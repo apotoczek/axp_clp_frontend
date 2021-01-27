@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>500 Internal Server Error</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Lato:300,400">
+    <style>
+        body {
+            font-family: 'Lato', serif;
+            background-color: #006ff1;
+        }
+        .wrapper {
+            display: table;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+        .coming-soon {
+            color: #fff;
+            padding-bottom: 200px;
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        h1 {
+            font-size: 38px;
+            font-weight: 300;
+            margin-bottom: 10px;
+            margin-top: 0;
+        }
+
+        p {
+            font-weight: 300;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="coming-soon">
+            <img src="${require('src/img/cobalt_logo_white.svg')}" style="width: 200px;" /><br />
+            <h1>Internal Server Error</h1>
+            <p>
+                We were unable to process your <br />
+                request, please try again later
+            </p>
+        </div>
+    </div>
+</body>
+</html>

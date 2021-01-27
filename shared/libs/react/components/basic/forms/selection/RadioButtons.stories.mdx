@@ -1,0 +1,29 @@
+
+import {Flex} from '@rebass/grid';
+
+import {Props, Preview, Story, Meta} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
+import {withKnobs, array, object} from '@storybook/addon-knobs';
+import RadioButtons from './RadioButtons';
+
+<Meta title='Documentation/RadioButtons' component={RadioButtons} />
+
+# RadioButtons
+
+The RadioButtons component is a set of toggles representing options.
+
+<Preview>
+    <Story name='Default'>
+        <RadioButtons
+        options={[
+            {label: 'Option 1', text: 'Option 1', value: 1},
+            {label: 'Option 2', text: 'Option 1', value: 2},
+            {label: 'Option 3', text: 'Option 1', value: 3}]
+        }
+        selected={object('value')}
+        onSelect={action('handleSelectType')}
+        />
+    </Story>
+</Preview>
+
+<Props of={RadioButtons} />

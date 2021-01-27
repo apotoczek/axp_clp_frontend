@@ -1,0 +1,27 @@
+<!-- ko renderComponent: cpanel --><!-- /ko -->
+
+<div class="layout-aside page">
+    <div class="layout-vbox">
+        <div class="row">
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <div class="scrollable content page no-header" style="padding: 20px 0;">
+            <!-- ko if: datasource.error() && !datasource.loading() -->
+                <div style="margin-top:50px;" class="big-message">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    <h1>No data for investor</h1>
+                    <p class="lead">
+                        No LP scoring data could be calculated for the selected investor...
+                    </p>
+                </div>
+            <!-- /ko -->
+            <!-- ko if: !datasource.error() || datasource.loading() -->
+                <div style="padding: 0 20px">
+                    <!-- ko renderComponent: chart --><!-- /ko -->
+                </div>
+                <!-- ko renderComponent: table --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+    </div>
+</div>

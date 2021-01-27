@@ -1,0 +1,328 @@
+.col-no-padding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.col-xs-1-5,
+.col-sm-1-5,
+.col-md-1-5,
+.col-lg-1-5 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.col-xs-1-5 {
+    width: 20%;
+    float: left;
+}
+
+@media (min-width: 768px) {
+    .col-sm-1-5 {
+        width: 20%;
+        float: left;
+    }
+}
+@media (min-width: 992px) {
+    .col-md-1-5 {
+        width: 20%;
+        float: left;
+    }
+}
+@media (min-width: 1200px) {
+    .col-lg-1-5 {
+        width: 20%;
+        float: left;
+    }
+}
+
+.layout-aside{
+    display:table-cell;
+    vertical-align: top;
+    height:100%;
+    float:none;
+}
+
+.layout-vbox {
+    display: block;
+    border-spacing: 0;
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.layout-vbox>.content{
+    position:absolute;
+    width:100%;
+    top:0px;
+    bottom:0px;
+}
+.layout-vbox-auto-w {
+    display: block;
+    border-spacing: 0;
+    position: relative;
+    height: 100%;
+}
+
+.layout-vbox-auto-w>.content{
+    position:absolute;
+    width:100%;
+    top:0px;
+    bottom:0px;
+}
+
+.layout-hbox {
+    display: table;
+    table-layout: fixed;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.layout-hbox>.table-row>.content{
+    display: table-cell;
+    vertical-align: top;
+    height: 100%;
+    padding: 0;
+    float: none;
+    width: 100%;
+}
+
+.table-row{
+    width: 100%;
+    display:table-row;
+}
+
+.layout-hbox>.table-row>.layout-aside{
+    display: table-cell;
+    vertical-align: top;
+    height: 100%;
+    padding: 0;
+    float: none;
+}
+
+
+
+.layout-vbox>.header + .nav{
+    width:100%;
+    display:block;
+}
+
+.stretch{
+    height: 100%;
+}
+
+
+.header{
+    padding:10px;
+}
+
+.wrapper.layout-hbox.stretch{
+    margin-top:0px;
+}
+
+.header-overlap-content {
+    position: relative;
+    min-width: 200px;
+    left: -210px;
+    height: 45px;
+    background-color: $header-toolbar;
+    padding: 13px;
+    display: inline-block;
+    top: -1px;
+    z-index: 3;
+}
+
+.header-overlap-content.sub-page-header,
+.header-overlap-content.full-width-page-header {
+    left: -10px !important;
+}
+
+.header-toolbar {
+    height:44px;
+    width:100%;
+    padding: 0 10px;
+    clear:both;
+
+    > .dropdown {
+        float: right;
+        >.btn:hover {
+            background-color: darken($header-toolbar, 5%);
+        }
+    }
+
+    >.btn:hover {
+            background-color: darken($header-toolbar, 5%);
+        }
+
+    > a.btn {
+        padding-top: 12px;
+    }
+
+    > .btn, .dropdown > .btn, .btn-group {
+        float: right;
+        font-size: 13px;
+        border-radius: 0;
+        height: 44px;
+        display: inline-block;
+        color: $header-toolbar-text;
+        background-color: transparent;
+
+        &.pull-left {
+            float: left;
+        }
+
+        > .well {
+            margin-top: 4px;
+            background-color: #e5e5e5;
+        }
+    }
+}
+
+.header-toolbar.reports {
+    background-color:$report-toolbar-bg;
+    text-align:center;
+
+    > .btn {
+        float:none;
+        color:$brand-success;
+        border:1px solid $brand-success;
+        border-radius:3px;
+        margin:4px;
+        height:33px;
+    }
+
+    > .btn:hover, .btn:active {
+        color:#FFF;
+        background:$brand-success;
+    }
+}
+
+// Smaller breadcrumb header update oct '16
+#mainbody .page .breadcrumb-header, #mainbody .breadcrumb-header{
+    height:33px;
+
+    &.header-light {
+        background-color:$header-toolbar;
+        border-bottom: 0;
+        margin-top:-1px;
+    }
+}
+.breadcrumb-header {
+    min-height: 33px;
+    border-bottom:1px solid $header-toolbar-darker;
+}
+.breadcrumb-header-overlap-content {
+    position: relative;
+    min-width: 200px;
+    left: -210px;
+    height: 33px;
+    background-color: $header-toolbar;
+    padding: 0px 13px;
+    display: inline-block;
+    top: -1px;
+    z-index: 3;
+}
+
+.breadcrumb-header-overlap-content.sub-page-header,
+.breadcrumb-header-overlap-content.full-width-page-header {
+    left: -10px !important;
+}
+.dashboard .breadcrumb-header.full-width-page-header {
+	.breadcrumb-header-overlap-content{
+		position:absolute;
+		left:0px !important;
+	}
+}
+
+.breadcrumb-header-toolbar {
+    height:33px;
+    width:100%;
+    padding: 0 10px;
+
+    > .dropdown {
+        float: right;
+        >.btn:hover {
+            background-color: darken($header-toolbar, 5%);
+        }
+    }
+
+    >.btn:hover {
+            background-color: darken($header-toolbar, 5%);
+        }
+
+    > a.btn {
+        padding-top: 6px;
+    }
+
+    > .btn, .dropdown > .btn, .btn-group {
+        float: right;
+        font-size: 13px;
+        border-radius: 0;
+        display: inline-block;
+        color: $header-toolbar-text;
+        background-color: transparent;
+
+        &.pull-left {
+            float: left;
+        }
+
+        > .well {
+            margin-top: 4px;
+            background-color: #e5e5e5;
+        }
+    }
+}
+
+// "PIXEL PERFECT" Tweaks
+
+.page.fundraising, .page.investments {
+    .shrinking-header {
+        h3 {
+            padding-top:3px;
+        }
+    }
+}
+
+
+
+//-----------------------------------------------------------------------
+// NO INVESTMENTS EXAMPLE WELL
+
+#examples-well {
+    background-color: $main-nav-bg;
+    width: 250px;
+    color: #fff;
+}
+
+
+//-----------------------------------------------------------------------
+// EQUAL HEIGHT BOOTSTRAP COLUMNS
+// WARNING: uses flex box -- taken off internet
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+
+
+//------------------------------------------------------------------------
+// Flex Flow Row
+//
+
+.flex-container {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+}

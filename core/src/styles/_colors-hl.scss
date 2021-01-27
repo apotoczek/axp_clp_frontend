@@ -1,0 +1,69 @@
+// Bison brand colors
+$bison-orange: #3C7DC9;
+$link: #3C7DC9;
+$main-nav-active: #4dbab2;
+$main-nav-bg: #11304C;
+$main-nav-bg-dark: #0C2A3F;
+$main-nav-borders: #19202F;
+$main-nav-bg-secondary: saturate($main-nav-bg, 10%);
+
+// Text colors
+// Use $lighten 15% to make disabled version
+$text-color: #424B4C;
+$link-color: #3C7DC9;
+$cpanel-text: #A8BBD2;
+$placeholder-text: #909DA2;
+$input-border: #E1E1E1;
+$gray-text: #909DA2;
+$light-gray: #EAF1F4;
+$barely-gray: #F5F5F5;
+
+$table-stripe: #F8F8F9;
+$header-toolbar: #0e2736; //#21374c;
+$header-toolbar-darker: #10314c; // #3f5b75;
+$header-toolbar-text: #FFF;
+$report-toolbar-bg: $header-toolbar-darker;
+
+$dark-blue: #0095C2; // For darker toolbar items
+
+// Default brand colors
+// Use $desaturate 20% to make darker version
+$brand-default: #5E88AC;
+$brand-success: #2ecc71;
+$brand-info: #55B9B1;
+$brand-danger: #ef6f56;
+$brand-warning: #F39C12;
+
+// Light callout colors
+// Use $darken 10% to make darker version
+$callout-default: #DDE5F0;
+$callout-success: #D6EFE1;
+$callout-info: #E8F5FC;
+$callout-danger: #EFCACA;
+$callout-warning: #F8E6CA;
+
+// Light callout borders
+$callout-default-dark: #BECBDD;
+$callout-success-dark: #9FE4BD;
+$callout-info-dark: #CADFEA;
+$callout-danger-dark: #D98C8C;
+$callout-warning-dark: #F8D295;
+
+$cpanel-bg: #204262;
+$cpanel-filter-bg: $main-nav-bg;
+$cpanel-filter-bg-active: #0f2433;
+$cpanel-filter-bg-active-border: $brand-info;
+$cpanel-nav-bg-active: #436686; //#363C4B;
+$cpanel-advanced-bg: #163a5a;
+
+// NOTES:
+// $brand-performance was batch replaced with #8B68DD
+
+// Color Overrides
+#mainbody .page .header.header-darker .header-toolbar .well > a {
+    color:$brand-info !important;
+}
+
+div.toggleButton{
+    background-color:$main-nav-borders;
+}

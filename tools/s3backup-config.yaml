@@ -1,0 +1,8 @@
+bucket: hamilton-lane-builds
+path: frontend/master
+logging:
+  format: "%(asctime)-15s %(message)s"
+  filepath: /var/log/s3_backup/builds.log
+  level: INFO
+backup:
+  retain: 30

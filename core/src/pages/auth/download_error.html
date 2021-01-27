@@ -1,0 +1,17 @@
+<div class="layout-aside page error-page" data-bind="css: error_page_class">
+    <div class="wrapper">
+        <div class="message">
+            <img data-bind="attr: { src: logo_urls.vertical }, style: logo_style" alt="LOGO">
+            <h1>Download Failed</h1>
+            <p>Something went wrong when<br> downloading the file</p>
+            <hr class="transparent">
+            <h3>Need help?</h3>
+            <p class="help-text">
+              Send an email to <span class="text-reversed" data-bind="text: support_email_reversed"></span>
+              <!-- ko if: support_phone -->
+              <br/> or call us at <span data-bind="text: support_phone"></span>
+              <!-- /ko -->
+            </p>
+        </div>
+    </div>
+</div>

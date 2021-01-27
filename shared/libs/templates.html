@@ -1,0 +1,4589 @@
+<script id="tpl_report_page" type="text/html">
+<div class="report-page pdf-page" data-bind="css: css">
+    <!-- ko if: !$data.is_cover -->
+        <div class="report-page-header">
+            <div class="report-page-number" data-bind="text: $data.page_number"></div>
+            <h3 class="report-page-title" data-bind="text: $data.title"></h3>
+            <h2 class="report-page-subtitle" data-bind="text: $data.subtitle"></h2>
+        </div>
+    <!-- /ko -->
+    <div data-bind="foreach: layout">
+        <!-- ko renderComponent: $data --><!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_perf_calc_error_missing_navs" type="text/html">
+<div style="margin-top:50px;" class="big-message">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <h1>Additional NAVs required</h1>
+    <p class="lead">
+        The time-weighted analysis requires quarterly NAVs for the entire time period.
+    </p>
+</div>
+</script>
+
+<script id="tpl_full_width_dynamic_visibility_radio_buttons" type="text/html">
+<div class="btn-group btn-block" data-bind="foreach: buttons">
+    <!-- ko if: $data.visible !== false -->
+        <!-- ko if: $data.template -->
+            <!-- ko template: {
+                data: $data,
+                name: $data.template
+            }--><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: !$data.template -->
+            <!-- ko if: !$parent.is_disabled($data) -->
+                <label class="btn" data-bind="css: $parent.css($data)">
+                    <input type="radio" name="options" autocomplete="off" data-bind="attr: { value: state, id: state }, checked: $parent.state"> <span data-bind="html: label"></span>
+                </label>
+            <!-- /ko -->
+        <!-- /ko -->
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_visual_report_side_by_side" type="text/html">
+<div class="big-message" data-bind="visible: loading">
+    <span class="glyphicon glyphicon-cog animate-spin"></span>
+    <h1>Loading..</h1>
+</div>
+<!-- ko if: !loading() && error() && error_template() -->
+    <!-- ko template: error_template --><!-- /ko -->
+<!-- /ko -->
+<!-- ko if: !loading() && !error() -->
+<div data-bind="attr: { id: html_id() }">
+        <div class="row">
+            <div class="col-xs-12 col-md-12" id="chart" style="text-align:center; margin-top:20px;">
+                <!-- ko ifnot: show_dropdown -->
+                    <div>
+                        <span data-bind="text: label"></span>
+                    </div>
+                <!-- /ko -->
+                <!-- ko if: show_dropdown -->
+                    <!-- ko renderComponent: chart_dropdown --><!-- /ko -->
+                <!-- /ko -->
+                <!-- ko with: chart -->
+                    <!-- ko renderComponent: $data --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+
+        </div>
+</div>
+<!-- /ko -->
+</script>
+
+<script id="tpl_report_toc" type="text/html">
+</script>
+
+<script id="tpl_popover_radio_button" type="text/html">
+    <div class="btn-group btn-block">
+        <a role="button" class="btn btn-sm btn-block clearfix btn-popover-radio" data-toggle="popover" data-bind="popover2: {
+            component: popover,
+            hide_on_events: hide_on_events,
+            opened_event: opened_event,
+            closed_event: closed_event,
+            options: popover_options,
+            listen_to: popover_options.listen_to,
+        }, css: css, visible: visible, click: click">
+            <span class="btn-label pull-left btn-ellipsis" data-bind="html: label"></span><span class="pull-right btn-icon" style="padding-top:2px;" data-bind="css:icon_css"></span>
+        </a>
+    </div>
+</script>
+
+<script id="tpl_breadcrumb_header" type="text/html">
+<div class="breadcrumb-header header-light header-buttons nav controls" data-bind="css: css">
+    <div class="breadcrumb-header-toolbar">
+        <div class="breadcrumb-header-overlap-content" data-bind="css: css">
+            <h4 data-bind="with: layout">
+                <!-- ko renderComponent: breadcrumb --><!-- /ko -->
+            </h4>
+        </div>
+        <!-- ko foreach: buttons -->
+            <!-- ko renderComponent: $data --><!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_perf_calc_error_market_out_of_range" type="text/html">
+    <div style="height:507px;margin-top:50px;" class="big-message">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <h1>Index out of range</h1>
+        <p class="lead">
+            The index data does not cover the full range of the fund(s).
+        </p>
+    </div>
+</script>
+
+<script id="tpl_save_search" type="text/html">
+    <div class="popover-save-search">
+        <div class="form-group" data-bind="event_horizon:true">
+            <input type="text" class="form-control input-sm" data-bind="textInput:name, attr:{ placeholder:placeholder }, enter: save">
+            <div class="hr hr-padded"></div>
+            <button type="button" class="btn btn-sm btn-cpanel-success btn-block close-popover" data-bind="click: save">Save</button>
+            <button type="button" class="btn btn-sm btn-cpanel-ghost-strong btn-block close-popover">Cancel</button>
+        </div>
+    </div>
+</script>
+
+<script id="tpl_metric_table_multi_col" type="text/html">
+    <!-- ko if: loading -->
+        <div style="width: 100%; text-align:center;">
+            <span class="glyphicon glyphicon-cog animate-spin"></span>
+            Loading table...
+        </div>
+    <!-- /ko -->
+    <!-- ko ifnot: loading -->
+        <div class="row" data-bind="foreach:columns">
+            <div data-bind="css:$parent.column_css">
+                <table class="table" style="border-bottom:1px solid #d0d0d0;">
+                    <tbody data-bind="foreach:$data">
+                        <tr>
+                            <td style="padding:0px;">
+                                <table class="table table-bison metric-table"  data-bind="css: $parents[1].css" style="border-bottom:0px; margin-bottom:0px;">
+                                    <tbody>
+                                        <tr>
+                                            <td class="table-lbl">
+                                                <span data-bind="html: label, define: { term: label, definition: definition }"></span>
+                                            </td>
+                                            <td class="table-data text-right" data-bind="html: value"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    <!-- /ko -->
+</script>
+
+<script id="tpl_investor_model_characteristics_table" type="text/html">
+    <!-- ko if: loading -->
+        <div style="width: 100%; text-align:center;">
+            <span class="glyphicon glyphicon-cog animate-spin"></span>
+            Loading table...
+        </div>
+    <!-- /ko -->
+    <!-- ko ifnot: loading -->
+        <div class="row" data-bind="foreach:columns">
+            <div data-bind="css:$parent.column_css">
+                <table class="table" style="border-bottom:1px solid #d0d0d0;">
+                    <tbody data-bind="foreach:$data">
+                        <tr>
+                            <td style="padding:0px;">
+                                <table class="table table-bison metric-table"  data-bind="css: $parents[1].css" style="border-bottom:0px; margin-bottom:0px;">
+                                    <tbody>
+                                        <tr>
+                                            <td class="table-lbl" style="padding:6px 0px 6px 10px;">
+                                                <span data-bind="html: label, define: { term: label, definition: definition }"></span>
+                                            </td>
+                                            <td class="table-data text-right" style="padding:6px 0px 6px 5px;" data-bind="html: value"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    <!-- /ko -->
+</script>
+
+<script id="tpl_metric_timeseries" type="text/html">
+<div data-bind="style: { margin: margin }">
+    <div class="centered" data-bind="if: metric_events">
+        <h2>Fund Results' <span data-bind="text: metric_label">DPI</span> over time</h2>
+        <p>Only first 20 results shown</p>
+    </div>
+
+    <div class="metric-timeseries-controls" data-bind="if: !metric_events">
+        <!-- ko renderComponent: metric_dropdown --><!-- /ko -->
+    </div>
+
+    <!-- ko renderComponent: chart --><!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_perf_calc_error_no_valuations" type="text/html">
+<div style="margin-top:50px;" class="big-message">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <h1>You have no valuations</h1>
+    <p class="lead">
+        To use Valuation Bridge, you must add valuations for at least one company.
+    </p>
+</div>
+</script>
+
+<script id="tpl_multi_bar_chart" type="text/html">
+<div data-bind="foreach: rows" class="component-box">
+    <div class="row" data-bind='foreach: $data'>
+        <div data-bind="css: $parents[1].column_css">
+            <!-- ko renderComponent: $data --><!-- /ko -->
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_report_meta" type="text/html">
+<div class="report-meta">
+    <div class="row">
+        <div class="col-xs-8">
+            <div class="report-meta-title" data-bind="renderComponent: title"></div>
+            <!-- ko if: metric_table -->
+                <div class="report-meta-metric-table" data-bind="renderComponent: metric_table"></div>
+            <!-- /ko -->
+            <!-- ko if: description -->
+                <div class="report-meta-description">
+                    <table class="callout-table callout-info">
+                        <tbody>
+                            <tr>
+                                <td class="callout-icon">
+                                    <span class="icon-info">
+                                    <div class="callout-line"></div>
+                                    </span>
+                                </td>
+                                <td>
+                                    <table><tbody><tr><td>
+                                        <p data-bind="text: description"></p>
+                                    </td></tr></tbody></table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            <!-- /ko -->
+        </div>
+        <div class="col-xs-4">
+            <div class="report-meta-image-cropper" data-bind="renderComponent: logo">
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_perf_calc_error_no_access" type="text/html">
+<div style="height:507px;margin-top:50px;" class="big-message">
+    <span class="glyphicon glyphicon-ban-circle"></span>
+    <h1>No Access</h1>
+    <p class="lead">
+        You don&#39;t have access to this analysis.
+    </p>
+</div>
+</script>
+
+<script id="tpl_list_body" type="text/html">
+    <div class="layout-aside page analytics">
+        <div class="layout-vbox">
+            <div class="row" >
+                <div class="col-xs-6"></div>
+                <div class="col-xs-6"></div>
+            </div>
+            <!-- ko if: layout.header -->
+            <!-- ko renderComponent: layout.header --><!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: layout.toolbar -->
+            <!-- ko renderComponent: layout.toolbar --><!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: layout.breadcrumb -->
+            <!-- ko renderComponent: layout.breadcrumb --><!-- /ko -->
+            <!-- /ko -->
+            <div class="scrollable content page">
+                <!-- ko foreach: layout.body -->
+                <!-- ko renderComponent: $data --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+
+        </div>
+    </div>
+</script>
+
+<script id="tpl_list_body_no_toolbar" type="text/html">
+<div class="layout-aside page analytics">
+    <div class="layout-vbox">
+        <div class="row" >
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <!-- ko if: layout.header -->
+            <!-- ko renderComponent: layout.header --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: layout.breadcrumb -->
+            <!-- ko renderComponent: layout.breadcrumb --><!-- /ko -->
+        <!-- /ko -->
+         <div class="content page no-toolbar">
+            <!-- ko foreach: layout.body -->
+               <!-- ko renderComponent: $data --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+
+    </div>
+</div>
+</script>
+
+<script id="tpl_popover_add_fund_snapshot_2col" type="text/html">
+<div class="popover-add-fund-snapshot" style="width:350px" data-bind="event_horizon:true">
+    <div class="force-scrollable-y">
+    <div class="row">
+    <div class="col-xs-6">
+        <div class="form-group">
+            <input type="text" class="form-control input-sm" data-bind="textInput: fund.name" placeholder="Fund Name">
+        </div>
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" data-bind="textInput: fund.irr" placeholder="IRR">
+            <span class="input-group-addon">%</span>
+        </div>
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" data-bind="textInput: fund.multiple" placeholder="TVPI">
+            <span class="input-group-addon">X</span>
+        </div>
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" data-bind="textInput: fund.dpi" placeholder="DPI">
+            <span class="input-group-addon">X</span>
+        </div>
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" data-bind="textInput: fund.rvpi" placeholder="RVPI">
+            <span class="input-group-addon">X</span>
+        </div>
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" data-bind="textInput: fund.pme_alpha" placeholder="PME Alpha">
+            <span class="input-group-addon">%</span>
+        </div>
+    </div>
+    <div class="col-xs-6">
+    <ul data-bind="foreach:compset">
+        <li class="btn btn-ghost btn-block btn-xs clearfix" data-bind="click:$parent.remove_comp"><span  data-bind="text:name" class="btn-label name pull-left"></span><span class="btn-icon pull-right glyphicon glyphicon-remove text-default"></span></li>
+    </ul>
+    </div>
+    </div>
+    </div>
+    <div class="hr hr-padded-bottom"></div>
+    <div class="row">
+        <div class="col-xs-6">
+            <button type="button" class="btn btn-block btn-sm btn-default" data-bind="click:add">Add Fund</button>
+        </div>
+        <div class="col-xs-6">
+                <button type="button" class="btn btn-block btn-sm btn-ghost-default close-popover" data-bind="click:clear">Clear</button>
+                <!-- <button type="button" class="btn btn-block btn-sm btn-ghost-default close-popover">Done</button> -->
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_popover_table" type="text/html">
+    <div class="popover-table-container" data-bind="css:css">
+        <h5 data-bind="text:title"></h5>
+        <div class="popover-body popover-checklist popover-cpanel">
+            <div data-bind="visible: loading, template: {
+                name: 'tpl_dark_magic_suggested_loading',
+                data: $data,
+            }"></div>
+            <!-- ko  if:!loading() -->
+            <ul data-bind="foreach:results">
+                <li class="button-group">
+                    <button data-bind="click:$parent.click" class="btn btn-popover-checklist-item btn-block btn-xs clearfix">
+                    <span  class="btn-label pull-left" data-bind="text:name, css:$parent.item_css"></span>
+                    </button>
+                </li>
+            </ul>
+            <!-- /ko -->
+        </div>
+    </div>
+</script>
+
+<script id="tpl_wizard_body" type="text/html">
+    <div class="layout-aside page analytics" data-bind="attr: { id: html_id() }">
+    <div class="layout-vbox">
+        <div class="row">
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <!-- ko if: layout.header -->
+            <!-- ko renderComponent: layout.header --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: layout.wizard_step_bar -->
+            <!-- ko renderComponent: layout.wizard_step_bar --><!-- /ko -->
+        <!-- /ko -->
+        <div class="scrollable content page  dark-page" style="top:138px;">
+            <!-- ko if: layout.body -->
+                <!-- ko renderComponent: layout.body --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_new_wizard_body" type="text/html">
+    <div class="layout-aside page analytics" data-bind="attr: { id: html_id() }">
+    <div class="layout-vbox">
+        <div class="row">
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <!-- ko if: layout.header -->
+            <!-- ko renderComponent: layout.header --><!-- /ko -->
+        <!-- /ko -->
+        <div class="scrollable content page  dark-page" style="top:33px;">
+            <!-- ko if: layout.body -->
+                <!-- ko renderComponent: layout.body --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_perf_calc_error_data_missing_navs" type="text/html">
+<div style="margin-top:50px;">
+    <div class="big-message">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <h1>Additional NAVs required</h1>
+    <p class="lead">
+        The time-weighted analysis requires quarterly NAVs for the entire time period.
+    </p>
+    </div>
+    <!-- ko renderComponent: $parent.missing_navs_table --><!-- /ko -->
+</div>
+</script>
+
+
+<script id="tpl_account_content" type="text/html">
+<!-- ko if: $data.toolbar -->
+    <!-- ko renderComponent: toolbar --><!-- /ko -->
+<!-- /ko -->
+<!-- ko renderComponent: content --><!-- /ko -->
+</script>
+
+<script id="tpl_perf_calc_error_no_managers" type="text/html">
+<div style="margin-top:50px;" class="big-message">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <h1>You have no managers</h1>
+    <p class="lead">
+        To use Manager Scoring, you must add a Manager<br>
+        (Deal Team Leader or Deal Team Second) for at least one company.
+    </p>
+</div>
+</script>
+
+<script id="tpl_attribute_values_form" type="text/html">
+<div data-bind="style: { width: '600px'}">
+    <!-- ko foreach: values -->
+        <!-- ko renderComponent: $data --><!-- /ko -->
+    <!-- /ko -->
+    <div class="new-world-form clearfix" style="border-top: 1px solid #ecf0f1; padding:10px 0 0; margin-top:10px">
+        <button class="btn btn-xs btn-ghost-default pull-right" data-dismiss="popover">Close</button>
+        <button class="btn btn-xs btn-default pull-left" data-bind="click: function() { add_value() }, enable: can_add, event_horizon: true"  style="margin-right:5px;">Add another</button>
+        <button class="btn btn-xs btn-danger pull-left" data-bind="click: remove_all, visible: !permanent_attribute">Delete</button>
+    </div>
+</div>
+</script>
+
+<script id="tpl_div_wrapper" type="text/html">
+    <div data-bind="css:css">
+    <!-- ko foreach: layout.body -->
+        <!-- ko renderComponent: $data --><!-- /ko -->
+    <!-- /ko -->
+    <div>
+</script>
+
+<script id="tpl_perf_calc_error_too_many_vehicles" type="text/html">
+<div style="height:507px;margin-top:50px;" class="big-message">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <h1>Limit reached</h1>
+    <p class="lead">
+        The current version of value drivers does not produce
+        valuable results for portfolios with more than 750 funds.<br>
+        The individual contributions will be too close to zero to be distinguishable.
+    </p>
+</div>
+</script>
+
+<script id="tpl_activity_widget_benchmark" type="text/html">
+    <table class="activity-widget">
+        <tbody>
+            <tr>
+                <td class="border-clear-right no-wrap"><span class="glyphicon glyphicon-file"></span></td>
+                <td class="border-clear-left block-wrapper">
+                    <p><strong data-bind="text:title"></strong></p>
+                    <p class="small" data-bind="text:description"></p>
+                    <p><strong data-bind="text:time"></strong></p>
+                </td>
+                <td class="no-wrap"><h5 class="text-success">DOWNLOAD</h5><span class="glyphicon glyphicon-save text-success"></span></td>
+        </tbody>
+    </table>
+</script>
+
+<script id="tpl_data_table_empty_list" type="text/html">
+<div class="big-message">
+    <h1>Nothing here!</h1>
+    <p class="lead">
+        This list is empty.
+    </p>
+</div>
+</script>
+
+<script id="tpl_data_manager_top_form_stack" type="text/html">
+<div class="row">
+    <div class="col-md-12 new-world-form fund-characteristics-form">
+         <!-- ko foreach: form_layout -->
+         <div class="row row-margins">
+            <div data-bind="css: $parent.column_css">
+                <!-- ko renderComponent: $data --><!-- /ko -->
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: $data.button -->
+        <div class="row row-margins">
+            <div class="col-md-12">
+                <!-- ko renderComponent: button --><!-- /ko -->
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_popover_buttons" type="text/html">
+    <div class="popover-checklist" data-bind="css: css">
+        <ul data-bind="foreach: options" class="force-scrollable-y">
+            <li class="button-group">
+                <button class="btn btn-popover-checklist-item btn-block btn-xs clearfix" data-bind="click: $parent.broadcast_state">
+                    <span class="btn-label pull-left" data-bind="text:label"></span>
+                </button>
+            </li>
+        </ul>
+        <div class="help-block" data-bind="visible: options().length == 0, text: empty_text">
+        </div>
+    </div>
+</script>
+
+<script id="tpl_live_report_suggested_comps" type="text/html">
+<!-- ko renderComponent: layout.search_field --><!-- /ko -->
+<!-- ko renderComponent: layout.results_meta--><!-- /ko -->
+<div class="row suggested-comps" data-bind="with:layout">
+    <div style="width:800px; margin:0px auto;">
+        <div class="col-xs-12 col-md-6">
+            <div data-bind="renderComponent: funds">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <div data-bind="renderComponent: investors">
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_live_report_suggested_funds" type="text/html">
+<!-- ko renderComponent: layout.search_field --><!-- /ko -->
+<!-- ko renderComponent: layout.results_meta--><!-- /ko -->
+<div class="row suggested-comps" data-bind="with:layout">
+    <div style="width:800px; margin:0px auto;">
+        <div style="width:600px; margin:0px auto;">
+            <div data-bind="renderComponent: funds">
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_live_report_suggested_investors" type="text/html">
+<!-- ko renderComponent: layout.search_field --><!-- /ko -->
+<!-- ko renderComponent: layout.results_meta--><!-- /ko -->
+<div class="row suggested-comps" data-bind="with:layout">
+    <div style="width:800px; margin:0px auto;">
+        <div style="width:600px; margin:0px auto;">
+            <div data-bind="renderComponent: investors">
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_add_attribute_form" type="text/html">
+<div class="new-world-form">
+    <div class="form-group">
+        <!-- ko renderComponent: attribute --><!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_reports_start_body_container" type="text/html">
+        <div class="row report-start-body" data-bind="with:layout">
+            <div class="col-md-8 editable-reports">
+                <!-- ko renderComponent: reports --><!-- /ko -->
+            </div>
+            <div class="col-md-4 exported-reports">
+                <h5>Previously Exported Reports:</h5>
+                <div class="button_list_container">
+
+                    <!-- ko renderComponent: downloads --><!-- /ko -->
+                </div>
+
+            </div>
+        </div>
+</script>
+
+<script id="tpl_perf_calc_error_no_filters" type="text/html">
+<div style="margin-top:50px;" class="big-message">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <h1>Invalid peer set</h1>
+    <p class="lead">
+        Please specify at least one filter in your peer set...
+    </p>
+</div>
+</script>
+
+<script id="tpl_perf_calc_error_limited_access" type="text/html">
+<div style="height:507px;margin-top:50px;" class="big-message">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <h1>You are browsing with limited access</h1>
+    <p class="lead">
+        With limited access, you can view net funds and portfolios that are shared with you.<br>
+        To create and view your own net funds and portfolios, you need a Performance Calculator subscription.
+    </p>
+    <a role="button" class="btn btn-lg btn-success" href="https://www.bison.co/#!/request-invoice/performance-calculator">
+        Get Performance Calculator
+    </a>
+</div>
+</script>
+
+<script id="tpl_data_table_empty_data_manager_archived" type="text/html">
+<div class="big-message empty-table">
+    <h2>You haven't archived any data yet.</h2>
+    <h4>Have vehicles you no longer need to see?</h4>
+    <div class="row row-eq-height tip">
+        <div class="col-xs-4" style="text-align:center;">
+            <img src="/img/how_to_archive1.jpg" width="140px" style="margin-top: 40px"/>
+        </div>
+        <div class="col-xs-8">
+            <h3>Archive Vehicles you don't need</h3>
+            <p class="lead">Use the button in the toolbar to archive selected vehicles. <i>These vehicles will no longer show up anywhere on Cobalt.</i> You can restore them here at any time.</p>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_report_peer" type="text/html">
+<div class="big-message" data-bind="visible: loading">
+    <span class="glyphicon glyphicon-cog animate-spin"></span>
+    <h1>Loading..</h1>
+</div>
+<!-- ko if: !loading() && error() && error_template() -->
+    <!-- ko template: error_template --><!-- /ko -->
+<!-- /ko -->
+<!-- ko if: !loading() && !error() -->
+<div data-bind="attr: { id: html_id() }">
+    <div class="row" data-bind="foreach: charts">
+        <div data-bind="css: $parent.column_css">
+            <!-- ko renderComponent: $data --><!-- /ko -->
+        </div>
+    </div>
+    <!-- ko template: {
+        name: 'tpl_benchmark_legend',
+        data: charts[0],
+    }--><!-- /ko -->
+    <!-- ko if: show_table -->
+        <div class="component-box" data-bind="renderComponent: benchmark_table"></div>
+    <!-- /ko -->
+</div>
+<!-- /ko -->
+</script>
+
+<script id="tpl_data_table_empty_data_reports" type="text/html">
+<div class="no-visual-reports" style="height: 800px;">
+        <div style="width: 700px; margin: 0 auto;">
+        <h2>You haven't run any Data Reports yet.</h2>
+        <h4>Choose a template above to get started.</h4>
+        <div class="row row-eq-height tip">
+            <div class="col-xs-4" style="text-align:center;">
+                <img src="/img/visual_report_tips_001.png" style="margin-top: 35px;"/>
+            </div>
+            <div class="col-xs-8">
+                <h3>Select a template</h3>
+                <p class="lead">Select a template above that matches the type of report you want to run.</p>
+            </div>
+        </div>
+        <div class="row row-eq-height tip">
+            <div class="col-xs-4" style="text-align:center;">
+                <img src="/img/how_to_datareport1.png" style="margin-top: 35px;"/>
+            </div>
+            <div class="col-xs-8">
+                <h3>Configure your report</h3>
+                <p class="lead">Edit the settings and peer set for the different components of your report.</p>
+            </div>
+        </div>
+        <div class="row row-eq-height tip">
+            <div class="col-xs-4" style="text-align:center;">
+                <img src="/img/how_to_datareport2.png" style="margin-top: 35px;" />
+            </div>
+            <div class="col-xs-8">
+                <h3>Download your Report</h3>
+                <p class="lead">Download a copy or export it in the preview.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_perf_calc_error_no_benchmark_data" type="text/html">
+    <div style="height:507px;margin-top:50px;" class="big-message">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <h1>Insufficient benchmark data</h1>
+        <p class="lead">
+            Please select at least one non-empty data set or adjust your filters to include more funds.
+        </p>
+    </div>
+</script>
+
+<script id="tpl_attribute_popover_button_table" type="text/html">
+<div class="new-world-form btn-group-justified" data-bind="with: popover" style="width: 100%;">
+    <div class="btn-group">
+        <button type="button" style="position:relative;" class="btn btn-ghost-default btn-xs btn-block btn-popover" data-toggle="popover" data-bind="css: $parent.btn_css, disable: $parent.read_only, popover2: {
+            component: $data,
+            listen_to: ['values'],
+            options: {
+                placement: $data.popover_placement,
+            }
+        }, attr: { title: $data.full_text_value() }">
+            <div class="btn-ellipsis">
+                <span data-bind="text: $data.text_value"></span>
+            </div>
+            <span class="caret"></span>
+        </button>
+    </div>
+</div>
+</script>
+
+<script id="tpl_perf_calc_error_no_commitment" type="text/html">
+<div style="margin-top:50px;" class="big-message">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <h1>No commitment</h1>
+    <p class="lead">
+        Analysis requires commitment...
+    </p>
+</div>
+</script>
+
+<script id="tpl_dashboard_body" type="text/html">
+<div class="layout-aside page dashboard" data-bind="attr: { id: html_id() }">
+    <div class="layout-vbox">
+        <div class="row">
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <!-- ko if: layout.header -->
+            <!-- ko renderComponent: layout.header --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: layout.notification_area -->
+            <!-- ko renderComponent: layout.notification_area --><!-- /ko -->
+        <!-- /ko -->
+        <div class="scrollable content page no-toolbar dark-page">
+            <!-- ko foreach: layout.body -->
+                <!-- ko renderComponent: $data --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_saved_searches" type="text/html">
+<div class="popover-saved-searches" data-bind="event_horizon:true, clickBubble:false">
+    <ul class="force-scrollable-y" data-bind="foreach:saved_searches, visible: !is_empty()">
+        <li class="btn btn-cpanel-ghost btn-block btn-xs clearfix close-popover" data-bind="click:$parent.activate_state, clickBubble:true">
+            <span class="btn-label pull-left" data-bind="text:name"></span>
+            <span class="btn-icon glyphicon glyphicon-remove pull-right text-default" data-bind="click:$parent.delete_state, clickBubble:false"></span>
+        </li>
+    </ul>
+    <div class="help-block" data-bind="visible:is_empty()">
+        No saved searches...
+    </div>
+</div>
+</script>
+
+<script id="tpl_live_reports_advanced_meta_count" type="text/html">
+<h5 style="color: #39bee5; margin-bottom: 30px;" data-bind="text:html()"></h5>
+</script>
+
+<script id="tpl_dark_magic_range" type="text/html">
+<div class="form-group popover-fund-size" data-bind="event_horizon:true, css: css", style="max-width:200px;">
+<div class="force-scrollable-y">
+    <div class="input-group input-group-sm">
+
+        <!-- ko if: prefix -->
+            <span class="input-group-addon" data-bind="text:prefix"></span>
+        <!-- /ko -->
+        <div class="form-group">
+            <input type="text" class="form-control input-sm" data-bind="textInput: min" placeholder="Min">
+        </div>
+        <!-- ko if: suffix -->
+        <span class="input-group-addon" data-bind="text:suffix"></span>
+        <!-- /ko -->
+    </div>
+    <div class="input-group input-group-sm">
+        <!-- ko if: prefix -->
+            <span class="input-group-addon" data-bind="text:prefix"></span>
+        <!-- /ko -->
+        <div class="form-group">
+            <input type="text" class="form-control input-sm" data-bind="textInput: max" placeholder="Max">
+        </div>
+        <!-- ko if: suffix -->
+            <span class="input-group-addon" data-bind="text:suffix"></span>
+        <!-- /ko -->
+    </div>
+</div>
+<div class="hr hr-padded-bottom"></div>
+<button type="button" class="btn btn-block btn-sm close-popover">Done</button>
+<button type="button" class="btn btn-block btn-sm btn-cpanel" data-bind="click:clear">Clear</button>
+</div>
+</script>
+
+<script id="tpl_dashboard_notification_contact_us" type="text/html">
+    <div class="notification">
+        <button class="notification-btn notification-btn-info">
+            Contact Us
+        </button>
+        <span data-bind="text:title"></span>
+    </div>
+</script>
+
+<script id="tpl_popover_text_input" type="text/html">
+    <div data-bind="event_horizon:false">
+        <form class="form-inline">
+            <input data-bind="attr: {placeholder: placeholder}, textInput: value" class="form-control input-sm">
+            <button class="btn btn-sm btn-cpanel-success" data-bind="click: submit">Submit</button>
+        </form>
+    </div>
+</script>
+
+<script id="tpl_dark_magic_suggested_loading" type="text/html">
+<div style="text-align:center; margin-top:40px; margin-bottom:40px;">
+    <span class="glyphicon glyphicon-cog animate-spin" style="font-size:40px;"></span>
+    <h3>Generating Suggestions...</h3>
+</div>
+</script>
+
+<script id="tpl_horizontal_data_report_cpanel" type="text/html">
+<div class="row row-margins" data-bind="foreach: layout.body">
+    <div class="col-xs-12 col-md-4" style="margin-bottom: 10px;">
+        <!-- ko renderComponent: $data --><!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_portfolio_breakdown" type="text/html">
+<div style="width:420px; margin:0px auto; text-align: center;">
+    <!-- ko if: charts().length -->
+        <div style='width:200px; display:inline-block;'>
+            <span class="chart-option-dropdown-label">breakdown</span>
+            <!-- ko renderComponent: breakdown_dropdown --><!-- /ko -->
+        </div>
+    <!-- /ko -->
+    <!-- ko if: show_commitments_dropdown -->
+        <div style='width:200px; display:inline-block;'>
+            <span class="chart-option-dropdown-label">commitments</span>
+            <!-- ko renderComponent: commitment_values_dropdown --><!-- /ko -->
+        </div>
+    <!-- /ko -->
+</div>
+<div class="row" data-bind='foreach: charts'>
+    <div data-bind="css: $parent.column_css">
+        <!-- ko renderComponent: $data --><!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_market_insights_body" type="text/html">
+    <!-- ko renderComponent: body --><!-- /ko -->
+</script>
+
+<script id="tpl_perf_calc_error_limited_access_gross" type="text/html">
+<div style="height:507px;margin-top:50px;" class="big-message">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <h1>You are browsing with limited access</h1>
+    <p class="lead">
+        With limited access, you can view gross funds and portfolios that are shared with you.<br>
+        To create and view your own gross funds and portfolios, you need a Deal Calculator subscription.
+    </p>
+    <a role="button" class="btn btn-lg btn-success" href="https://www.bison.co/#!/request-invoice/deal-calculator">
+        Get Deal Calculator
+    </a>
+</div>
+</script>
+
+<script id="tpl_visual_report_pme" type="text/html">
+    <div class="big-message" data-bind="visible: loading">
+        <span class="glyphicon glyphicon-cog animate-spin"></span>
+        <h1>Loading PME..</h1>
+    </div>
+    <!-- ko if: !loading() && error() && error_template() -->
+        <!-- ko template: error_template --><!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: !loading() && !error() -->
+    <div class="component-box" data-bind="attr: { id: html_id() }">
+        <div class="row">
+            <div class="col-xs-12 col-md-12" data-bind="renderComponent: pme">
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+</script>
+
+<script id="tpl_simple_table" type="text/html">
+<table class="table" data-bind="css: css">
+    <thead>
+        <tr data-bind="foreach: columns">
+            <th class="table-lbl" data-bind="css: $data.css">
+                <!-- ko if: $data.label -->
+                    <span data-bind="html: label"></span>
+                <!-- /ko -->
+            </th>
+        </tr>
+    </thead>
+        <tbody data-bind="foreach: rows">
+            <tr data-bind="foreach: $data.cells, css: $data.css">
+                <td data-bind="css: $data.css">
+                    <span data-bind="html: value"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+<script id="tpl_report_component_wrapper_view" type="text/html">
+<!-- ko ifnot: hide -->
+    <div class="report-component-wrapper">
+        <div class="contents">
+            <h4 data-bind="text: title" class="report-component-title"></h4>
+
+            <!-- ko if: meta_data().length -->
+                <div class="report-component-meta-data">
+                    <!-- ko foreach: meta_data -->
+                        <strong data-bind="text: name"></strong>:
+                        <span data-bind="text: data"></span>
+                    <!-- /ko -->
+                </div>
+            <!-- /ko -->
+
+            <!-- ko renderComponent: widget --><!-- /ko -->
+
+            <div class="report-component-description" data-bind="visible: text_body">
+                <p class="description" data-bind="html: text_body"></p>
+            </div>
+        </div>
+    </div>
+<!-- /ko -->
+</script>
+
+<script id="tpl_fund_overview_callouts" type="text/html">
+<div class="component-box full-height cashflow-overview-widget" data-bind="style: css_style">
+    <!-- ko if: loading() || !data() -->
+        <span class="glyphicon glyphicon-cog animate-spin"></span>
+    <!-- /ko -->
+    <!-- ko if: !loading() && data() -->
+    <div class="row row-margins">
+        <div class="col-md-12">
+            <!--ko foreach: callouts-->
+                <div class="col-xs-6" data-bind="renderComponent: $data"></div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_attribute_value_form" type="text/html">
+<div class="row row-condensed" style="margin-bottom:10px;">
+    <div class="col-xs-11" data-bind="renderComponent: input"></div>
+    <div class="col-xs-1 text-center">
+        <span class="glyphicon glyphicon-remove text-danger" data-bind="click: remove, event_horizon: true" style="margin-top: 9px;"></span>
+    </div>
+</div>
+</script>
+
+<script id="tpl_asides" type="text/html">
+<!-- ko foreach: asides -->
+    <!-- ko renderComponent: $data --><!-- /ko -->
+<!-- /ko -->
+</script>
+
+<script id="tpl_notification_area" type="text/html">
+    <div class="notification-area" data-bind="foreach:widgets">
+        <!-- ko renderComponent: $data --><!-- /ko -->
+    </div>
+</script>
+
+<script id="tpl_report_layout_engine" type="text/html">
+<div class="layout-engine" data-bind="css: css">
+    <!-- ko if: $data.header -->
+        <div class="layout-engine-header" data-bind="renderComponent: header">
+        </div>
+    <!-- /ko -->
+    <!-- ko foreach: layout -->
+        <!-- ko if: $data.is_page_break -->
+            <div class="page-break"></div>
+            <div class="new-page-margin"></div>
+        <!-- /ko -->
+        <!-- ko ifnot: $data.is_page_break -->
+            <div class="row row-eq-height" data-bind="">
+                <!-- ko foreach:$data -->
+                    <!-- ko template: {
+                        name: $data.template,
+                        data: $data,
+                    } --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+        <!-- /ko -->
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_button_list" type="text/html">
+    <!-- ko foreach: list -->
+        <div data-bind="html:$data" style="margin-bottom:5px;"></div>
+    <!-- /ko -->
+</script>
+
+<script id="tpl_render_full_body" type="text/html">
+    <div class="layout-aside page analytics full-body no-cpanel">
+        <div class="layout-vbox">
+            <div class="row" >
+                <div class="col-xs-6"></div>
+                <div class="col-xs-6"></div>
+            </div>
+            <div class="scrollable content page" style="top:0px;">
+                <!-- ko with: body -->
+                    <!-- ko renderComponent: $data --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="tpl_dynamic_pme_box" type="text/html">
+    <div class="pme-box full-height new-world-form" data-bind="css:css_style">
+        <!-- ko if: loading -->
+            <span class="glyphicon glyphicon-cog animate-spin"></span>
+        <!-- /ko -->
+        <!-- ko ifnot: loading -->
+            <!-- ko if: show_dropdown -->
+            <div data-bind="renderComponent: methodology_dropdown" style="margin-bottom: 20px;"></div>
+            <!-- /ko -->
+            <!-- ko ifnot: show_dropdown -->
+            <div>
+                Methodology:
+                <span data-bind="text: label"></span>
+            </div>
+            <!-- /ko -->
+            <div class="pme-description" data-bind="html: description"></div>
+            <div class="pme-delta" data-bind="html: delta"></div>
+            <!-- ko if: info_text -->
+                <div data-bind="renderComponent: info_popover" style="margin-top:-18px;margin-bottom:5px;"></div>
+            <!-- /ko -->
+            <!-- ko if: chart -->
+                <div data-bind="renderComponent: chart"></div>
+                <hr class="transparent">
+            <!-- /ko -->
+            <!-- ko if: table -->
+                <div data-bind="renderComponent: table"></div>
+            <!-- /ko -->
+
+            <!-- ko with: pme_error -->
+                <h4 class="text-danger" data-bind="text:title"></h4>
+                <p class="text-halfmuted" data-bind="text:description"></p>
+                <!-- ko if: shame_sentence -->
+                    <p class="text-halfmuted" data-bind="text:shame_sentence"></p>
+                <!-- /ko -->
+            <!-- /ko -->
+
+
+        <!-- /ko -->
+    </div>
+</script>
+
+<script id="tpl_report_col12" type="text/html">
+    <div class="col-md-12 layout-engine-wrapper">
+        <!-- ko template: {
+            name: $data.data.template,
+            data: $data.data,
+        } --><!-- /ko -->
+    </div>
+</script>
+
+<script id="tpl_lp_update_report_header" type="text/html">
+<div class="header-well">
+    <div class="row row-margins">
+        <div class="col-md-8">
+            <h2 class="report-header-title" data-bind="text: report_name"></h2>
+        </div>
+        <div class="col-md-4" data-bind="with: mapped_data">
+            <!-- ko if: logo_src -->
+                <img data-bind="attr: { src: logo_src }" class="report-header-logo" />
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_attribute_member_form" type="text/html">
+<div class="row row-condensed">
+    <div data-bind="css: { 'col-xs-12': !enable_weight(), 'col-xs-10': enable_weight() }, renderComponent: dropdowns"></div>
+    <!-- ko if: enable_weight -->
+        <div class="col-xs-2" data-bind="renderComponent: weight"></div>
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_data_table_empty_data_manager" type="text/html">
+<div class="big-message empty-table">
+    <h2>You haven't added any investment data yet.</h2>
+    <h4>Get started by uploading.</h4>
+    <!-- ko renderComponent: components.upload --><!-- /ko -->
+    <div class="row row-eq-height tip">
+        <div class="col-xs-4" style="text-align:center;">
+            <img src="/img/secure.png" width="80px"/>
+        </div>
+        <div class="col-xs-8">
+            <h3>Upload your Data</h3>
+            <p class="lead">Upload cash flows; company, fund, and manager attributes; as well as financial metrics, all in one place.<br/><strong>Your data will be encrypted and you will control access to it.</strong></p>
+        </div>
+    </div>
+    <div class="row row-eq-height tip">
+        <div class="col-xs-4" style="text-align:center;">
+            <img src="/img/how_to_datamanager1.png" width="190px"/>
+        </div>
+        <div class="col-xs-8">
+            <h3>Customize your data</h3>
+            <p class="lead">Set attributes for your data for easy searching and defining of peer sets.</p>
+        </div>
+    </div>
+    <div class="row row-eq-height tip">
+        <div class="col-xs-4" style="text-align:center;">
+            <img src="/img/how_to_archive1.jpg" width="140px" style="margin-top: 40px"/>
+        </div>
+        <div class="col-xs-8">
+            <h3>Archive Vehicles you don't need</h3>
+            <p class="lead">Use the button in the toolbar to archive selected vehicles. <i>These vehicles will no longer show up anywhere on Cobalt.</i> You can restore them here at any time.</p>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_attribute_popover_button" type="text/html">
+<!-- ko with: popover -->
+<button
+    type="button"
+    style="position:relative;"
+    class="btn btn-ghost-default btn-block btn-popover"
+    data-toggle="popover"
+    data-bind="
+        css: $parent.btn_css,
+        popover2: {
+            component: $data,
+            listen_to: ['values'],
+            options: {
+                placement: $data.popover_placement
+            },
+        },
+        attr: { title: $data.full_text_value() },
+        disable: $parent.disabled
+    ">
+    <div class="btn-ellipsis">
+        <strong><span data-bind="text: $data.attribute_name"></span>:</strong>
+        <span data-bind="text: $data.text_value"></span>
+    </div>
+    <span class="caret"></span>
+</button>
+<!-- /ko -->
+</script>
+
+<script id="tpl_wizard_step_bar" type="text/html">
+    <div class="row row-eq-height wizard-step-bar" data-bind="css:{hidden:!visible()}, visible:visible, foreach:steps">
+        <div class="col-md-4" data-bind="click:$parent.activate"><span class="step-number" data-bind="text:number, css:{active:active}"></span><span class="step-text" data-bind="text:text"></span></div>
+    </div>
+</script>
+
+<script id="tpl_activity_widget_update" type="text/html">
+    <table class="activity-widget tpl_activity_widget_update">
+        <tbody data-bind="click: navigate_to_url" class="clickable">
+            <tr>
+                <td class="block-wrapper">
+                    <p data-bind="text:title, css: title_css"></p>
+                    <p class="small" data-bind="text:time"></p>
+                </td>
+                <td class="border-clear-left">
+                    <span class="glyphicon glyphicon-share-alt"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+<script id="tpl_live_report_wizard_start_body" type="text/html">
+<!-- ko renderComponent: body --><!-- /ko -->
+</script>
+
+<script id="tpl_report_glossary" type="text/html">
+<div class="glossary" data-bind="foreach: glossary">
+    <div class="glossary-item">
+        <div class="glossary-item-title" data-bind="text: $data.title">
+        </div>
+        <div class="glossary-item-desc" data-bind="html: $data.desc">
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_lp_update_wizard_body" type="text/html">
+<div data-bind="with:layout" class="full-body no-cpanel">
+    <!-- ko renderComponent: header --><!-- /ko -->
+    <div class="row">
+        <!-- ko renderComponent: title --><!-- /ko -->
+    </div>
+    <div class="row">
+        <!-- ko renderComponent: filters --><!-- /ko -->
+    </div>
+    <div class="row">
+        <!-- ko renderComponent: table --><!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_perf_calc_error_invalid_range" type="text/html">
+    <div style="height:507px;margin-top:50px;" class="big-message">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <h1>Invalid Range</h1>
+        <p class="lead">
+            The chosen range is invalid. Please adjust it to run the anlysis.
+        </p>
+    </div>
+</script>
+
+<script id="tpl_data_table_investors_empty" type="text/html">
+<div class="big-message">
+    <p class="lead">No investor data available at this time.</p>
+
+</div>
+</script>
+
+<script id="tpl_data_table_no_families_in_fund" type="text/html">
+<div class="big-message">
+    <p class="lead">No data on funds in family at this time.</p>
+
+</div>
+</script>
+
+
+<script id="tpl_report_component_wrapper" type="text/html">
+<div class="report-component-wrapper">
+    <div class="contents">
+        <!-- ko if:hide -->
+            <div class="report-component-hidden">
+                <h4 data-bind="text: title" class="report-component-title"></h4>
+                <img src="/img/report_hidden.png" />
+                <p class='lead'>
+                    This component is hidden and will not be<br/>
+                    included in the final report.
+                </p>
+                <button class="btn btn-success" data-bind="click: toggle_hide">Re-include</button>
+            </div>
+        <!-- /ko -->
+        <!-- ko ifnot: hide -->
+            <!-- ko if: can_hide -->
+                <div class="clearfix">
+                    <button class="btn btn-ghost-default btn-xs report-component-toggle" data-bind="click: toggle_hide">
+                        <span data-bind="text: button_text"></span>
+                    </button>
+                </div>
+            <!-- /ko -->
+            <div class="big-message" data-bind="visible: loading">
+                <span class="glyphicon glyphicon-cog animate-spin"></span>
+                <h1>Loading..</h1>
+            </div>
+            <!-- ko if: !loading() && error() && error_template() -->
+                <h4 data-bind="text: title" class="report-component-title"></h4>
+                <!-- ko template: error_template --><!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: !loading() && !error() -->
+                <h4 data-bind="text: title" class="report-component-title"></h4>
+
+                <!-- ko if: meta_data().length -->
+                 <div class="report-component-meta-data">
+                    <!-- ko foreach: meta_data -->
+                        <strong data-bind="text: name"></strong>:
+                        <span data-bind="text: data"></span>
+                    <!-- /ko -->
+                </div>
+                <!-- /ko -->
+
+                <!-- ko renderComponent: widget --><!-- /ko -->
+
+                <!-- ko if: allow_description -->
+                    <div class="report-component-description">
+                        <!-- ko renderComponent: description --><!-- /ko -->
+                    </div>
+                <!-- /ko -->
+            <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_report_multi_component_wrapper" type="text/html">
+<!-- ko foreach: { data: components, as: 'component' } -->
+    <h4 data-bind="text: $parent.title" class="report-component-title"></h4>
+    <!-- ko renderComponent: component --><!-- /ko -->
+<!-- /ko -->
+</script>
+
+<script id="tpl_perf_calc_error_no_indexes" type="text/html">
+    <div style="height:507px;margin-top:50px;" class="big-message">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <h1>No index data</h1>
+        <p class="lead">
+            At least one index is required to run the PME Benchmark.<br />
+            Use the upload button create an index from a spreadsheet..
+        </p>
+    </div>
+</script>
+
+<script id="tpl_fund_overview_callouts_full" type="text/html">
+<div class="component-box full-height cashflow-overview-widget" data-bind="style: css_style">
+    <!-- ko if: loading() || !data() -->
+        <span class="glyphicon glyphicon-cog animate-spin"></span>
+    <!-- /ko -->
+    <!-- ko if: !loading() && data() -->
+    <div class="row row-margins">
+        <div class="col-md-12">
+            <!--ko foreach: callouts-->
+                <div class="col-xs-3" data-bind="renderComponent: $data"></div>
+            <!-- /ko -->
+        </div>
+    </div>
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_image_cropper" type="text/html">
+    <!-- This wraps the whole cropper -->
+    <div id="image-cropper" data-bind="image_cropper: $data">
+        <div  style="margin-top:0px; width:201px;" class="pull-right">
+            <h4>Upload your logo</h4>
+            <!-- This is where user selects new image -->
+            <input type="file" id="crop-it-file-input" class="cropit-image-input" />
+            <label for="crop-it-file-input" class="btn btn-info cropit-input-label btn-block">Choose a file</label>
+             <!-- This is where the preview image is displayed -->
+                <div class="cropit-preview" style="border: 1px solid #ddd">
+
+                </div>
+                <p>Click and drag to reposition, zoom to crop</p>
+                <!-- This range input controls zoom -->
+                <!-- You can add additional elements here, e.g. the image icons -->
+                <span class="glyphicon glyphicon-picture" style="font-size:12px"></span>
+                <input type="range" class="cropit-image-zoom-input" />
+                <span class="glyphicon glyphicon-picture" style="font-size:18px"></span>
+            <!-- The cropit- classes above are needed
+               so cropit can identify these elements -->
+            <a role="button" class="btn btn-sm btn-success btn-block crop-finish" data-bind="click:save" style="margin-top:10px;">Crop &amp; Finish</a>
+        </div>
+    </div>
+</script>
+
+<script id="tpl_no_investments" type="text/html">
+<div class="layout-aside page analytics">
+    <div class="layout-vbox">
+        <div class="row">
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <!-- ko if: layout.header -->
+            <!-- ko renderComponent: layout.header --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: layout.toolbar -->
+            <!-- ko renderComponent: layout.toolbar --><!-- /ko -->
+        <!-- /ko -->
+        <div class="scrollable content page">
+            <div class="row">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-8">
+                    <img data-bind="attr:{src:opts.image_url}" width="100%" style="padding: 30px 0px;" />
+                </div>
+                <div class="col-xs-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-1"></div>
+                <div class="col-xs-10" style="margin-bottom: 30px;">
+                    <h1 data-bind="text:opts.title_text"></h1>
+                    <h4>Our Data Manager will help you manage and safely store your investment data.</h4>
+                </div>
+                <div class="col-xs-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-1"></div>
+                <div class="col-xs-2">
+                    <!--ko renderComponent: layout.upload --><!-- /ko -->
+                </div>
+                <div class="col-xs-9">
+                    <p>Upload cash flows; company, fund, and manager attributes; as well as financial metrics.</p>
+                    <p style="font-weight: 700;">
+                    <span class="icon-lock"></span>Your data will be encrypted and you will control access to it.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layout-aside" id="examples-well">
+    <div class="row">
+        <h3>Examples of analyses</h3>
+        <img src="/img/example_peer_benchmark.gif" />
+        <p class="text-small">Benchmark funds against Cobalt and Hamilton Lane's datasets.</p>
+        <img src="/img/example_valuation_bridge.gif" />
+        <p class="text-small">Discover what is driving a fund's performance.</p>
+        <img src="/img/example_horizon_model.gif" />
+        <p class="text-small">Optimize your portfolio's performance and manage your future allocations</p>
+    </div>
+</div>
+</script>
+
+<script id="tpl_popover_new_body" type="text/html">
+<div data-bind="style: style">
+    <!-- ko foreach:layout.body -->
+        <!-- ko renderComponent: $data --><!-- /ko -->
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_activity_widget_information" type="text/html">
+    <table class="activity-widget activity_widget_information">
+        <tbody>
+            <tr>
+                <td class="block-wrapper">
+                    <p data-bind="text:title" class="text-info"></p>
+                </td>
+                <td class="border-clear-left">
+                    <a data-bind="attr:{ href: url }">
+                        <h5>LEARN MORE <span class="glyphicon glyphicon-share-alt"></span></h5>
+                    </a>
+                </td>
+            </tr>
+            <tr class="border-clear-top">
+                <td colspan="2" class="small" data-bind="text:time"></td>
+            </tr>
+            <tr class="border-clear-top" data-bind="if:description">
+                <td colspan="2" class="description">
+                    <p data-bind="text:description"></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+<script id="tpl_data_table_empty_metrics" type="text/html">
+<div class="big-message empty-table">
+    <h2>You haven't created any metrics yet.</h2>
+    <h4>Use the button above to get started.</h4>
+    <div class="row row-eq-height tip">
+        <div class="col-xs-5" style="text-align:center;"><div class="circle-info-icon"><span class="icon-info"></span></div>
+        </div>
+        <div class="col-xs-7">
+            <h3>What are they?</h3>
+            <p class="lead">Custom metrics allow you to define your own metrics for your companies.<br /><br />
+            </p>
+        </div>
+    </div>
+    <div class="row row-eq-height tip">
+        <div class="col-xs-5" style="text-align:center;">
+            <img src="/img/how_to_metrics1.png" width="225px" style="margin-top: 15px;"/>
+        </div>
+        <div class="col-xs-7">
+            <h3>Create your own</h3>
+            <p class="lead">Name your metric something descriptive.</p>
+        </div>
+    </div>
+    <div class="row row-eq-height tip">
+        <div class="col-xs-5" style="text-align:center;">
+            <img src="/img/how_to_metrics2.png" width="225px" style="margin-top:20px" />
+        </div>
+        <div class="col-xs-7">
+            <h3>Choose format</h3>
+            <p class="lead">The format defines how your metrics will be displayed and what operations can be performed.</p>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_data_table_empty_attributes" type="text/html">
+<div class="big-message empty-table">
+    <h2>You haven't created any custom attributes yet.</h2>
+    <h4>Use the button above to get started.</h4>
+    <div class="row row-eq-height tip">
+        <div class="col-xs-4" style="text-align:center;"><div class="circle-info-icon"><span class="icon-info"></span></div>
+        </div>
+        <div class="col-xs-8">
+            <h3>What are they?</h3>
+            <p class="lead">Custom attributes allow you to define your own attributes for your investment data.<br /><br />
+            Assign a customized geography, or other list of items to reuse when creating new funds or portfolios.</p>
+        </div>
+    </div>
+    <div class="row row-eq-height tip">
+        <div class="col-xs-4" style="text-align:center;">
+            <img src="/img/how_to_attributes1.png" width="200px" style="margin-top: 15px;"/>
+        </div>
+        <div class="col-xs-8">
+            <h3>Create your own</h3>
+            <p class="lead">Name your attribute something descriptive.</p>
+        </div>
+    </div>
+    <div class="row row-eq-height tip">
+        <div class="col-xs-4" style="text-align:center;">
+            <img src="/img/how_to_attributes2.png" width="200px" style="margin-top: 15px;"/>
+        </div>
+        <div class="col-xs-8">
+            <h3>Customize your data</h3>
+            <p class="lead">Add your custom values. These can also be updated as you upload your data.</p>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_report_tvpi_momentum_box" type="text/html">
+    <div class="number-box">
+        <h4 class="number-title">
+            <span data-bind="html: label, define: { term: label, placement: 'bottom' }"></span>
+        </h4>
+        <div class="number-highlight">
+            <!-- ko if: loading -->
+                <span class="text-muted">N/A</span>
+            <!-- /ko -->
+            <!-- ko ifnot: loading -->
+                <span data-bind="html: value"></span>
+            <!-- /ko -->
+        </div>
+        <span class="number-subtext" data-bind="visible: subtext, html: subtext">
+        </span>
+    </div>
+</script>
+
+<script id="tpl_popover_sort" type="text/html">
+    <div class="popover-body popover-checklist" data-bind="event_horizon:true, css: css">
+        <span style="text-transform:uppercase;font-size: 10px;margin-left:2px;">Sort Order</span>
+        <div class="btn-group btn-group-justified" role="group" aria-label="..." style="margin-top:5px;">
+          <a role="button " class="btn btn-popover-checklist-item btn-xs" data-bind="click:sort_asc, css:{checked:sort_order() == 'asc'}">Ascending</a>
+          <a role="button" class="btn btn-popover-checklist-item btn-xs" data-bind="click:sort_desc, css:{checked:sort_order() == 'desc'}">Descending</a>
+        </div>
+        <div class="hr"></div>
+        <ul data-bind="foreach: segregated_options" class="force-scrollable-y">
+            <li class="button-group" data-bind="css: { is_title: $parent.is_label($data) }">
+                <button class="btn btn-popover-checklist-item btn-block btn-xs clearfix" data-bind="css: { checked: $parent.is_selected($data) }, click: $parent.toggle">
+                <span class="btn-label pull-left" data-bind="text:label"></span>
+                <span class="btn-icon glyphicon glyphicon-ok pull-right"></span>
+                </button>
+            </li>
+        </ul>
+        <div class="help-block" data-bind="visible: options().length == 0, text: empty_text">
+        </div>
+        <div class="hr"></div>
+        <button type="button" class="btn btn-block btn-sm close-popover">Close</button>
+        <!-- ko if: !disable_untoggle && !disable_clear_button -->
+            <button type="button" class="btn btn-block btn-sm clear-popover" data-bind="click:clear">Clear Selected</button>
+        <!-- /ko -->
+        <!-- ko if: restore_defaults -->
+            <button type="button" class="btn btn-block btn-sm clear-popover" data-bind="click: restore_defaults">Restore Defaults</button>
+        <!-- /ko -->
+    </div>
+</script>
+
+<script id="tpl_default_cpanel" type="text/html">
+<div class="layout-aside" id="main-control-panel">
+    <div class="layout-vbox">
+        <div class="header mode-toggle" data-bind="css: title_css">
+            <!-- ko with: layout.header -->
+                <!-- ko renderComponent: $data --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <ul id="main-control-panel-body" class="nav nav-sidebar collapse">
+            <!-- ko foreach: layout.body -->
+                <li data-bind="renderComponent: $data"></li>
+            <!-- /ko -->
+        </ul>
+  </div>
+</div>
+</script>
+
+<script id="tpl_chart_block_wrapper_simple" type="text/html">
+<div class="chart-block-wrapper">
+    <!-- ko renderComponent: layout.body --><!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_anchor_action_button" type="text/html">
+    <a role="button" class="btn" data-bind="click: broadcast_event, html: label, css: css, disable: disabled, visible: visible"></a>
+</script>
+
+<script id="tpl_dropdown_item_action_button" type="text/html">
+    <li data-bind="css: {disabled: disabled}, visible: visible">
+        <a role="button" data-bind="click: broadcast_event, disable: disabled, html: label"></a>
+    </li>
+</script>
+
+<script id="tpl_how_to_modal" type="text/html">
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 data-bind="text: title"></h4>
+            </div>
+            <div class="modal-body">
+                <div data-bind="foreach: tips">
+                    <div class="row tip">
+                        <div class="col-xs-4" style="text-align:center;">
+                            <img data-bind="attr:{src:tip_img, width:img_width}" style="margin-top: 30px;"/>
+                        </div>
+                        <div class="col-xs-8">
+                            <h3 data-bind="text: tip_title"></h3>
+                            <p class="lead" data-bind="text: tip_text"></p>
+                        </div>
+                    </div>
+                </div>
+                <div style="height: 34px; text-align: center;">
+                    <button class="btn btn-success" data-bind="click: got_it">Got it <span class="glyphicon glyphicon-ok"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_perf_calc_error_limited_access_net" type="text/html">
+    <!-- ko template: 'tpl_perf_calc_error_limited_access' --><!-- /ko -->
+</script>
+
+<script id="tpl_action_toolbar" type="text/html">
+<div class="header header-darker header-buttons nav controls" data-bind="css: css">
+    <div class="header-toolbar">
+        <!-- ko if: $data.last_button -->
+            <!-- ko renderComponent: last_button --><!-- /ko -->
+        <!--/ko -->
+
+        <!-- ko if: !disable_export() && can_export() -->
+            <!-- ko renderComponent: export_actions --><!-- /ko -->
+        <!--/ko -->
+
+        <!-- ko foreach: buttons -->
+            <!-- ko renderComponent: $data --><!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: $data.selected_count -->
+            <!-- ko renderComponent: selected_count --><!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_header_with_advanced" type="text/html">
+<div class="advanced-filter-header">
+    <h5 data-bind='text: label' style="display:inline-block"></h5>
+    <span class="advanced-filter-toggle btn-popover" data-bind="css:css, popover2: {
+        component: popover,
+        hide_on_events: hide_on_events,
+        opened_event: opened_event,
+        closed_event: closed_event,
+        options: popover_options,
+        listen_to: popover_options.listen_to,
+    }, visible: visible"><span class="glyphicon glyphicon-cog" style="padding-right:5px;"></span>Advanced</span>
+
+</div>
+
+</script>
+
+<script id="tpl_investor_modeling" type="text/html">
+    <!-- ko if: datasource.loading -->
+    <div class="big-message" style="color: #616e83;">
+        <span class="glyphicon glyphicon-cog animate-spin" style="margin: 50px 0px 30px;"></span>
+        <h1>Generating report..</h1>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: datasource.error -->
+    <div style="margin-top:50px;" class="big-message">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <h1>No data for selected fund / investor combination</h1>
+        <p class="lead">
+            Please select different investor or a fund with different characteristics to run the report.
+        </p>
+    </div>
+    <!-- /ko -->
+    <!-- ko if: !datasource.loading() && !datasource.error() -->
+    <div class="layout-vbox faux-page-wrapper scrollable">
+        <div class="faux-page" data-bind="attr: { id: html_id() }">
+            <div class="report-page pdf-page lp-report report-cover">
+                <div class="report-component-wrapper">
+                    <div class="contents">
+                    <div class="lp-report-cover">
+                        <div class="lp-report-cover-dates">
+                            <span data-bind="text: created_date"></span><br />
+                            As of <span data-bind="text: as_of_date"></span>
+                        </div>
+
+                        <h1 class="lp-report-cover-report-name">
+                            Modeling in <span data-bind="html: investor_name_possesive"></span> portfolio
+                        </h1>
+
+                        <h2 class="lp-report-cover-title">LP Report
+                        </h2>
+
+                        <div class="lp-report-cover-meta">
+                            <strong data-bind="html: fund_name"></strong><br />
+                            <span data-bind="html: fund_size"></span><br />
+                            <span data-bind="html: geography"></span> |
+                            <span data-bind="html: style"></span><br />
+                            Vintage Year <span data-bind="html: vintage_year"></span>
+                        </div>
+
+                        <div class="lp-report-cover-legal">
+                            <p>
+                                All platform-provided information contained within this report has been gathered from sources believed to be reliable, including but not limited to public filings, lead sponsor fund financials, limited partner performance reports, and third party market data sources, but its accuracy cannot be guaranteed. The information contained in this report may include forward-looking statements regarding the portfolio, fund sponsor, or company presented. Forward-looking statements include a number of risks, uncertainties and other factors beyond the control of the sponsor or the target company, which may result in material differences in actual results, performance or other expectations. Any opinions, estimates and analyses reflect our or the lead sponsor’s current judgment, which may change in the future.
+                            </p>
+                            <p>
+                                The past performance information contained in this report is not necessarily indicative of future results. The actual realized value of currently unrealized investments will depend on a variety of factors, including future operating results, the value of the assets and market conditions at the time of disposition, any related transaction costs and the timing and manner of sale, all of which may differ from the assumptions and circumstances on which any current unrealized valuations are based.
+                            </p>
+                            <p>
+                                Any tables, graphs or charts relating to past performance included in this report are intended only to illustrate the performance of the lead sponsor, fund, company, or the investment opportunity referred to for the historical periods shown. Such tables, graphs and charts are not intended to predict future performance and should not be used as the basis for an investment decision.
+                            </p>
+                            <p>
+                                The calculations contained in this document are generated by the <span data-bind="text:platform_name"></span> platform based on information provided by the user (e.g. cash flows and valuations), and have not been prepared, reviewed or approved by any other party.
+                            </p>
+                            <p>
+                                The information herein is not intended to provide, and should not be relied upon for, accounting, legal or tax advice, or investment recommendations. You should consult your accounting, legal, tax or other advisors about the matters discussed herein.
+                            </p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="report-page pdf-page lp-report">
+                <div class="report-page-header">
+                    <div class="report-page-number">1</div>
+                    <h3 class="report-page-title">Portfolio Review</h3>
+                    <h2 class="report-page-subtitle">Matched Characteristics</h2>
+                </div>
+                <div class="report-component-wrapper">
+                    <div class="contents">
+                        <div class="report-component-padding">
+                            <!-- ko renderComponent: info_table --><!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ko if: has_commitment_values -->
+                <div class="report-page-header report-page-header-inline">
+                    <h2 class="report-page-subtitle">Recent Commitments</h2>
+                </div>
+                <div class="report-component-wrapper">
+                    <div class="contents">
+                        <div class="report-component-padding">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div style="margin-top:10px;">
+                                        <!-- ko renderComponent: recent_commitments_table --><!-- /ko -->
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <!-- ko renderComponent: recent_commitments_chart --><!-- /ko -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="report-component-description">
+                            <p><span data-bind="html:investor_name"></span> has made <span data-bind="html: recent_commitment_count"></span> commitments to <span data-bind="html: characteristics"></span>  over the last five years. <span data-bind="html:investor_name_possesive"></span> annual commitments have ranged from <span data-bind="html: recent_commitment_count_min"></span> on the low end to <span data-bind="html: recent_commitment_count_max"></span> on the high end.</p>
+                            <p>On a committed capital basis, <span data-bind="html:investor_name"></span> has committed <span data-bind="html:recent_commitment_sum"></span> to <span data-bind="html:characteristics"></span> over the last five years. The average commitment has been <span data-bind="html:recent_commitment_mean"></span>.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+
+                <!-- ko ifnot: has_commitment_values -->
+                <div class="report-page-header report-page-header-inline">
+                    <h2 class="report-page-subtitle">Recent Investments</h2>
+                </div>
+                <div class="report-component-wrapper">
+                    <div class="contents">
+                        <div class="report-component-padding">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div style="margin-top:10px;">
+                                        <!-- ko renderComponent: recent_investments_table --><!-- /ko -->
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <!-- ko renderComponent: recent_investments_chart --><!-- /ko -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="report-component-description">
+                            <p><span data-bind="html:investor_name"></span> has made <span data-bind="html: recent_commitment_count"></span> commitments to <span data-bind="html: characteristics"></span> over the last five years. <span data-bind="html:investor_name_possesive"></span> annual commitments have ranged from <span data-bind="html: recent_commitment_count_min"></span> on the low end to <span data-bind="html: recent_commitment_count_max"></span> on the high end.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+
+                <div class="report-page-header report-page-header-inline">
+                    <h2 class="report-page-subtitle">Recent Performance</h2>
+                </div>
+                <div class="report-component-wrapper recent-performance">
+                    <div class="contents">
+                        <div class="report-component-padding">
+                            <div class="row">
+                                <div class="col-xs-8">
+                                    <!-- ko renderComponent: recent_performance --><!-- /ko -->
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="report-text-box">
+                                        <!-- ko if: recent_performance_is_market_average -->
+                                        <p>Performance information for <span data-bind="html:investor_name_possesive"></span> recent commitments is not available.
+                                        </p>
+                                        <p>The chart illustrates high level performance statistics for <span data-bind="html: characteristics"></span> during the <span data-bind="html: recent_vintage_range_text"></span>.
+                                        </p>
+                                        <!-- /ko -->
+                                        <!-- ko ifnot: recent_performance_is_market_average -->
+                                        <p>This chart illustrates high-level performance statistics for <span data-bind="html:investor_name_possesive"></span> <span data-bind="html: characteristics"></span> commitments during the <span data-bind="html: recent_vintage_range_text"></span>.</p>
+                                        <!-- /ko -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="report-page pdf-page lp-report">
+                <div class="report-page-header">
+                    <div class="report-page-number">2</div>
+                    <h3 class="report-page-title">Manager Relationships</h3>
+                    <h2 class="report-page-subtitle">Core Relationships</h2>
+                </div>
+                <div class="report-component-wrapper">
+                    <div class="contents">
+                        <div class="report-component-padding">
+                            <!-- ko with: core_relationships -->
+                                <!-- ko renderComponent: $data --><!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                        <div class="report-component-description">
+                            <p><span data-bind="html: investor_name"></span> has committed to <span data-bind="html: all_time_manager_count"></span> <span data-bind="html: characteristics"></span> managers since <span data-bind="html: first_commitment_year"></span>. The list above highlights the active GP relationships that <span data-bind="html: investor_name"></span> has committed to most frequently during this time.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- ko if: has_forward_calendar -->
+                <div class="report-page-header report-page-header-inline">
+                    <h2 class="report-page-subtitle">Forward Calendar</h2>
+                </div>
+                <div class="report-component-wrapper">
+                    <div class="contents">
+                        <div class="report-component-padding">
+                            <div class="row">
+                                <div class="col-xs-8">
+                                    <!-- ko renderComponent: forward_calendar --><!-- /ko -->
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="report-text-box">
+                                        <p>This list looks at <span data-bind="html: investor_name_possesive"></span> <span data-bind="html: characteristics"></span> commitments and compares them to our forward calendar.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /ko -->
+            </div>
+
+            <div class="report-page pdf-page lp-report">
+                <div class="report-page-header">
+                    <div class="report-page-number">3</div>
+                    <h3 class="report-page-title">LP Behavior</h3>
+                    <h2 class="report-page-subtitle">New Relationships</h2>
+                </div>
+                <div class="report-component-wrapper">
+                    <div class="contents">
+                        <div class="report-component-description" style="margin-top: 0;">
+                            <p>
+                                Over the last five years, <span data-bind="html: investor_name"></span> has invested with <span data-bind="html: recent_manager_count"></span> <span data-bind="html: characteristics"></span> managers. Bison analyzed these relationships to determine <span data-bind="html: investor_name_possesive"></span> likelihood to establish new relationships vs. commit to existing GPs.
+                            </p>
+                            <p>
+                                <span data-bind="html: investor_name"></span> has a new manager ratio of <strong data-bind="html: new_manager_ratio"></strong>. This means <span data-bind="html: new_manager_ratio"></span> of the commitments they have made to <span data-bind="html: characteristics"></span> have been new managers in their portfolio.
+                            </p>
+                            <!-- ko if: new_manager_count() > 0 -->
+                                <h3>New Managers</h3>
+                                <ul class="list-inline" data-bind="foreach: new_managers">
+                                  <li data-bind="text: $data"></li>
+                                </ul>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+                <div class="report-page-header report-page-header-inline">
+                    <h2 class="report-page-subtitle">Retention</h2>
+                </div>
+                <div class="report-component-wrapper">
+                    <div class="contents">
+                        <div class="report-component-description" style="margin-top: 0;">
+                            <p>
+                                <span data-bind="html: investor_name"></span> has a retention ratio of <strong data-bind="html: retention_ratio"></strong>. The retention ratio analyzes how often an LP recommits to existing relationships.
+                            </p>
+                            <p>
+                                Among <span data-bind="html: investor_name_possesive"></span> active GP relationships, they have not recommitted to <span data-bind="text: lost_manager_count"></span> managers over the last five years.
+                            </p>
+                            <!-- ko if: lost_manager_count() > 0 -->
+                            <h3>Lost Managers</h3>
+                            <ul class="list-inline" data-bind="foreach: lost_managers">
+                              <li data-bind="text: $data"></li>
+                            </ul>
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="report-page pdf-page lp-report">
+                <div class="report-page-header">
+                    <div class="report-page-number">4</div>
+                    <h3 class="report-page-title">Alpha Driver Analysis</h3>
+                    <p class="report-page-description">
+                        This section analyzes whether your fund adds value to the LP's portfolio. The alpha driver analysis calculates the % change in TVPI that would result from an investment in your fund. The analysis uses an equal-weighted methodology, meaning commitment sizes are not taken into consideration.
+                    </p>
+                </div>
+                <div class="report-component-wrapper">
+                    <div class="contents">
+                        <div class="report-component-description">
+                            <p>
+                                <span data-bind="html: investor_name"></span> made <span data-bind="html: comp_count() || 'no'"></span> investments into <span data-bind="html: characteristics"></span> during the <span data-bind="html: alpha_driver_vintage_range"></span> vintage years.
+                            </p>
+
+                            <!-- ko ifnot: comp_count_with_performance() -->
+                            <p>
+                                <!-- ko if: comp_count -->
+                                    Performance information for these investments is not available.
+                                <!-- /ko -->
+                                Against the <span data-bind="html: alpha_driver_vintage_range"></span> <span data-bind="html: characteristics"></span> composite, <span data-bind="html:fund_name_possesive"></span> TVPI is <span data-bind="html: market_alpha_driver_metric"></span> <span data-bind="html: market_alpha_driver_text"></span> than the market average.
+                            </p>
+                            <!-- /ko -->
+
+                            <!-- ko if: comp_count_with_performance -->
+                            <p>The alpha driver analysis indicates that <span data-bind="html:fund_name"></span> would <span data-bind="html: alpha_driver_text"></span> to <span data-bind="html:investor_name_possesive"></span> portfolio. The alpha driver metric is <span data-bind="html: alpha_driver_metric"></span>. The portfolio's average TVPI <span data-bind="html: alpha_driver_change_text"></span> slightly.</p>
+                            <!-- /ko -->
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <!-- ko renderComponent: alpha_driver_chart --><!-- /ko -->
+                            </div>
+                            <div class="col-xs-6">
+                                <!-- ko renderComponent: alpha_driver_table --><!-- /ko -->
+                                <p class="text-muted">
+                                    <em><small>Performance information represents average performance data from Bison's market data set.</small></em>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- /ko -->
+</script>
+
+<script id="tpl_mode_toggle" type="text/html">
+<!-- ko if: visible -->
+    <div class="toggleButton pull-right" data-bind="click: on_click, css:css">
+      <button class="edit" data-bind="disable: disabled">Edit</button>
+      <button class="preview" data-bind="disable: disabled">Preview</button>
+    </div>
+<!-- /ko -->
+</script>
+
+<script id="tpl_chart_block_wrapper" type="text/html">
+<div class="chart-block-wrapper">
+    <div class="expandable-visualizations">
+        <!-- ko renderComponent: layout.expando --><!-- /ko -->
+    </div>
+    <!-- ko renderComponent: layout.body --><!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_live_reports_fund_advanced_meta_count" type="text/html">
+<h5 style="color: #39bee5; margin-bottom: 30px;"> You have <strong data-bind="text:$data.data()"></strong> funds.</h5>
+
+</script>
+
+<script id="tpl_expandable_metric_table" type="text/html">
+<!-- ko if: loading -->
+    <div style="width: 100%; text-align:center;">
+        <span class="glyphicon glyphicon-cog animate-spin"></span>
+        Loading table...
+    </div>
+<!-- /ko -->
+<!-- ko ifnot: loading -->
+    <div data-bind="foreach: columns" class="expanded-data row">
+        <div data-bind="foreach:$data" class="col-sm-3">
+            <h5 data-bind="html: label" style="margin-bottom: 5px;"></h5>
+            <p data-bind="html: value" style="margin-bottom: 20px;"><p>
+        </div>
+    </div>
+<!-- /ko -->
+</script>
+
+<script id="tpl_activity_widget_report" type="text/html">
+<table class="activity-widget activity_widget_report">
+    <tbody>
+        <tr>
+            <td class="border-clear-right no-wrap">
+                <p class="block-wrapper">
+                    <strong data-bind="text:title"></strong>
+                </p>
+            </td>
+            <td class="border-clear-left">
+                <p class="small">
+                    <span data-bind="text:description"></span> - <span data-bind="text:time"></span>
+                </p>
+            </td>
+            <td class="no-wrap clickable" data-bind="click:download_fund_modeler_pdf, visible: enable_download">
+                <h5 class="text-success">DOWNLOAD</h5><span class="glyphicon glyphicon-save text-success"></span>
+            </td>
+            <td data-bind="click:navigate_to_url, visible: !enable_download()" class="clickable">
+                <h5 class="text-info">RERUN</h5><span class="glyphicon glyphicon-repeat text-info"></span>
+            </td>
+        </tr>
+        <tr data-bind="if:alert">
+            <td colspan="2" >
+                <span class="text-info">
+                    <span class="glyphicon" data-bind="css: alert_glyphicon"></span>
+                    <span data-bind="text:alert"></span>
+                </span>
+            </td>
+            <td data-bind="click:navigate_to_url" class="clickable">
+                <h5 class="text-info">RERUN</h5><span class="glyphicon glyphicon-repeat text-info"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</script>
+
+<script id="tpl_no_visual_reports" type="text/html">
+<div class="no-visual-reports">
+    <div style="width: 700px; margin: 0 auto;">
+        <h2>You haven't made any Visual Reports yet.</h2>
+        <h4>Here's how to get started.</h4>
+        <div class="row row-eq-height tip">
+            <div class="col-xs-4" style="text-align:center;">
+                <img src="/img/visual_report_tips_001.png"/>
+            </div>
+            <div class="col-xs-8">
+                <h3>Select a template</h3>
+                <p class="lead">Select a template above that matches the type of report you want to create.</p>
+            </div>
+        </div>
+        <div class="row row-eq-height tip">
+            <div class="col-xs-4" style="text-align:center;">
+                <img src="/img/visual_report_tips_002.png"/>
+            </div>
+            <div class="col-xs-8">
+                <h3>Configure your report</h3>
+                <p class="lead">Edit the settings and peer set for the different components of your report.</p>
+            </div>
+        </div>
+        <div class="row row-eq-height tip">
+            <div class="col-xs-4" style="text-align:center;">
+                <img src="/img/visual_report_tips_006.png"/>
+            </div>
+            <div class="col-xs-8">
+                <h3>Customize your report</h3>
+                <p class="lead">Hide any pieces you don't wish to include.</p>
+            </div>
+        </div>
+        <div class="row row-eq-height tip">
+            <div class="col-xs-4" style="text-align:center;">
+                <img src="/img/visual_report_tips_003.png"/>
+            </div>
+            <div class="col-xs-8">
+                <h3>Preview</h3>
+                <p class="lead">Preview your report to make sure everything looks the way you want.</p>
+            </div>
+        </div>
+        <div class="row row-eq-height tip">
+            <div class="col-xs-4" style="text-align:center;">
+                <img src="/img/visual_report_tips_007.png"/>
+            </div>
+            <div class="col-xs-8">
+                <h3>Finish</h3>
+                <p class="lead">Finish your report so that your data won't change next time you want to download the report.</p>
+            </div>
+        </div>
+        <div class="row row-eq-height tip well">
+            <div class="col-xs-4" style="text-align:center;">
+                <img src="/img/visual_report_tips_005.png"/>
+            </div>
+            <div class="col-xs-8">
+                <p>Come back and download your report as many times as you want, or make a fresh copy to get more up-to-date data.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_table_toolbar_gen" type="text/html">
+    <div style="width: 100%; border: 1px solid #ddd;">
+        <div class="action-buttons-container" style="white-space: nowrap;" data-bind='foreach:buttons'>
+            <div style="display: table-cell;" class="action-button-table-cell">
+                <!-- ko renderComponent: $data--><!-- /ko -->
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="tpl_perf_calc_error_target_date_out_of_range" type="text/html">
+    <div style="height:507px;margin-top:50px;" class="big-message">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <h1>Target Date Out of Range</h1>
+        <p class="lead">
+            The target date has to be within 15 years of the selected as of date.
+        </p>
+    </div>
+</script>
+
+<script id="tpl_fbr_report_cover" type="text/html">
+<div class="fbr-cover">
+    <div class="fbr-cover-dates">
+        <span data-bind="text: created_date"></span><br />
+        <!-- ko with: mapped_data -->
+            As of <span data-bind="text: as_of_date"></span>
+        <!-- /ko -->
+    </div>
+
+    <!-- ko if: include_logo -->
+    <div class="fbr-cover-logo" data-bind="with: mapped_data">
+        <!-- ko if: $data.logo_src -->
+            <img data-bind="attr: { src: $data.logo_src }" width="275px" />
+        <!-- /ko -->
+    </div>
+    <!-- /ko -->
+
+    <h1 class="fbr-cover-report-name" data-bind="html: report_name"></h1>
+
+    <h2 class="fbr-cover-title" data-bind="html: report_title"></h2>
+
+    <!-- ko if: include_meta -->
+    <div class="fbr-cover-meta" data-bind="with: mapped_data">
+        <!-- ko if: 'fund_size' in $data-->
+        <span data-bind="html: fund_size"></span><br />
+        <!-- /ko -->
+        <span data-bind="html: geography"></span> |
+        <span data-bind="html: style"></span><br />
+        Vintage Year <span data-bind="html: vintage_year"></span>
+    </div>
+    <!-- /ko -->
+
+    <div class="fbr-cover-legal" data-bind="html: legal_html">
+    </div>
+</div>
+</script>
+
+<script id="tpl_text_button" type="text/html">
+    <a role="button" data-bind="click: event, html: label"></a>
+</script>
+
+<script id="tpl_google_map" type="text/html">
+    <div style="margin:20px;">
+        <div style="width: 100%; height: 350px" data-bind="renderMap: $data"></div>
+    </div>
+</script>
+
+<script id="tpl_perf_calc_error_insufficient_vehicles" type="text/html">
+    <div style="height:507px;margin-top:50px;" class="big-message">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <h1>Insufficient vehicles</h1>
+        <p class="lead">
+            You need at least two vehicles to see component impact.
+        </p>
+    </div>
+</script>
+
+<script id="tpl_fileupload_button" type="text/html">
+<a class="btn btn-cpanel-success fileinput-button" data-bind="css: { disabled: uploading }">
+    <!-- ko if: uploading -->
+    <span class="glyphicon glyphicon-cog animate-spin">
+    </span>
+    <span>Uploading</span>
+    <!-- /ko -->
+    <!-- ko ifnot: uploading -->
+    <span class="glyphicon glyphicon-upload"></span>
+    <span data-bind="text:label"></span>
+    <!-- /ko -->
+    <input type="file" name="file" data-bind="fileupload: $data">
+</a>
+</script>
+
+<script id="tpl_drilldown_group_by_chart_box" type="text/html">
+    <div data-bind="style: { margin: margin }" class="centered">
+        <!-- ko if: $data.chart_title -->
+            <div class="centered">
+                <h2 class="component-label centered" data-bind="html: $data.chart_title"></h2>
+                <p class="halfmuted">All results included</p>
+            </div>
+        <!-- /ko -->
+        <!-- ko if: $data.chart_subtitle -->
+            <h4 style="font-variant:small-caps" class="text-halfmuted" data-bind="text:$data.chart_subtitle"></h4>
+        <!-- /ko -->
+        <!-- ko if: loading -->
+            <div style="width: 100%; text-align:center;" data-bind="style: $data.loading_style">
+                <span class="glyphicon glyphicon-cog animate-spin"></span>
+                Loading chart...
+            </div>
+        <!-- /ko -->
+        <!-- ko ifnot: loading -->
+            <div data-bind="highchart2: $data">
+        </div>
+        <!-- /ko -->
+    </div>
+</script>
+
+<script id="tpl_expandable_visualizations" type="text/html">
+<div class="expandable-vis-triangle" data-bind="visible:visible"></div>
+<div class="expandable-vis" data-bind="click: toggle_visible">
+    <h5 data-bind="text: label"></h5>
+    <i class="pull-right" data-bind="css: { 'icon-down-open': !visible(), 'icon-up-open': visible() }"></i>
+</div>
+</script>
+
+<script id="tpl_fund_performance" type="text/html">
+<!-- ko if: active_component -->
+    <!-- ko renderComponent: active_component --><!-- /ko -->
+<!-- /ko -->
+</script>
+
+<script id="tpl_body_no_layout" type="text/html">
+<!-- ko renderComponent: body --><!-- /ko -->
+</script>
+
+<script id="tpl_leaderboard_area" type="text/html">
+<div class="layout-aside layout-vbox content" id="dashboard-side-panel">
+    <div class="layout-vbox">
+        <ul id="main-control-panel-body" class="nav nav-sidebar collapse">
+            <!-- ko foreach: leaderboards -->
+                <h2 data-bind="text:title"></h2>
+                <!-- ko template: {
+                    name: $data.template,
+                    data: $data,
+                } --><!-- /ko -->
+            <!-- /ko -->
+        </ul>
+  </div>
+</div>
+</script>
+
+<script id="tpl_dark_magic_advanced_select_comp" type="text/html">
+    <div class="row" style="text-align: center;">
+        <!-- ko foreach: layout.top -->
+            <!-- ko renderComponent: $data --><!-- /ko -->
+        <!-- /ko -->
+    </div>
+    <div class="row" data-bind="with:layout">
+        <div class="cpanel-dark-magic" data-bind="renderComponent: left">
+        </div>
+        <div class="col-xs-12 col-md-9" data-bind="renderComponent: right">
+        </div>
+    </div>
+</script>
+
+<script id="tpl_anchor_action_buttons" type="text/html">
+<div class="action-buttons-container" style="white-space: nowrap;" data-bind="css: css">
+    <!-- ko foreach: buttons -->
+        <!-- ko renderComponent: $data --><!-- /ko -->
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_test_body" type="text/html">
+<!-- ko with: body -->
+    <!-- ko renderComponent: $data --><!-- /ko -->
+<!-- /ko -->
+</script>
+
+<script id="tpl_leaderboard_table" type="text/html">
+    <div class="row" style="margin-bottom: 30px;" data-bind="foreach:$data">
+        <div class="col-sm-12 clearfix leaderboard-row" data-bind="click:$parents[2].model_entity"><span class="pull-left rank" data-bind="html:rank"></span> <span class="pull-left" data-bind="text:name"></span><span class="hover-action pull-right">Model It <i class="glyphicon glyphicon-share-alt"></i></span></div>
+    </div>
+</script>
+
+<script id="tpl_fbr_report_toc" type="text/html">
+<div class="fbr-toc" data-bind="foreach: toc">
+    <div class="fbr-toc-item">
+        <div class="fbr-toc-page-number" data-bind="text: $data.page_number">
+        </div>
+        <div class="fbr-toc-title" data-bind="html: $data.title">
+        </div>
+        <div class="fbr-toc-subtitles" data-bind="foreach: $data.subtitles">
+            <div class="fbr-toc-subtitle" data-bind="html: $data">
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_perf_calc_error_insufficient_cashflows" type="text/html">
+    <div style="height:507px;margin-top:50px;" class="big-message">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <h1>Insufficient cash flows</h1>
+        <p class="lead">
+            Please add cash flows to run the analysis.
+        </p>
+    </div>
+</script>
+
+<script id="tpl_report_body" type="text/html">
+<div class="layout-aside page analytics" data-bind="attr: { id: html_id() }">
+    <div class="layout-vbox">
+        <div class="row">
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <!-- ko if: layout.header -->
+            <!-- ko renderComponent: layout.header --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: layout.breadcrumb -->
+            <!-- ko renderComponent: layout.breadcrumb --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: layout.modal -->
+            <!-- ko renderComponent: layout.modal --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: layout.toolbar -->
+            <!-- ko renderComponent: layout.toolbar --><!-- /ko -->
+        <!-- /ko -->
+        <div class="scrollable content page" data-bind="renderComponent: layout.body">
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_overview_container" type="text/html">
+<div class='row' data-bind="foreach:layout.body, css:css">
+    <div class="col-sm-6 expand-pdf">
+        <!-- ko renderComponent: $data --><!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_empty_reports_table" type="text/html">
+<div class="big-message empty-table">
+    <h2>You haven't run any reports yet.</h2>
+    <h4>Click 'Create New Report' above to get started.</h4>
+</div>
+</script>
+
+<script id="tpl_data_table_empty_lists" type="text/html">
+<div class="big-message empty-table">
+    <h2>You haven't created any lists yet.</h2>
+    <h4>Make a new list to get started.</h4>
+    <!-- ko renderComponent: layout.new_list_button --><!-- /ko -->
+    <div class="row row-eq-height tip">
+        <div class="col-xs-4" style="text-align:center;">
+            <div class="circle-info-icon"><span class="icon-info"></span></div>
+        </div>
+        <div class="col-xs-8">
+            <h3>What are they?</h3>
+            <p class="lead">Lists help you organize data into groups that make sense to you. Anything can go into a list; use them to compare against other data or just to keep track of things.</p>
+        </div>
+    </div>
+    <div class="row row-eq-height tip">
+        <div class="col-xs-4" style="text-align:center;">
+            <img src="/img/how_to_lists1.png" width="120px" style="margin-top: 30px;"/>
+        </div>
+        <div class="col-xs-8">
+            <h3>Create lists here</h3>
+            <p class="lead">Create a list by naming it to get started.</p>
+        </div>
+    </div>
+    <div class="row row-eq-height tip">
+        <div class="col-xs-4" style="text-align:center;">
+            <img src="/img/how_to_lists2.png" width="120px"/>
+        </div>
+        <div class="col-xs-8">
+            <h3>Add to your lists</h3>
+            <p class="lead">Add your own data or data from Market Research into your already-created lists.</p>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_data_table_empty_diligence_list" type="text/html">
+    <div class="big-message empty-table">
+        <h2>You haven't created any diligence projects yet.</h2>
+        <h4>Create a new project to get started.</h4>
+        <!-- ko if: layout.new_list_button -->
+        <!-- ko renderComponent: layout.new_list_button --><!-- /ko -->
+        <!-- /ko -->
+        <div class="row row-eq-height tip">
+        </div>
+    </div>
+</script>
+
+<script id="tpl_dropdown_data_table_empty_diligence_list" type="text/html">
+    <div style="margin-left:8%; float:left;">
+        <div class="big-message empty-table" style="margin:auto; float:left;">
+            <h4>There are no funds in this project yet.</h4>
+            <h5> To get started, upload and attach funds to this project! </h5>
+            <!-- ko if: layout.attach_to_project_button -->
+            <!-- ko renderComponent: layout.attach_to_project_button --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <div class="big-message empty-table" style="margin:auto; float:left;">
+            <h4>Add provisional funds in order to run analytics on theoretical values.</h4>
+            <h5> To get started, enter in attributes and performance metrics! </h5>
+            <!-- ko if: layout.add_provisional_fund_button -->
+                <a data-bind="attr: {href: '#!/provisional-fund/' + $parent.uid + '/'}">
+                    <button class="btn btn-success btn-lg">Add Provisional Fund Data
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </button>
+                </a>
+            <!-- /ko -->
+        </div>
+    </div>
+</script>
+
+<script id="tpl_data_manager_form_table" type="text/html">
+<!-- ko renderComponent: form --><!-- /ko -->
+<div class="row">
+    <!-- ko renderComponent: table --><!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_report_col6" type="text/html">
+<div class="col-md-6 layout-engine-wrapper">
+    <!-- ko template: {
+        name: $data.data.template,
+        data: $data.data,
+    } --><!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_chart_block" type="text/html">
+<!-- ko if: visible -->
+    <table class="chart-block">
+        <tbody>
+            <tr>
+                <td class="cpanel">
+                    <!-- ko renderComponent: layout.cpanel --><!-- /ko -->
+                </td>
+                <td>
+                    <!-- ko renderComponent: layout.chart --><!-- /ko -->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+<!-- /ko -->
+</script>
+
+<script id="tpl_no_data_reports" type="text/html">
+<div class="big-message">
+    <h1>No Data Reports</h1>
+    <p class="lead">
+        No reports have been created.
+    </p>
+</div>
+</script>
+
+<script id="tpl_report_layout_engine_faux_page" type="text/html">
+<div class="faux-page-wrapper">
+    <div class="faux-page" data-bind="attr: { id: html_id() }">
+        <div class="faux-page-padding" data-bind="template: {
+            name: 'tpl_report_layout_engine',
+            data: $data,
+        }"></div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_text_input_typeahead" type="text/html">
+<div data-bind="css: { 'has-error': !valid(), 'text-input-bordered-label': bordered_label }" class="text-input" style="text-align: center;position:relative">
+    <input type="text" data-bind="textInput: value_bind, css: css, attr: { placeholder: placeholder }, disable: disabled, typeahead:typeahead() ? typeahead_options : {}" class="form-control" required />
+    <!-- ko if:search_icon -->
+    <span class="glyphicon glyphicon-search" style="margin-left: -40px; font-size: 18px;"></span>
+    <!-- /ko -->
+    <!-- ko if: $data.label -->
+        <label data-bind="text: label, click: focus"></label>
+    <!-- /ko -->
+    <!-- ko if: !valid() && error_message -->
+        <div class="error-message" data-bind="text: error_message, click: focus"></div>
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_popover_support_form" type="text/html">
+</script>
+
+<script id="tpl_perf_calc_error_no_group_values" type="text/html">
+<div style="margin-top:50px;" class="big-message">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <h1>No data for selected grouping</h1>
+    <p class="lead">
+        To group by a property, that property needs to be set for at least one company.
+    </p>
+</div>
+</script>
+
+<script id="tpl_perf_calc_error_target_timestamp_out_of_range" type="text/html">
+    <div style="margin-top:50px;" class="big-message">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <h1>Target exposure date too far out!</h1>
+        <p class="lead">
+            To run a projection, select a closer target exposure date.
+        </p>
+    </div>
+</script>
+
+<script id="tpl_new_popover_button_a" type="text/html">
+    <a role="button" class="btn btn-popover clearfix" data-toggle="popover" data-bind="popover2: {
+        component: popover,
+        hide_on_events: hide_on_events,
+        opened_event: opened_event,
+        closed_event: closed_event,
+        options: popover_options,
+        listen_to: popover_options.listen_to,
+    }, css: css, visible: visible">
+        <span class="btn-label pull-left" data-bind="html: label"></span>
+        <span class="btn-icon pull-right" data-bind="visible: icon_css, css: icon_css"></span>
+    </a>
+</script>
+
+<script id="tpl_dashboard_notification_add_data" type="text/html">
+    <div class="notification">
+        <button class="notification-btn notification-btn-warning">
+            <span class="glyphicon glyphicon-alert"></span>
+            Add Data
+        </button>
+        <span data-bind="text: title"></span>
+    </div>
+</script>
+
+<script id="tpl_number_box_row" type="text/html">
+<div class="row" data-bind="foreach:layout.body">
+    <div class="col-md-3">
+        <!--ko renderComponent: $data --><!--/ko-->
+    </div>
+</div>
+</script>
+
+<script id="tpl_flexible_number_box_row" type="text/html">
+    <div style="display: -webkit-box; display: flex;" data-bind="foreach:layout.body">
+        <!-- ko if: $data.visible -->
+        <div style="flex: 1; -webkit-box-flex: 1;">
+            <!--ko renderComponent: $data --><!--/ko-->
+        </div>
+        <!-- /ko -->
+    </div>
+</script>
+
+<script id="tpl_text_box_input" type="text/html">
+<div>
+    <textarea cols="25" rows="5" data-bind="textInput: value, css: css, attr: {placeholder: placeholder}" class="form-control"></textarea>
+</div>
+</script>
+
+<script id="tpl_upload_button" type="text/html">
+    <a data-bind="css: css" style="width: 100%;">
+        <!-- ko if: uploading -->
+            <span class="glyphicon glyphicon-cog animate-spin"></span> Uploading...
+        <!-- /ko -->
+        <!-- ko ifnot: uploading -->
+         <span data-bind="html: label"></span>
+         <!-- /ko -->
+         <input type="file" name="file" data-bind="fileupload:upload_options" style="width: inherit;">
+     </a>
+</script>
+
+<script id="tpl_aside_control_panel" type="text/html">
+<div class="aside aside-control-panel">
+    <div class="vbox">
+        <ul data-bind="foreach: layout.body">
+            <li data-bind="renderComponent: $data"></li>
+        </ul>
+    </div>
+</div>
+</script>
+
+<script id="tpl_info_container" type="text/html">
+<div class='row' data-bind="foreach:layout.body">
+    <div class="col-sm-6">
+        <!-- ko renderComponent: $data --><!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_typeahead_input" type="text/html">
+<div data-bind="css: { 'has-error': !valid() }" class="typeahead-input">
+    <input type="text" data-bind="typeahead: typeahead_options, css: css, attr: { placeholder: placeholder}, disable: disabled" class="form-control" required />
+    <!-- ko if: $data.label -->
+        <label data-bind="text: label, click: focus"></label>
+    <!-- /ko -->
+    <!-- ko if: !valid() && error_message -->
+        <div class="error-message" data-bind="text: error_message, click: focus"></div>
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_aside_split_full" type="text/html">
+<div class="row" data-bind="with:layout">
+    <div class="col-md-4">
+        <!-- ko renderComponent: col_1 --><!-- /ko -->
+    </div>
+    <div class="col-md-8">
+        <!-- ko renderComponent: col_2 --><!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_data_table_passed_test" type="text/html">
+<div class="big-message">
+    <span class="glyphicon glyphicon-glass"></span>
+    <h1>Sit back and relax</h1>
+    <p class="lead">
+        This test passed.
+    </p>
+</div>
+</script>
+
+<script id="tpl_aside_split" type="text/html">
+<div class="row" data-bind="with: layout">
+    <div class="col-md-4">
+        <!-- ko renderComponent: col_1 --><!-- /ko -->
+    </div>
+    <div class="col-md-6">
+        <!-- ko renderComponent: col_2 --><!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_aside_horizontal_split" type="text/html">
+<!-- ko with: layout -->
+    <div class="aside aside-content" data-bind="css:$parent.css">
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <!-- ko renderComponent: top --><!-- /ko -->
+            </div>
+        </div>
+        <!-- ko if: !$parent.opts.disable_seperator -->
+            <hr>
+        <!-- /ko -->
+        <div class="hbox">
+            <!-- ko renderComponent: bottom --><!-- /ko -->
+        </div>
+    </div>
+<!-- /ko -->
+</script>
+
+<script id="tpl_aside_vertical_split" type="text/html">
+    <!-- ko with: layout -->
+        <div class="row">
+            <div class="aside aside-content" data-bind="css:$parent.css">
+                <div class="col-md-6">
+                    <!-- ko renderComponent: left --><!-- /ko -->
+                </div>
+                <div class="col-md-6">
+                    <!-- ko renderComponent: right --><!-- /ko -->
+                </div>
+            </div>
+        </div>
+    <!-- /ko -->
+</script>
+
+<script id="tpl_page_wrapper" type="text/html">
+<!-- ko renderComponent: page_wrapper --><!-- /ko -->
+</script>
+
+<script id="tpl_data_table_empty_with_label" type="text/html">
+<div class="big-message">
+    <p class="lead">
+        No <span data-bind="text: label"></span>...
+    </p>
+</div>
+</script>
+
+<script id="tpl_loading_cpanel_button" type="text/html">
+    <button type="button" class="btn btn-block" data-bind="click: event, css: css, disable: disabled">
+        <span class="glyphicon glyphicon-cog animate-spin" data-bind="visible: loading"></span>
+        <span data-bind="text: label"></span>
+    </button>
+</script>
+
+<script id="tpl_edit_form" type="text/html">
+<form>
+    <div class="row">
+    <!-- ko foreach: groups -->
+        <div data-bind="css: $parent.col_css">
+        <!-- ko foreach: $data -->
+            <div class="form-group">
+                <label data-bind="text: label"></label>
+                <!-- ko renderComponent: input --><!-- /ko -->
+            </div>
+        <!-- /ko -->
+        </div>
+    <!-- /ko -->
+    </div>
+    <button type="button" class="btn btn-primary" data-bind="click: save, disable: !valid()">Save</button>
+    <button type="button" class="btn btn-default" data-bind="click: cancel, visible: cancel_event">Cancel</button>
+</form>
+</script>
+
+<script id="tpl_xhr_action_button" type="text/html">
+    <a class="btn btn-sm btn-cpanel-success" data-bind="click: sendRequest">
+        <!-- ko if: waiting-->
+            <span class="glyphicon glyphicon-cog animate-spin"></span> Running...
+        <!-- /ko -->
+        <!-- ko ifnot: waiting -->
+         <span data-bind="html: label"></span>
+         <!-- /ko -->
+     </a>
+ </script>
+
+<script id="tpl_file_upload_button" type="text/html">
+    <a class="btn btn-sm btn-cpanel-success fileinput-button">
+        <!-- ko if: uploading -->
+            <span class="glyphicon glyphicon-cog animate-spin"></span> Uploading...
+        <!-- /ko -->
+        <!-- ko ifnot: uploading -->
+         <span data-bind="html: label"></span>
+         <!-- /ko -->
+         <input type="file" name="file" data-bind="fileupload:upload_options">
+     </a>
+</script>
+
+<script id="tpl_aside_main_content" type="text/html">
+<div class="aside aside-content">
+    <!-- ko if: layout.breadcrumb -->
+        <!-- ko renderComponent: layout.breadcrumb --><!-- /ko -->
+    <!-- /ko -->
+    <!-- ko foreach: layout.body -->
+        <div data-bind="renderComponent: $data"></div>
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_delete_modal_single" type="text/html">
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Please confirm..</h4>
+            </div>
+            <div class="modal-body">
+                <!-- <hr class="transparent hr-small"> -->
+                <p data-bind="html: warning_text"></p>
+                <hr class="transparent hr-small">
+                <button type="button" class="btn btn-danger" data-bind="click: delete_entity, css: { disabled: loading }">
+                    <span data-bind="text: btn_text"></span>
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="css: { disabled: loading }">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_json_content" type="text/html">
+<table class="table table-bison table-light" style="border-bottom:1px solid #d0d0d0;">
+    <!-- ko if: json -->
+    <tbody data-bind="foreach: json">
+        <tr style="border-bottom:0px margin-bottom: 1px">
+            <td style="padding:5px" class="table-lbl" data-bind="html: key"></td>
+            <td style="padding:5px" class="table-data text-right" data-bind="html: value"></td>
+        </tr>
+    </tbody>
+    <!-- /ko -->
+
+</table>
+ <!-- ko if: loading -->
+    <p>
+        <span class="glyphicon glyphicon-cog animate-spin"></span> Loading...
+    </p>
+    <!-- /ko -->
+<a class="text-info" data-bind="click: toggle_expand, html: button_text"></a>
+</script>
+
+<script id="tpl_inbox_data_table" type="text/html">
+<!-- ko if: label -->
+<div class="row inbox-table-header">
+    <div class="col-xs-12 col-md-6 text-left" style="padding: 10px 15px;">
+        <span data-bind="text: label" style="font-weight: 300;color: #555;">
+        </span>
+        <!-- ko if: !loading() && has_rows() -->
+        <span data-bind="html: page_info" style="font-size: 12px; font-weight: 300;color: #999;"></span>
+        <!-- /ko -->
+    </div>
+    <div class="col-xs-12 col-md-6 text-right" style="padding: 10px 15px;">
+        <!-- ko if: enable_clear_order && has_order()-->
+            <a data-bind="click: clear_order" class="table-clear-order clickable" style="font-size:12px; margin-right:10px;">
+                Clear Order
+            </a>
+        <!-- /ko -->
+        <!-- ko if: enable_column_toggle -->
+            <!-- ko renderComponent: visible_columns --><!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->
+<div class="table-responsive full-height" style="overflow:scroll;">
+    <table class="table table-bison" data-bind="css: css, fixedTableHeader: $data, visible: has_rows() && !loading()">
+        <thead data-bind="visible: has_rows">
+            <tr>
+                <!-- ko if: enable_selection -->
+                <th style="width: 1%" data-bind="css: { clickable: $parent.enable_selection }" class="no-selection">
+                    <input type="checkbox" data-bind="checked: toggle_select_visible" class="checkbox clickable" />
+                </th>
+                <!-- /ko -->
+                <!-- ko ifnot: enable_selection -->
+                <th style="width: 1%;">
+                </th>
+                <!-- /ko -->
+                <!-- ko foreach: columns -->
+                <th data-bind="click: $parent.toggle_order, css: css, style: { width: $data.width }">
+                    <span data-bind="text: label, css: sort_icon, define: { term: label, placement: 'bottom', definition: definition }"></span>
+                </th>
+                <!-- /ko -->
+                <!-- ko if: enable_clear_order && has_order() && !label-->
+                <th style="width: 1%">
+                    <a data-bind="click: clear_order" class="table-clear-order">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>
+                </th>
+                <!-- /ko -->
+                <!-- ko if: enable_column_toggle && !label -->
+                <th style="width: 1%" data-bind="with: visible_columns">
+                    <div style="position: relative;">
+                        <!-- ko renderComponent: $data --><!-- /ko -->
+                    </div>
+                </th>
+                <!-- /ko -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- ko template: {
+                name: 'tpl_inbox_data_table_rows',
+                data: {
+                    rows: rows,
+                    is_comps: false,
+                    css:row_css
+                },
+            } --><!-- /ko -->
+        </tbody>
+    </table>
+    <!-- ko if: loading -->
+    <div data-bind="template: {
+        name: loading_template,
+        data: $data,
+    }"></div>
+    <!-- /ko -->
+    <div class="row" data-bind="visible: has_rows() && !loading()">
+        <div class="col-xs-12 col-md-2 text-left">
+        </div>
+        <div class="col-xs-12 col-md-8 text-center">
+            <div data-bind="visible: has_pages, template: {
+                name: pagination_template,
+                data: $data,
+            }"></div>
+        </div>
+
+    </div>
+    <div data-bind="visible: !has_rows() && !loading(), template: {
+        name: empty_template,
+        data: $data,
+    }"></div>
+</div>
+</script>
+
+<script id="tpl_dl_metric_table" type="text/html">
+    <!-- ko if: loading -->
+        <div style="width: 100%; text-align:center;">
+            <span class="glyphicon glyphicon-cog animate-spin"></span>
+            Loading table...
+        </div>
+    <!-- /ko -->
+    <!-- ko ifnot: loading -->
+        <dl data-bind="foreach: rows">
+            <dt data-bind="html: label" style="margin-top:5px;"></dt>
+            <dd data-bind="html: value"><dd>
+        </dl>
+    <!-- /ko -->
+</script>
+
+<script id="tpl_data_table_no_funds_in_portfolio" type="text/html">
+<div class="big-message">
+    <h1>Empty!</h1>
+    <p class="lead">
+        This portfolio has no funds yet.<br />
+        Go to &quot;Available Funds&quot; to add funds.
+    </p>
+</div>
+</script>
+
+<script id="tpl_data_table_no_cashflows" type="text/html">
+<div class="big-message">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <h1>No Cashflows</h1>
+    <p class="lead">
+        The vehicle does&apos;t have any cash flows.
+    </p>
+</div>
+</script>
+
+<script id="tpl_radio_buttons_tabs" type="text/html">
+<table class="table table-tabs" data-bind="css:css_style">
+    <tbody>
+        <tr>
+            <td style="width:20px;"><div  style="width:20px; border-bottom:1px solid #e0e0e0;"></div></td>
+            <!-- ko foreach: buttons -->
+            <td role="presentation"><label class="btn" data-bind="css: $parent.css($data)">
+                <input type="radio" data-bind="attr: { value: state, id: state }, checked: $parent.state" style="display:none;">
+                <!-- ko if: $data.icon -->
+                    <span data-bind="css: icon"></span>
+                <!-- /ko-->
+                <span data-bind="html: label"></span>
+            </label></td>
+            <!-- /ko -->
+            <td style="width:20px;"><div  style="width:20px; border-bottom:1px solid #e0e0e0;"></div></td>
+        </tr>
+    </tbody>
+</table>
+</script>
+
+<script id="tpl_popover_range" type="text/html">
+<div class="form-group popover-fund-size" data-bind="event_horizon:true, css: css", style="max-width:200px;">
+<div class="force-scrollable-y">
+    <div class="input-group input-group-sm">
+
+        <!-- ko if: prefix -->
+            <span class="input-group-addon" data-bind="text:prefix"></span>
+        <!-- /ko -->
+        <div class="form-group">
+            <input type="text" class="form-control input-sm" data-bind="textInput: min" placeholder="Min">
+        </div>
+        <!-- ko if: suffix -->
+        <span class="input-group-addon" data-bind="text:suffix"></span>
+        <!-- /ko -->
+    </div>
+    <div class="input-group input-group-sm">
+        <!-- ko if: prefix -->
+            <span class="input-group-addon" data-bind="text:prefix"></span>
+        <!-- /ko -->
+        <div class="form-group">
+            <input type="text" class="form-control input-sm" data-bind="textInput: max" placeholder="Max">
+        </div>
+        <!-- ko if: suffix -->
+            <span class="input-group-addon" data-bind="text:suffix"></span>
+        <!-- /ko -->
+    </div>
+</div>
+<div class="hr hr-padded-bottom"></div>
+<button type="button" class="btn btn-block btn-sm close-popover">Done</button>
+<button type="button" class="btn btn-block btn-sm clear-popover" data-bind="click:clear">Clear</button>
+</div>
+</script>
+
+<script id="tpl_action_buttons_dropdown" type="text/html">
+<div class="dropdown" data-bind="css: { 'pull-right': css['pull-right'], 'pull-left': css['pull-left'] }">
+    <button type="button" class="btn dropdown-toggle" data-bind="html: label, css: css, disable: disabled" data-toggle="dropdown">
+    </button>
+    <ul class="dropdown-menu new-world-form" role="menu">
+        <!-- ko foreach: buttons -->
+        <li data-bind="css: { disabled: disabled }, visible: visible">
+            <a data-bind="html: label, click: broadcast_event, disable: disabled, css: css"></a>
+        </li>
+        <!-- /ko -->
+    </ul>
+</div>
+</script>
+
+<script id="tpl_react_page" type="text/html">
+    <div class="layout-aside page analytics">
+        <div class="layout-vbox">
+            <div class="row" >
+                <div class="col-xs-6"></div>
+                <div class="col-xs-6"></div>
+            </div>
+            <!-- ko if: layout.header -->
+            <!-- ko renderComponent: layout.header --><!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: layout.toolbar -->
+            <!-- ko renderComponent: layout.toolbar --><!-- /ko -->
+            <!-- /ko -->
+            <div class="content page" style="padding: 0;" data-bind="css: { 'no-header': !layout.header, 'no-toolbar': layout.header && !layout.toolbar}">
+                <!-- ko if: visible -->
+                <!-- ko renderComponent: layout.body --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="tpl_analytics_body_static" type="text/html">
+<div class="layout-aside page analytics">
+    <div class="layout-vbox">
+        <div class="row" >
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <!-- ko if: layout.header -->
+            <!-- ko renderComponent: layout.header --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: layout.toolbar -->
+            <!-- ko renderComponent: layout.toolbar --><!-- /ko -->
+        <!-- /ko -->
+        <div class="scrollable content page" data-bind="css: { 'no-header': !layout.header, 'no-toolbar': layout.header && !layout.toolbar }">
+            <!-- ko if: layout.expandable_meta_data -->
+                <!-- ko renderComponent: layout.expandable_meta_data --><!-- /ko -->
+            <!-- /ko -->
+            <div data-bind="attr: { id: html_id() }, foreach: layout.body">
+                <!-- ko if: visible -->
+                    <!-- ko renderComponent: $data--><!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_analytics_body" type="text/html">
+<div class="layout-aside page analytics">
+    <div class="layout-vbox">
+        <div class="row" >
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <!-- ko if: layout.header -->
+            <!-- ko renderComponent: layout.header --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: layout.toolbar -->
+            <!-- ko renderComponent: layout.toolbar --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: layout.message_banner -->
+            <div style="position: relative">
+            <!-- ko renderComponent: layout.message_banner -->
+            <!-- /ko -->
+            </div>
+        <!-- /ko -->
+        <div class="scrollable content page" data-bind="css: { 'no-header': !layout.header, 'no-toolbar': layout.header && !layout.toolbar }">
+        <!-- ko if: layout.expandable_meta_data -->
+            <!-- ko renderComponent: layout.expandable_meta_data --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko with: active_component -->
+            <!-- ko renderComponent: $data --><!-- /ko -->
+        <!-- /ko -->
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_popover_nested_checklist" type="text/html">
+<div class="popover-checklist popover-nested-checklist" data-bind="event_horizon:true, css: css">
+    <div class="row row-margins">
+        <div class="col-xs-6" data-bind="with:l1">
+            <ul data-bind="foreach:options" class="force-scrollable-y">
+                <li class="button-group">
+                    <button class="btn btn-popover-checklist-item btn-block btn-xs clearfix" data-bind="css: { checked: $parent.is_selected($data) }, click:$parent.toggle">
+                    <span class="btn-label pull-left" data-bind="text:label"></span><span class="btn-icon glyphicon glyphicon-ok pull-right"></span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="col-xs-6 help" data-bind="visible:(l2.filtered_options().length <= 0 ? l2.show_empty_text : l2.filtered_options().length <= 0) ">
+            <div class="help-block">
+                <div>
+                    <span data-bind="text:l2.empty_text"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6" data-bind="visible:l2.filtered_options().length > 0">
+            <div data-bind="with:l2" class="l2">
+                <ul data-bind="foreach: segregated_options" class="force-scrollable-y">
+                    <li class="button-group" data-bind="css: { is_title: $parent.is_label($data) }">
+                        <button class="btn btn-popover-checklist-item btn-block btn-xs clearfix" data-bind="css: { checked: $parent.is_selected($data) }, click: $parent.toggle">
+                        <span class="btn-label pull-left" data-bind="text: label"></span><span class="btn-icon glyphicon glyphicon-ok pull-right"></span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="hr"></div>
+    <button type="button" class="btn btn-block btn-sm close-popover btn-half">Done</button>
+    <button type="button" class="btn btn-block btn-sm clear-popover btn-half" data-bind="click:clear">Clear</button>
+</div>
+</script>
+
+<script id="tpl_popover_sort_order" type="text/html">
+<div class="popover-checklist" data-bind="event_horizon:true, css: css">
+    <ul data-bind="foreach: columns" class="force-scrollable-y">
+        <!-- ko if: !disable_sorting -->
+        <li class="button-group">
+            <button class="btn btn-popover-checklist-item btn-block btn-xs clearfix" data-bind="css: { checked: has_sort }, click: $parent.toggle_order">
+            <span class="btn-label pull-left short-label" data-bind="text: label"></span>
+            <span class="pull-right" style="margin-right:10px;" data-bind="text: sort_text"></span>
+            </button>
+        </li>
+        <!-- /ko -->
+    </ul>
+    <div class="hr"></div>
+    <button type="button" class="btn btn-block btn-sm close-popover">Close</button>
+    <button type="button" class="btn btn-block btn-sm clear-popover" data-bind="click: clear">Clear Order</button>
+</div>
+</script>
+
+<script id="tpl_base_h2" type="text/html">
+    <h2 class="default-entity-page-heading" data-bind="visible: visible, text:opts.heading, css:css"></h2>
+</script>
+
+<script id="tpl_family_heading" type="text/html">
+    <div>
+        <!-- ko if: $data && $data.data -->
+        <h2 class="default-entity-page-heading" data-bind="visible: visible, text: $data.data().name, css:css"></h2>
+        <!-- /ko -->
+    </div>
+</script>
+
+<script id="tpl_data_table_simple_pagination" type="text/html">
+<ul class="pagination pagination-sm" style="margin:0;">
+    <!-- ko foreach: page_numbers -->
+    <li data-bind="css: { active: $parent.is_page($data-1) }">
+        <a class="clickable" role="button" data-bind="text: $data, click: function() { $parent.set_page($data-1) }"></a>
+    </li>
+    <!-- /ko -->
+</ul>
+</script>
+
+<script id="tpl_cpanel_empty" type="text/html">
+<div class="layout-aside" id="main-control-panel">
+    <div class="layout-vbox">
+        <div class="header"></div>
+    <ul id="main-control-panel-body" class="nav nav-sidebar collapse fundraising">
+
+    </ul>
+  </div>
+
+</div>
+</script>
+
+<script id="tpl_action_buttons" type="text/html">
+    <div style="white-space: nowrap;" data-bind="css: css">
+    <!-- ko foreach: buttons -->
+        <!-- ko renderComponent: $data --><!-- /ko -->
+    <!-- /ko -->
+    </div>
+</script>
+
+<script id="tpl_radio_buttons" type="text/html">
+    <div class="btn-group" data-bind="foreach: buttons">
+        <!-- ko if: !$parent.is_disabled($data) -->
+            <label class="btn" data-bind="css: $parent.css($data)">
+                <input type="radio" name="options" autocomplete="off" data-bind="attr: { value: state, id: state }, checked: $parent.state"> <span data-bind="html: label"></span>
+            </label>
+        <!-- /ko -->
+    </div>
+</script>
+
+<script id="tpl_data_manager_top_form" type="text/html">
+<div class="row">
+    <div class="col-md-12 new-world-form" style="padding: 20px;">
+         <!-- ko foreach: form_layout -->
+             <div class="row row-margins" style="margin-bottom: 10px" data-bind="foreach: $data">
+                <div data-bind="css: $parents[1].column_css">
+                    <!-- ko renderComponent: $data --><!-- /ko -->
+                </div>
+            </div>
+        <!-- /ko -->
+        <!-- ko if: $data.button -->
+        <div class="row row-margins">
+            <div class="col-md-12">
+                <!-- ko renderComponent: button --><!-- /ko -->
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_pcw_fileblock" type="text/html">
+<div data-bind="foreach:sheets">
+    <!-- ko template :{
+        name:template,
+        data:$data
+    } --> <!--/ko -->
+</div>
+</script>
+
+<script id="tpl_base_p" type="text/html">
+    <!-- ko if: $data.opts.content_key -->
+        <!-- ko with: $data.data -->
+            <p class="default-entity-page-paragraph" data-bind="text: $data[$parent.opts.content_key]"></p>
+        <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko ifnot: $data.content_key -->
+        <p class="default-entity-page-paragraph" data-bind="text:opts.content"></p>
+    <!-- /ko -->
+</script>
+
+<script id="tpl_number_box" type="text/html">
+    <!-- ko if: visible -->
+        <div class="number-box">
+            <h4 class="number-title">
+                <span data-bind="html: label, define: { term: label, placement: 'bottom' }"></span>
+            </h4>
+            <div class="number-highlight">
+                <!-- ko if: loading -->
+                    <span class="glyphicon glyphicon-cog animate-spin"></span>
+                <!-- /ko -->
+                <!-- ko ifnot: loading -->
+                    <span data-bind="html: value"></span>
+                <!-- /ko -->
+            </div>
+            <span class="number-subtext" data-bind="visible: subtext, html: subtext">
+            </span>
+        </div>
+    <!-- /ko -->
+</script>
+
+<script id="tpl_pcw_widget_complete" type="text/html">
+<div class="upload-status upload-status-success">
+    <div class="row">
+        <table class="callout-table callout-success">
+            <tr>
+                <td class="callout-icon">
+                    <span class="glyphicon glyphicon-ok">
+                </td>
+                <td>
+                    <table style="table-layout: fixed; width: 50%;">
+                        <tr>
+                            <td>
+                                <p data-bind="html: message" style="color: #222;">
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <table>
+                                <tr>
+                                    <td style="vertical-align: top; width: 1%;">
+                                        <button class="btn btn-sm btn-confirm" data-bind="click: view_in_datamanager">View in Data Manager</button>
+                                    </td>
+                                    <td style="vertical-align: top; width: 1%;">
+                                        <!-- ko ifnot: is_index -->
+                                            <button class="btn btn-sm btn-confirm" data-bind="click: view_in_analytics">View in Analytics</button>
+                                        <!-- /ko -->
+                                    </td>
+                                    <td>
+                                        <!-- ko if: alerts -->
+                                            <table class="callout-table callout-alert">
+                                                <tr>
+                                                    <td><span class="icon-attention-1"></td>
+                                                    <td style="padding-left: 0px !important;" data-bind="with: alerts">
+                                                        <div data-bind="text: first"></div>
+                                                        <!-- ko if: moreCount -->
+                                                            <div class="collapse" id="moreErrors">
+                                                                <div data-bind="foreach: more">
+                                                                    <div data-bind="text: $data"></div>
+                                                                </div>
+                                                            </div>
+                                                            <a
+                                                                data-toggle="collapse"
+                                                                class="collapsed"
+                                                                href="#moreErrors"
+                                                                aria-expanded="false"
+                                                            >
+                                                                <span class="if-collapsed">
+                                                                    (<span data-bind="text: moreCount"></span>) More...
+                                                                </span>
+                                                                <span class="if-not-collapsed">
+                                                                    Less...
+                                                                </span>
+                                                            </a>
+                                                        <!-- /ko -->
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        <!-- /ko -->
+                                    </td>
+                                </tr>
+                                <!-- ko if: is_new_fund && !is_index -->
+                                <tr>
+                                    <td colspan="3">
+                                        <hr class="hr-small" />
+                                        <p
+                                            data-bind="html: attach_suggestion"
+                                            style="color: #222;"
+                                        >
+                                        </p>
+                                        <hr class="hr-small transparent" />
+                                        <div class="fund-quick-search">
+                                            <input
+                                                class="form-control"
+                                                style="width:80%;"
+                                                type="text"
+                                                data-bind="typeahead: typeahead_options, attr:{placeholder:placeholder}"
+                                                style="position: relative"
+                                            />
+                                        </div>
+                                        <hr class="hr-small transparent" />
+                                        <button
+                                            type="button"
+                                            class="btn btn-cpanel-success"
+                                            data-bind="click: attach_funds_to_diligence, css: { disabled: !selected_entity() }"
+                                        >
+                                            Attach Fund to Diligence Project
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- /ko -->
+                            </table>
+                        </tr>
+                    </table>
+                <td>
+            </tr>
+        </table>
+    </div>
+</div>
+</script>
+
+<script id="tpl_pme_box" type="text/html">
+    <div class="pme-box full-height">
+        <!-- ko if: loading -->
+            <span class="glyphicon glyphicon-cog animate-spin"></span>
+        <!-- /ko -->
+        <!-- ko ifnot: loading -->
+            <h3 class="pme-label" data-bind="html: label"></h3>
+            <div class="pme-description" data-bind="html: description"></div>
+            <div class="pme-delta" data-bind="html: delta"></div>
+            <!-- ko if: chart -->
+                <div data-bind="renderComponent: chart"></div>
+                <hr class="transparent">
+            <!-- /ko -->
+            <!-- ko if: table -->
+                <div data-bind="renderComponent: table"></div>
+            <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</script>
+
+<script id="tpl_empty" type="text/html">
+</script>
+
+<script id="tpl_dynamic_wrapper" type="text/html">
+    <!-- ko if: visible -->
+        <!-- ko with: active_component -->
+            <!-- ko renderComponent: $data --><!-- /ko -->
+        <!-- /ko -->
+    <!-- /ko -->
+</script>
+
+<script id="tpl_cpanel_label" type="text/html">
+    <h5 data-bind="visible: visible(), html: label, css: css"></h5>
+</script>
+
+<script id="tpl_aside_body" type="text/html">
+<!-- ko if: visible -->
+    <!-- ko foreach: layout.body-->
+        <!-- ko renderComponent: $data--><!-- /ko -->
+    <!-- /ko -->
+<!-- /ko -->
+</script>
+
+<script id="tpl_cpanel_body_items" type="text/html">
+<!-- ko foreach: layout.body -->
+    <li data-bind="renderComponent: $data"></li>
+<!-- /ko -->
+</script>
+
+<script id="tpl_data_table_commitments" type="text/html">
+    <div class="alert-callout alert-callout-info" style="padding-top: 22px;">
+            <p class="text-left lead">
+                To upload a commitment plan, download and fill out the template.<br>
+                Once you're done, create a new commitment plan or append/replace an existing one.<br>
+            </p>
+    </div>
+    <div style="height:100%;" data-bind="
+        template: {
+            name: 'tpl_data_table',
+            data: $data,
+        }">
+    </div>
+</script>
+
+<script type="text/html" id="tpl_metric_table">
+<!-- ko if: description -->
+    <div style="width: 100%;">
+        <p style="height: 100px;" data-bind="html: description"></p>
+    </div>
+<!-- /ko -->
+<!-- ko if: loading -->
+    <div style="width: 100%; text-align:center;">
+        <span class="glyphicon glyphicon-cog animate-spin"></span>
+        Loading table...
+    </div>
+<!-- /ko -->
+<!-- ko ifnot: loading -->
+    <!-- ko if: title -->
+        <h4 class="metric-table-title" data-bind="html: title"></h4>
+    <!-- /ko -->
+    <div class="row" data-bind="foreach: columns, css: top_css" >
+        <div data-bind="css: $parent.column_css">
+            <table class="table metric-table-wrapper">
+                <tbody data-bind="foreach: $data">
+                    <tr>
+                        <td style="padding:0px;">
+                            <table class="table table-bison metric-table"  data-bind="css: $parents[1].css" style="border-bottom:0px; margin-bottom:0px;">
+                                <tbody>
+                                    <tr>
+                                        <td class="table-lbl" style="max-width: 120px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                            <span data-bind="html: label, define: { term: label, definition: $data.definition }"></span>
+                                        </td>
+                                        <td class="table-data text-right" style="white-space: nowrap;" data-bind="html: value"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<!-- /ko -->
+</script>
+
+<script id="tpl_benchmark_legend" type="text/html">
+<div class="legend">
+    <span class="legend-item">
+        <span class="legend-box" data-bind="style: { backgroundColor: get_color('eighth') }"></span>
+        <span class="legend-text">Q1</span>
+    </span>
+    <span class="legend-item">
+        <span class="legend-box" style="background-color:#404040"></span>
+        <span class="legend-text">Q2</span>
+    </span>
+    <span class="legend-item">
+        <span class="legend-box" data-bind="style: { backgroundColor: get_color('first') }"></span>
+        <span class="legend-text">Q3</span>
+    </span>
+    <span class="legend-item">
+        <span class="legend-box" style="background-color:#A6A6A6"></span>
+        <span class="legend-text">Q4</span>
+    </span>
+</div>
+</script>
+
+<script id="tpl_data_table_empty_with_top_form" type="text/html">
+<div class="big-message">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <h1>Nothing here!</h1>
+    <p class="lead">
+        Use the form above to add something..
+    </p>
+</div>
+</script>
+
+<script id="tpl_horizontal_separator" type="text/html">
+<hr>
+</script>
+
+<script id="tpl_chart" type="text/html">
+<!-- ko if: loading -->
+    <div style="width: 100%; text-align:center;" data-bind="style: $data.loading_style">
+        <span class="glyphicon glyphicon-cog animate-spin"></span>
+        Loading chart...
+    </div>
+<!-- /ko -->
+<!-- ko ifnot: loading -->
+    <div data-bind="style: _container_style, highchart2: $data"></div>
+<!-- /ko -->
+</script>
+
+<script id="tpl_cpanel" type="text/html">
+<div class="layout-aside" id="main-control-panel">
+    <div class="layout-vbox">
+        <!-- ko if: layout.header -->
+        <div class="header" data-bind="renderComponent: layout.header"></div>
+        <!-- /ko -->
+        <!-- ko ifnot: layout.header -->
+        <div class="header"></div>
+        <!-- /ko -->
+        <ul id="main-control-panel-body" class="nav nav-sidebar collapse fundraising" data-bind="foreach: layout.body" style="padding-top:10px;">
+            <li data-bind="renderComponent: $data"></li>
+        </ul>
+    </div>
+</div>
+</script>
+
+<script id="tpl_new_popover_button" type="text/html">
+    <button type="button" class="btn btn-popover" data-toggle="popover" data-bind="popover2: {
+        component: popover,
+        hide_on_events: hide_on_events,
+        opened_event: opened_event,
+        closed_event: closed_event,
+        options: popover_options,
+        listen_to: popover_options.listen_to,
+    }, css: css, visible: visible, disable: disabled">
+        <!-- ko if: loading -->
+            <span class="pull-left" style="margin-left:10px;">
+                <span class="glyphicon glyphicon-cog animate-spin">
+                </span>
+            </span>
+        <!-- /ko -->
+        <!-- ko ifnot: loading -->
+            <span
+                class="btn-label pull-left"
+                data-bind="
+                    html: label,
+                    css: ellipsis ? 'btn-ellipsis' : '',
+                "
+            ></span>
+            <span class="btn-icon pull-right" data-bind="visible: icon_css, css: icon_css"></span>
+        <!-- /ko -->
+    </button>
+</script>
+
+<script id="tpl_analytics_header" type="text/html">
+<div class="header header-light header-buttons nav controls" data-bind="css: css">
+    <div class="header-toolbar">
+        <div class="header-overlap-content" data-bind="css: css">
+            <h4 data-bind="with: layout">
+                <!-- ko renderComponent: breadcrumb --><!-- /ko -->
+            </h4>
+        </div>
+
+        <!-- ko if: can_export -->
+            <!-- ko renderComponent: export_actions --><!-- /ko -->
+        <!--/ko -->
+
+        <!-- ko foreach: buttons -->
+            <!-- ko renderComponent: $data --><!-- /ko -->
+        <!-- /ko -->
+
+        <!-- ko if: $data.selected_count -->
+            <!-- ko renderComponent: selected_count --><!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_data_table_default_pagination" type="text/html">
+<ul class="pagination pagination-sm" style="margin:0;">
+    <li data-bind="css: { disabled: is_first() }">
+        <a class="clickable" role="button" data-bind="click: first">
+            <span class="icon-angle-double-left"></span>
+        </a>
+    </li>
+    <li data-bind="css: { disabled: is_first() }">
+        <a class="clickable" role="button" data-bind="click: prev">
+            <span class="icon-left-dir"></span>
+        </a>
+    </li>
+    <!-- ko foreach: page_numbers -->
+    <li data-bind="css: { active: $parent.is_page($data-1) }">
+        <a class="clickable" role="button" data-bind="text: $data, click: function() { $parent.set_page($data-1) }"></a>
+    </li>
+    <!-- /ko -->
+    <li data-bind="css: { disabled: is_last() }">
+        <a class="clickable" role="button" data-bind="click: next">
+            <span class="icon-right-dir"></span>
+        </a>
+    </li>
+    <li data-bind="css: { disabled: is_last() }">
+        <a class="clickable" role="button" data-bind="click: last">
+            <span class="icon-angle-double-right"></span>
+        </a>
+    </li>
+</ul>
+</script>
+
+<script id="tpl_diligence_overview" type="text/html">
+<div class="slide" data-bind="with: body">
+    <div class="row text-center" style="background-color: #fff;padding: 20px;">
+        <div class="col-xs-8 col-xs-offset-2">
+            <img data-bind="attr: { src: logo_url }" style="width: 400px;margin:40px 0;">
+            <h1 data-bind="text: fund_name"></h1>
+            <h3 style="margin-top:5px;font-weight:normal;" data-bind="text: fund_size"></h3>
+            <p class="lead" style="margin-top:40px; " data-bind="html: overview_text"></p>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_popover_checklist" type="text/html">
+    <div class="popover-body popover-checklist" data-bind="event_horizon:true, css: css">
+        <!-- ko if:$data.mode_select -->
+            <!-- ko renderComponent:mode_select --><!-- /ko -->
+        <!-- /ko -->
+        <ul data-bind="css:filter_mode, foreach: segregated_options" class="force-scrollable-y">
+            <li class="button-group" data-bind="css: { is_title: $parent.is_label($data), custom_attribute_indicator: $data.is_custom}">
+                <button class="btn btn-popover-checklist-item btn-block btn-xs clearfix" data-bind="css: { checked: $parent.is_selected($data) }, click: $parent.toggle">
+                    <span class="btn-label pull-left" data-bind="html: label"></span>
+                    <span class="btn-icon glyphicon pull-right" data-bind="css:$parent.icon"></span>
+                    <!-- ko if:$data.is_custom -->
+                        <span class="icon-user secondary-icon pull-right"></span>
+                    <!-- /ko -->
+                </button>
+            </li>
+        </ul>
+        <div class="help-block" data-bind="visible: options().length == 0, text: empty_text">
+        </div>
+        <div class="hr"></div>
+        <button type="button" class="btn btn-block btn-sm close-popover">Close</button>
+        <!-- ko if: !disable_untoggle && !disable_clear_button -->
+            <button type="button" class="btn btn-block btn-sm clear-popover" data-bind="click:clear">Clear Selected</button>
+        <!-- /ko -->
+        <!-- ko if: restore_defaults -->
+            <button type="button" class="btn btn-block btn-sm clear-popover" data-bind="click: restore_defaults">Restore Defaults</button>
+        <!-- /ko -->
+    </div>
+</script>
+
+<script id="tpl_cpanel_button" type="text/html">
+    <button type="button" class="btn btn-block" data-bind="click: event, html: label, css: css, disable: disabled, visible: visible"></button>
+</script>
+
+<script id="tpl_html_content" type="text/html">
+<span data-bind="html: html, css:css, visible:visible"></span>
+</script>
+
+<script id="tpl_horizontal_cpanel" type="text/html">
+<div class="row row-margins" data-bind="foreach: layout.body">
+    <div class="col-xs-12 col-md-3" style="margin-bottom: 10px;">
+        <!-- ko renderComponent: $data --><!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_cpanel_radio_toggle" type="text/html">
+<!-- ko if: visible -->
+<!-- ko foreach: buttons -->
+    <!-- ko if: !$parent.is_active($data) -->
+    <button class="btn btn-block btn-sm btn-cpanel-primary" data-bind="click: $parent.toggle, html: label">
+    </button>
+    <!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+</script>
+
+<script id="tpl_data_table_rows" type="text/html">
+<!-- ko foreachWithLength: { data: rows, as: 'row' } -->
+<tr data-bind="css: { selected: $parents[1].is_selected(row) }, click:$parents[1].row_click">
+    <!-- ko if: $parents[1].enable_selection -->
+    <td data-bind="event_horizon:true, click: $parents[1].toggle_select, css: { clickable: $parents[1].enable_selection }" class="no-selection">
+    <div class="round-checkbox">
+        <input type="checkbox" data-bind="checked: $parents[1].is_selected(row)"/>
+        <label for="checkboxInput"></label>
+    </div>
+    </td>
+    <!-- /ko -->
+    <!-- ko ifnot: $parents[1].enable_selection -->
+    <td></td>
+    <!-- /ko -->
+    <!-- ko foreach: { data: $parents[1].columns, as: 'column' } -->
+        <!-- ko if: column.component -->
+            <!-- ko with: column.gen_instance(row, $parentContext.$index(), $parentContext.$length) -->
+                <td data-bind="renderComponent: $data, css: column.css"></td>
+            <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko ifnot: column.component -->
+            <td data-bind="html: column.gen_cell(row), css: column.get_css(row), style: { color: $parents[1].is_comps ? $parents[2].comp_color || row.color : undefined }, tooltip: column.get_tooltip(row)"></td>
+        <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: $parents[1].enable_clear_order && $parents[1].has_order() && !$parents[1].label -->
+        <td></td>
+    <!-- /ko -->
+    <!-- ko if: $parents[1].enable_column_toggle && !$parents[1].label -->
+        <td></td>
+    <!-- /ko -->
+</tr>
+<!-- /ko -->
+</script>
+
+<script id="tpl_pcw_crunching_numbers" type="text/html">
+<div class="row">
+    <table class="callout-table" data-bind="css: callout_css">
+        <tr>
+            <td class="callout-icon">
+                <span class="glyphicon glyphicon-ok">
+            </td>
+            <td>
+                <p style="color: #222;">Crunching those numbers... please wait...</p>
+            </td>
+        </tr>
+    </table>
+</div>
+</script>
+
+<script id="tpl_body_empty" type="text/html">
+<div class="layout-aside page analytics">
+    <div class="layout-vbox">
+        <div class="row" >
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <div class="scrollable content page">
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_text_input" type="text/html">
+<div data-bind="css: { 'has-error': !valid(), 'text-input-bordered-label': bordered_label }" class="text-input" style="text-align: center;position:relative">
+    <input type="text" data-bind="textInput: value_bind, css: css, attr: { placeholder: placeholder }, disable: disabled" class="form-control" required />
+    <!-- ko if:search_icon -->
+        <span class="glyphicon glyphicon-search" style="margin-left: -40px; font-size: 18px;"></span>
+    <!-- /ko -->
+    <!-- ko if: $data.label -->
+        <label data-bind="text: label, click: focus"></label>
+    <!-- /ko -->
+    <!-- ko if: !valid() && error_message -->
+        <div class="error-message" data-bind="text: error_message, click: focus"></div>
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_meta_info" type="text/html">
+<div class="meta-info" data-bind="css: css">
+    <span data-bind="html: label"></span>
+    <span class="pull-right" data-bind="html: count"></span>
+</div>
+</script>
+
+<script id="tpl_inbox_data_table_rows" type="text/html">
+<!-- ko foreachWithLength: { data: rows, as: 'row' } -->
+<tr data-bind="css: { selected: $parents[1].is_selected(row) }, click:$parents[1].row_click">
+    <!-- ko if: $parents[1].enable_selection -->
+    <td data-bind="click: $parents[1].toggle_select, css: { clickable: $parents[1].enable_selection }" class="no-selection">
+    <input type="checkbox" data-bind="checked: $parents[1].is_selected(row)" class="checkbox clickable" />
+    </td>
+    <!-- /ko -->
+    <!-- ko ifnot: $parents[1].enable_selection -->
+    <td></td>
+    <!-- /ko -->
+    <!-- ko foreach: { data: $parents[1].columns, as: 'column' } -->
+        <!-- ko if: column.component -->
+            <!-- ko with: column.gen_instance(row, $parentContext.$index(), $parentContext.$length) -->
+                <td data-bind="renderComponent: $data, css: column.css"></td>
+            <!-- /ko -->
+        <!-- /ko -->
+        <!-- ko ifnot: column.component -->
+            <td data-bind="html: column.gen_cell(row), css: column.css, style: { color: $parents[1].is_comps ? $parents[2].comp_color || row.color : undefined }"></td>
+        <!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: $parents[1].enable_clear_order && $parents[1].has_order() && !$parents[1].label -->
+        <td></td>
+    <!-- /ko -->
+    <!-- ko if: $parents[1].enable_column_toggle && !$parents[1].label -->
+        <td></td>
+    <!-- /ko -->
+</tr>
+<!-- /ko -->
+</script>
+
+<script id="tpl_delete_modal" type="text/html">
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Please confirm..</h4>
+            </div>
+            <div class="modal-body">
+                <!-- ko renderComponent: to_delete --><!-- /ko -->
+                <hr class="transparent hr-small">
+                <p data-bind="html: warning_text"></p>
+                <hr class="transparent hr-small">
+                <button type="button" class="btn btn-danger" data-bind="click: delete_entities, css: { disabled: loading }">
+                    <!-- ko if: loading -->
+                        <span class="glyphicon glyphicon-cog animate-spin"></span> Loading...
+                    <!-- /ko -->
+                    <!-- ko ifnot: loading -->
+                        <span data-bind="text: btn_text"></span>
+                    <!-- /ko -->
+                </button>
+                <button type="button" class="btn btn-ghost-default" data-dismiss="modal" data-bind="css: { disabled: loading }">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_point_in_time_box" type="text/html">
+    <div class="full-height">
+        <div class="row">
+            <div class="col-xs-12">
+                <div data-bind="renderComponent: callout"></div>
+                <div data-bind="renderComponent: metric_table"></div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="tpl_popover_checklist_custom_value" type="text/html">
+<div class="popover-checklist" style="max-width:250px;" data-bind="event_horizon:true, css: css">
+    <ul class="force-scrollable-y" data-bind="visible: options().length > 0">
+        <li>
+            <div class="input-group input-group-sm">
+                <input type="text" class="form-control" data-bind="textInput: custom_value, attr: { placeholder: custom_value_placeholder }">
+                <span class="input-group-btn">
+                     <button class="btn btn-sm btn-popover-enable-custom-value active" data-bind="click: toggle_custom_value">
+                        <span class="glyphicon" data-bind="css: { 'glyphicon-check': custom_value_enabled(), 'glyphicon-unchecked': !custom_value_enabled(), 'text-success': custom_value_enabled() }">
+                        </span>
+                    </button>
+                </span>
+            </div>
+        </li>
+        <!-- ko foreach: segregated_options -->
+            <li class="button-group" data-bind="css: { is_title: $parent.is_label($data) }">
+                <button class="btn btn-popover-checklist-item btn-block btn-xs clearfix" data-bind="css: { checked: $parent.is_selected($data) }, click: $parent.toggle">
+                <span class="btn-label pull-left" data-bind="text:label"></span>
+                <span class="btn-icon glyphicon glyphicon-ok pull-right"></span>
+                </button>
+            </li>
+        <!-- /ko -->
+    </ul>
+    <div class="help-block" data-bind="visible: options().length == 0, text: empty_text">
+    </div>
+    <div class="hr"></div>
+    <button type="button" class="btn btn-block btn-sm close-popover">Close</button>
+    <!-- ko if: !disable_untoggle && !disable_clear_button -->
+        <button type="button" class="btn btn-block btn-sm clear-popover" data-bind="click:clear">Clear Selected</button>
+    <!-- /ko -->
+    <!-- ko if: restore_defaults -->
+        <button type="button" class="btn btn-block btn-sm clear-popover" data-bind="click: restore_defaults">Restore Defaults</button>
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_data_manager_characteristics" type="text/html">
+    <div class="col-md-6" style="margin-top: 20px;">
+        <h4 data-bind="text:strings.form_title" style="margin-left: 20px;">
+        </h4>
+        <!-- ko renderComponent: form --><!-- /ko -->
+        <!-- ko if: $data.custom_attributes_form -->
+        <div class="row">
+            <div class="col-md-12 new-world-form custom-attr-dropdown-container" style="padding:0px 20px;">
+                <!-- ko foreach: custom_attributes_form -->
+                    <!-- ko renderComponent: $data --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
+        <!-- /ko -->
+        <div class="row">
+            <div class="col-md-12 fund-characteristics-form">
+                <!-- ko if: $data.is_remote_entity -->
+                <div class="alert alert-info" role="alert">
+                    <strong>Locked data</strong>
+                    This fund contains data that has been gathered from remote sources,
+                    and this data cannot be changed manually by the user.
+                </div>
+                <!-- /ko  -->
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6" style="margin-top: 20px;">
+        <!-- ko if: $data.metadata -->
+            <h4 data-bind="text:strings.metadata_title" style="margin-left: 20px;"></h4>
+            <!-- ko renderComponent: metadata --><!-- /ko -->
+        <!-- /ko -->
+    </div>
+
+</script>
+
+<script id="tpl_pcw_widget_failed" type="text/html">
+<div class="upload-status upload-status-danger">
+    <div class="row">
+        <table class="callout-table callout-danger">
+            <tr>
+                <td class="callout-icon">
+                    <span class="glyphicon glyphicon-warning-sign">
+                </td>
+                <td>
+                    <p data-bind="html: opts.data.error_text"></p>
+                    <!-- ko if: opts.data.action_button -->
+                        <!-- ko template: {
+                            name: opts.data.action_button.template,
+                            data: opts.data.action_button
+                        } --> <!-- /ko -->
+                    <!-- /ko -->
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</script>
+
+<script id="tpl_popover_ghost_info_checklist" type="text/html">
+<div class="popover-checklist" data-bind="event_horizon:true">
+    <ul data-bind="foreach:options" class="force-scrollable-y">
+        <li class="button-group" data-bind="css: { is_title: $parent.is_label($data) }">
+            <button class="btn btn-ghost-default btn-block btn-xs clearfix" data-bind="css: { checked: $parent.is_selected($data) }, click: $parent.toggle">
+            <span class="btn-label pull-left" data-bind="text:label"></span><span class="btn-icon glyphicon glyphicon-ok pull-right"></span>
+            </button>
+        </li>
+    </ul>
+    <div class="help-block" data-bind="visible: options().length == 0, text: empty_text">
+    </div>
+    <div class="hr"></div>
+    <button type="button" class="btn btn-block btn-sm btn-default close-popover">Done</button>
+    <!-- ko if: !disable_untoggle && !disable_clear_button -->
+        <button type="button" class="btn btn-block btn-sm btn-ghost-default clear-popover" data-bind="click: clear">Clear Selected</button>
+    <!-- /ko -->
+    <!-- ko if: restore_defaults -->
+        <button type="button" class="btn btn-block btn-sm btn-ghost-default clear-popover" data-bind="click: restore_defaults">Restore Defaults</button>
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_popover_ghost_info_checklist_no_blanks" type="text/html">
+    <div class="popover-checklist" data-bind="event_horizon:true">
+        <ul data-bind="foreach:options" class="force-scrollable-y">
+                <!-- ko if: $data.label -->
+                <li class="button-group" data-bind="css: { is_title: $parent.is_label($data) }">
+                    <button class="btn btn-ghost-default btn-block btn-xs clearfix" data-bind="css: { checked: $parent.is_selected($data) }, click: $parent.toggle">
+                    <span class="btn-label pull-left" data-bind="text:label"></span><span class="btn-icon glyphicon glyphicon-ok pull-right"></span>
+                    </button>
+                </li>
+                <!-- /ko-->
+        </ul>
+        <div class="help-block" data-bind="visible: options().length == 0, text: empty_text">
+        </div>
+        <div class="hr"></div>
+        <button type="button" class="btn btn-block btn-sm btn-default close-popover">Done</button>
+        <!-- ko if: !disable_untoggle && !disable_clear_button -->
+            <button type="button" class="btn btn-block btn-sm btn-ghost-default clear-popover" data-bind="click: clear">Clear Selected</button>
+        <!-- /ko -->
+        <!-- ko if: restore_defaults -->
+            <button type="button" class="btn btn-block btn-sm btn-ghost-default clear-popover" data-bind="click: restore_defaults">Restore Defaults</button>
+        <!-- /ko -->
+    </div>
+</script>
+
+<script id="tpl_data_table_standalone_pagination" type="text/html">
+<div class="row" data-bind="visible: has_rows() && !loading()" style="margin-top:10px;">
+    <div class="col-xs-12 text-center">
+        <div data-bind="visible: has_pages, template: {
+            name: pagination_template,
+            data: $data,
+        }"></div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_data_table_default_loading" type="text/html">
+<div class="big-message">
+    <span class="glyphicon glyphicon-cog animate-spin"></span>
+    <h1>Loading..</h1>
+</div>
+</script>
+
+<script id="tpl_full_width_radio_buttons" type="text/html">
+<div class="btn-group btn-block" data-bind="css:css_style, visible:visible, foreach: buttons">
+    <!-- ko if: $data.template -->
+        <!-- ko template: {
+            data: $data,
+            name: $data.template
+        }--><!-- /ko -->
+    <!-- /ko -->
+    <!-- ko if: !$data.template -->
+        <!-- ko if: !$parent.is_disabled($data) -->
+            <label class="btn" data-bind="css: $parent.css($data)">
+                <input type="radio" name="options" autocomplete="off" data-bind="attr: { value: state, id: state }, checked: $parent.state">
+                <span data-bind="html: label"></span>
+            </label>
+        <!-- /ko -->
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_text_popover_button" type="text/html">
+<a role="button" class="popover-info-btn" data-toggle="popover" data-bind="popover2: {
+        component: popover,
+        hide_on_events: hide_on_events,
+        opened_event: opened_event,
+        closed_event: closed_event,
+        options: popover_options,
+        listen_to: popover_options.listen_to,
+    }, css: css, visible: visible, click: click">
+    <span data-bind="text: label" style="font-size: 12px;"></span>
+</a>
+</script>
+
+<script id="tpl_dynamic_actions_dropdown" type="text/html">
+<div class="dropdown">
+    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" data-bind="css: css, disable: disabled">
+        <span data-bind="html: label"></span>
+        <span data-bind="css: icon_css"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <!-- ko foreach: top_level_actions -->
+            <li data-bind="css: css">
+                <a class="clickable" data-bind="click: $parent.event">
+                    <span data-bind="html: title"></span>
+                    <span class="text-muted" style="margin-left:2px; font-size:75%;" data-bind="html: $data.subtitle"></span>
+                </a>
+            </li>
+        <!-- /ko -->
+        <li role="separator" class="divider" data-bind="visible: top_level_actions().length > 0 && types().length > 0"></li>
+        <!-- ko foreach: types -->
+            <li role="separator" class="divider" data-bind="visible: $index"></li>
+            <li class="dropdown-header" data-bind="html: title"></li>
+            <!-- ko foreach: actions -->
+                <li data-bind="css:css">
+                    <a class="clickable" data-bind="click: $parents[1].event">
+                        <span data-bind="html: title"></span>
+                        <span class="text-muted" style="margin-left:2px; font-size:75%;" data-bind="html: $data.subtitle"></span>
+                    </a>
+                </li>
+            <!-- /ko -->
+        <!-- /ko -->
+    </ul>
+</div>
+</script>
+
+<script id="tpl_cashflow_overview_widget" type="text/html">
+<div class="component-box full-height cashflow-overview-widget" data-bind="style: css_style">
+    <!-- ko if: loading() || !data() -->
+        <span class="glyphicon glyphicon-cog animate-spin"></span>
+    <!-- /ko -->
+    <!-- ko if: !loading() && data() -->
+    <div class="row row-margins">
+        <div class="col-xs-12">
+            <h2 data-bind="text: name"></h2>
+            <!-- ko if: enable_actions -->
+                <div class="widget-header-toolbar">
+                    <a data-bind="attr: { href: analytics_url }" class="btn btn-ghost pull-right">View in Analytics</a>
+                </div>
+            <!-- /ko -->
+        </div>
+        <div class="col-md-6" style="padding-top:20px;">
+            <!--ko foreach: callouts-->
+                <div class="col-xs-3" data-bind="renderComponent: $data"></div>
+            <!-- /ko -->
+            <div style="padding: 5px 20px 10px;margin-top:15px;" data-bind="renderComponent: metric_table"></div>
+        </div>
+        <div class="col-md-6">
+            <!-- ko renderComponent: cashflow_chart --><!-- /ko -->
+        </div>
+    </div>
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_data_table_empty_no_data" type="text/html">
+<div class="big-message">
+    <p class="lead">
+        No data to display...
+    </p>
+</div>
+</script>
+
+<script id="tpl_data_table_default_empty" type="text/html">
+<div class="big-message">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <h1>No matching results</h1>
+    <p class="lead">
+        Please modify your filters.
+    </p>
+</div>
+</script>
+
+<script id="tpl_analytics_cpanel" type="text/html">
+<div class="layout-aside" id="main-control-panel">
+    <div class="layout-vbox">
+        <div class="header mode-toggle" data-bind="css: title_css">
+            <!-- ko with: layout.header -->
+                <!-- ko renderComponent: $data --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <ul id="main-control-panel-body" class="nav nav-sidebar collapse">
+            <!-- ko foreach: layout.body -->
+                <li data-bind="renderComponent: $data"></li>
+            <!-- /ko -->
+        </ul>
+  </div>
+</div>
+</script>
+
+<script id="tpl_data_table_no_supporting_vehicles" type="text/html">
+<div class="big-message">
+    <h1>Nothing here!</h1>
+    <p class="lead">
+        No supporting vehicles added yet.
+    </p>
+</div>
+</script>
+
+<script id="tpl_supporting_vehicles_modal" type="text/html">
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Vehicles</h4>
+            </div>
+            <div class="modal-body">
+                <!-- ko if: review -->
+                    <!-- ko renderComponent: included_selected_count --><!-- /ko -->
+                    <!-- ko if: included_vehicles_table.has_selected -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-danger" data-bind="click: remove_selected_vehicles">
+                                    <span class="glyphicon glyphicon-minus"></span>
+                                    Remove selected
+                            </button>
+                        </div>
+                    <!-- /ko -->
+                    <hr class="transparent hr-tiny">
+                    <!-- ko renderComponent: included_vehicles_table --><!-- /ko -->
+                    <hr>
+                    <button type="button" class="btn btn-ghost-default" data-bind="click: toggle_review">
+                        <span class="glyphicon glyphicon-arrow-left"></span>
+                    </button>
+                    <button type="button" class="btn btn-cpanel-success pull-right" data-bind="click: confirm_add_vehicles, disable: !has_vehicles() || adding()">
+                            <!-- ko if: adding -->
+                                <span class="glyphicon glyphicon-cog animate-spin"></span> Adding
+                            <!-- /ko -->
+                            <!-- ko ifnot: adding -->
+                                Confirm
+                            <!-- /ko -->
+                    </button>
+                <!-- /ko -->
+                <!-- ko ifnot: review -->
+                    <!-- ko renderComponent: filters --><!-- /ko -->
+                    <hr class="transparent hr-tiny">
+                    <!-- ko renderComponent: selected_count --><!-- /ko -->
+                    <!-- ko if: vehicles_table.has_selected -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-cpanel-success" data-bind="click: add_selected_vehicles">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    Add selected
+                            </button>
+                        </div>
+                    <!-- /ko -->
+                    <hr class="transparent hr-tiny">
+                    <!-- ko renderComponent: vehicles_table --><!-- /ko -->
+                    <hr>
+                    <button type="button" class="btn btn-ghost-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-cpanel-success pull-right" data-bind="click: toggle_review, disable: !has_vehicles()">
+                        Review
+                        <span style="margin-left:5px;" class="glyphicon glyphicon-arrow-right"></span>
+                    </button>
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_fund_in_family_container" type="text/html">
+    <section class='fund-details-container'>
+        <div class="row" data-bind="if: layout.top_row">
+            <div class="col-md-7">
+                <!-- ko if: layout.top_row[0] -->
+                    <!-- ko renderComponent: layout.top_row[0] --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+            <div class="col-md-5">
+                <!-- ko if: layout.top_row[1] -->
+                    <!-- ko renderComponent: layout.top_row[1] --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="row" data-bind="foreach:layout.middle_row">
+            <div class="col-md-6">
+                <!-- ko renderComponent: $data --><!-- /ko-->
+            </div>
+        </div>
+        <div class="page_break"></div>
+        <div class="row" data-bind="foreach:layout.bottom_row">
+            <div class="col-md-6">
+                <!-- ko renderComponent: $data --><!-- /ko-->
+            </div>
+        </div>
+    </section>
+</script>
+
+<script id="tpl_body" type="text/html">
+<div class="layout-aside page analytics" data-bind="attr: { id: html_id() }">
+    <div class="layout-vbox">
+        <div class="row">
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <!-- ko if: layout.header -->
+            <!-- ko renderComponent: layout.header --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: layout.breadcrumb -->
+            <!-- ko renderComponent: layout.breadcrumb --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: layout.modal -->
+            <!-- ko renderComponent: layout.modal --><!-- /ko -->
+        <!-- /ko -->
+        <!-- ko if: layout.toolbar -->
+            <!-- ko renderComponent: layout.toolbar --><!-- /ko -->
+        <!-- /ko -->
+        <div class="scrollable content page" data-bind="attr: { id: layout.body.html_id() }, renderComponent: layout.body, css:css">
+        </div>
+    </div>
+</div>
+</script>
+
+<script id="tpl_report_menu_wrapper" type="text/html">
+<div class="new-report-menu-wrapper page analytics" data-bind="attr: { id: html_id() }">
+    <div class="layout-vbox">
+        <div class="row">
+            <div class="col-xs-12"></div>
+        </div>
+            <!-- ko if: layout.header -->
+                <!-- ko renderComponent: layout.header --><!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: layout.breadcrumb -->
+                <!-- ko renderComponent: layout.breadcrumb --><!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: layout.modal -->
+                <!-- ko renderComponent: layout.modal --><!-- /ko -->
+            <!-- /ko -->
+            <!-- ko if: layout.toolbar -->
+                <!-- ko renderComponent: layout.toolbar --><!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko renderComponent: layout.body --><!-- /ko -->
+    </div>
+</div>
+</script>
+
+<script id="tpl_widget_append_replace_entity" type="text/html">
+<div class="upload-status upload-status-warning">
+    <!--ko if: loading -->
+        <!-- ko template: {
+            name: 'tpl_pcw_crunching_numbers',
+            data: {
+                callout_css: 'callout-warning'
+            },
+        } --><!-- /ko -->
+    <!-- /ko -->
+    <!-- ko ifnot:loading -->
+        <div class="row">
+
+            <table class="callout-table callout-warning">
+                <tr>
+                    <td class="callout-icon">
+                        <span class="icon-attention-1">
+                    </td>
+                    <td>
+                        <table class="new-world-form" style="table-layout: fixed; width: 50%;">
+                            <tr>
+                                <td class="fund-quick-search">
+                                    <input class='form-control'  type="text" data-bind="
+                                    value:selected_entity_name,
+                                    typeahead: typeahead_options
+                                    , attr:{placeholder:placeholder}
+                                    " style="position: relative"/>
+                                    <span class="glyphicon glyphicon-search" style="font-size:18px; padding-left:10px;position: absolute;right: 25px;color: #AAA;top: 16px;"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td>
+                                            <p class="lead">
+                                                <span data-bind="text: prompt_text"></span>
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <!-- ko if: selected_entity() -->
+                                            <button class="btn btn-confirm btn-sm pull-right" data-bind="click: finish, disable: loading">
+                                                Continue
+                                                <span class="glyphicon glyphicon-ok pull-left"></span>
+                                            </button>
+                                            <!-- /ko -->
+                                        </td>
+                                    </tr>
+                                </table>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_popover_input_range" type="text/html">
+<div class="popover-input-range" data-bind="event_horizon:true, css: css">
+    <div class="new-world-form">
+        <div class="form-group">
+            <!-- ko renderComponent: min --><!-- /ko -->
+        </div>
+        <div class="form-group">
+            <!-- ko renderComponent: max --><!-- /ko -->
+        </div>
+    </div>
+    <div class="hr hr-padded-bottom"></div>
+    <button type="button" class="btn close-popover" data-bind="css: close_btn_css" data-dismiss="popover">Done</button>
+    <button type="button" class="btn" data-bind="click: clear, css: clear_btn_css, enable: modified">Clear</button>
+</div>
+</script>
+
+<script id="tpl_no_reports" type="text/html">
+<div class="big-message">
+    <span class="glyphicon glyphicon-file"></span>
+    <h1>You have no reports</h1>
+    <p class="lead">
+        Use the control panel to the left to generate your first report.
+    </p>
+</div>
+</script>
+
+<script id="tpl_action_button" type="text/html">
+    <button type="button" class="btn" data-bind="click: broadcast_event, html: label, css: css, disable: disabled, visible: visible"></button>
+</script>
+
+<script id="tpl_special_text_input" type="text/html">
+<div data-bind="css: { 'has-error': !valid(), 'text-input-bordered-label': bordered_label, 'text-input-cpanel': in_cpanel }" class="text-input">
+    <input type="text" data-bind="value: value_bind, valueUpdate: 'lostfocus', css: css, attr: { placeholder: placeholder }, disable: disabled" class="form-control" required />
+    <!-- ko if: $data.label -->
+        <label data-bind="text: label, click: focus"></label>
+    <!-- /ko -->
+    <!-- ko if: !valid() && error_message -->
+        <div class="error-message" data-bind="text: error_message, click: focus"></div>
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_boolean_button_checkbox" type="text/html">
+    <div class="text-center"><input type="checkbox" data-bind="checked: read_only_state, click: toggle"></div>
+</script>
+
+<script id="tpl_boolean_button" type="text/html">
+<button class="btn" data-bind="click: toggle, css: btn_css, visible: visible, disable: disabled" style="padding-left:10px; padding-right:10px;">
+        <span data-bind="html: label, css: label_css" class="pull-left"></span>
+        <span class="pull-right glyphicon btn-icon" style="padding-top:2px;" data-bind="css: icon_css">
+        </span>
+</button>
+</script>
+
+<script id="tpl_chart_box" type="text/html">
+    <div class="component-box full-height">
+        <!-- ko if: $data.label && !$data.label_in_chart -->
+            <h3 class="component-label" data-bind="html: $data.label"></h3>
+        <!-- /ko -->
+        <!-- ko if: loading -->
+            <div style="width: 100%; text-align:center;" data-bind="style: $data.loading_style">
+                <span class="glyphicon glyphicon-cog animate-spin"></span>
+                Loading chart...
+            </div>
+        <!-- /ko -->
+        <!-- ko ifnot: loading -->
+            <div data-bind="style: _container_style, highchart2: $data">
+            </div>
+        <!-- /ko -->
+    </div>
+</script>
+
+<script id="tpl_cpanel_string_filter" type="text/html">
+<div class="input-group" data-bind="css: { active: has_value() }">
+    <h5 class="hidden-xs" style="color:#fff;">Search</h5>
+    <div class="form-group">
+        <input type="text" class="form-control input-sm" data-bind="attr: { placeholder: placeholder }, textInput: value">
+        <span class="search-icon glyphicon glyphicon-search hidden-xs">
+        </span>
+    </div>
+    <span class="input-group-btn">
+        <button class="btn btn-sm btn-chrome-primary visible-xs visible-sm" type="button" data-toggle="collapse" data-target="#main-control-panel-body.fundraising">Advanced</button>
+    </span>
+</div>
+</script>
+
+<script id="tpl_popover_ghost_default_checklist" type="text/html">
+<div class="popover-checklist" data-bind="event_horizon:true">
+    <ul data-bind="foreach:options" class="force-scrollable-y">
+        <li class="button-group" data-bind="css: { is_title: $parent.is_label($data) }">
+            <button class="btn btn-ghost-default btn-block btn-xs clearfix" data-bind="css: { checked: $parent.is_selected($data) }, click: $parent.toggle">
+            <span class="btn-label pull-left" data-bind="text:label"></span><span class="btn-icon glyphicon glyphicon-ok pull-right"></span>
+            </button>
+        </li>
+    </ul>
+    <div class="help-block" data-bind="visible: options().length == 0, text: empty_text">
+    </div>
+    <div class="hr"></div>
+    <button type="button" class="btn btn-block btn-sm btn-default close-popover">Done</button>
+    <!-- ko if: !disable_untoggle && !disable_clear_button -->
+        <button type="button" class="btn btn-block btn-sm btn-ghost-default clear-popover" data-bind="click:clear">Clear Selected</button>
+    <!-- /ko -->
+    <!-- ko if: restore_defaults -->
+        <button type="button" class="btn btn-block btn-sm btn-ghost-default clear-popover" data-bind="click: restore_defaults">Restore Defaults</button>
+    <!-- /ko -->
+</div>
+</script>
+
+<script id="tpl_button" type="text/html">
+    <button type="button" class="btn" data-bind="click: event, html: label, css: css"></button>
+</script>
+
+<script id="tpl_popover_info" type="text/html">
+<div class="popover-info">
+    <!-- ko if: $data.metric_table -->
+        <div class="content" data-bind="renderComponent: metric_table"></div>
+    <!-- /ko -->
+    <!-- ko if: $data.html -->
+        <div data-bind="html: html"></div>
+    <!-- /ko -->
+</div>
+</script>
+
+<script type="text/html" id="tpl_cpanel_boolean_button">
+<button class="btn btn-block btn-sm btn-cpanel-primary" data-bind="click: toggle, define: define, css:btn_css, visible: visible" style="padding-left:10px; padding-right:10px;">
+        <span data-bind="html: label, css: { 'text-success': state() }" class="pull-left"></span>
+        <span class="pull-right glyphicon btn-icon" style="padding-top:2px;" data-bind="css: { 'glyphicon-check': state(), 'glyphicon-unchecked': !state(), 'text-success':state() }">
+        </span>
+</button>
+</script>
+
+<script id="tpl_string_filter" type="text/html">
+<div class="string-filter" data-bind="css: { active: has_value(), 'string-filter-cpanel': cpanel_style }">
+    <div class="form-group">
+        <input type="text" class="form-control input-sm" data-bind="attr: { placeholder: placeholder }, textInput: value">
+        <span class="search-icon glyphicon glyphicon-search hidden-xs">
+        </span>
+    </div>
+</div>
+</script>
+
+<script id="tpl_data_table" type="text/html">
+<!-- ko if: !hide_empty() && visible-->
+    <!-- ko if: label -->
+        <div class="row data-table-header">
+            <div class="col-xs-12 col-md-6 text-left" style="padding: 10px 15px;">
+                <span data-bind="html: label" style="font-weight: 300;color: #555;">
+                </span>
+                <!-- ko if: !loading() && has_rows() -->
+                <span data-bind="html: page_info" style="font-size: 12px; font-weight: 300;color: #999;"></span>
+                <!-- /ko -->
+            </div>
+            <div class="col-xs-12 col-md-6 text-right" style="padding: 10px 15px;">
+                <!-- ko if: enable_clear_order && has_order()-->
+                    <a data-bind="click: clear_order" class="table-clear-order clickable" style="font-size:12px; margin-right:10px;">
+                        Clear Order
+                    </a>
+                <!-- /ko -->
+                <!-- ko if: enable_column_toggle -->
+                    <!-- ko renderComponent: visible_columns --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
+    <!-- /ko -->
+    <div class="table-responsive full-height" data-bind="style: { overflow: overflow }">
+        <table class="table table-bison" data-bind="css: css, fixedTableHeader: $data, visible: has_rows() && !loading()">
+            <thead data-bind="visible: (has_rows && !hide_header)">
+                <tr>
+                    <!-- ko if: enable_selection && !radio_selection-->
+                    <th style="width: 1%" data-bind="css: { clickable: $parent.enable_selection }" class="no-selection">
+                    <div class="round-checkbox">
+                        <input type="checkbox" data-bind="checked: toggle_select_visible, attr: { id: checkbox_id }"/>
+                        <label data-bind="attr: { for: checkbox_id }"></label>
+                    </div>
+                    </th>
+                    <!-- /ko -->
+                    <!-- ko if: !enable_selection || radio_selection -->
+                    <th style="width: 1%;">
+                    </th>
+                    <!-- /ko -->
+                    <!-- ko foreach: columns -->
+                    <th data-bind="click: $parent.toggle_order, css: css, style: { width: $data.width }">
+                        <span data-bind="html: label, css: sort_icon, define: { term: label, placement: 'bottom', definition: definition, disable_lang_definition: disable_lang_definition }"></span>
+                    </th>
+                    <!-- /ko -->
+                    <!-- ko if: enable_clear_order && has_order() && !label-->
+                    <th style="width: 1%">
+                        <a data-bind="click: clear_order" class="table-clear-order">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                    </th>
+                    <!-- /ko -->
+                    <!-- ko if: enable_column_toggle && !label -->
+                    <th style="width: 1%" data-bind="with: visible_columns">
+                        <div style="position: relative;">
+                            <!-- ko renderComponent: $data --><!-- /ko -->
+                        </div>
+                    </th>
+                    <!-- /ko -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- ko template: {
+                    name: 'tpl_data_table_rows',
+                    data: {
+                        rows: comps,
+                        is_comps: true,
+                    },
+                } --><!-- /ko -->
+                <!-- ko template: {
+                    name: 'tpl_data_table_rows',
+                    data: {
+                        rows: rows,
+                        is_comps: false,
+                    },
+                } --><!-- /ko -->
+            </tbody>
+        </table>
+        <div data-bind="visible: loading, template: {
+            name: loading_template,
+            data: $data,
+        }"></div>
+        <div class="row" data-bind="visible: has_rows() && !loading()">
+            <div class="col-xs-12 col-md-2 text-left">
+            </div>
+            <div class="col-xs-12 col-md-8 text-center">
+                <div data-bind="visible: has_pages, template: {
+                    name: pagination_template,
+                    data: $data,
+                }"></div>
+            </div>
+            <div class="col-xs-12 col-md-2 text-right">
+                <!-- ko if: enable_csv_export && export_csv -->
+                    <button type="button" class="btn btn-white btn-sm" data-bind="click: export_csv, css: { disabled: export_loading }">
+                        <!-- ko if: export_loading -->
+                            <span class="glyphicon glyphicon-cog animate-spin"></span> Exporting
+                        <!-- /ko -->
+                        <!-- ko ifnot: export_loading -->
+                            Export CSV
+                        <!-- /ko -->
+                    </button>
+                <!-- /ko -->
+            </div>
+        </div>
+        <div data-bind="visible: !has_rows() && !loading(), template: {
+            name: empty_template,
+            data: $data,
+        }"></div>
+    </div>
+<!-- /ko -->
+</script>
+
+<script type="text/html" id="tpl_per_client_metrics_dash">
+    <div class="container" data-bind="foreach:layout.body">
+    <div class="row" >
+        <div class="col-md-12">
+            <div class="metric-group">
+                <!-- ko template: {
+                    data: $data,
+                    name: $data.template
+                }--><!-- /ko -->
+            </div>
+        </div>
+    </div>
+
+</div>
+</script>

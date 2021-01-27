@@ -1,0 +1,272 @@
+// Button variants
+// -------------------------
+// Easily pump out default styles, as well as :hover, :focus, :active,
+// and disabled options for all buttons
+@mixin flat-button-variant($color, $background) {
+  @include button-variant($color, $background, $background);
+  &:focus {
+    outline: none!important;
+  }
+}
+
+
+@mixin gen-btn-transparent($color) {
+  //@inclue button-variant($color, transparent, transparent);
+  color:$color;
+  background:transparent;
+
+  > .glyphicon, .icon {
+    margin-left: 5px;
+  }
+
+  &:hover {
+    background-color: lighten(#999, 30%);
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+      pointer-events: none;
+      opacity: 0.5;
+      filter: alpha(opacity=5);
+      -webkit-box-shadow: none;
+      box-shadow: none;
+  }
+}
+
+// Alerts
+// -------------------------
+@mixin alert-variant($background, $border, $text-color) {
+  background-color: $background;
+  border-color: $border;
+  color: $text-color;
+
+  hr {
+    border-top-color: darken($border, 5%);
+  }
+  .alert-link {
+    color: darken($text-color, 10%);
+  }
+}
+
+
+// Panels
+// -------------------------
+@mixin panel-variant($border, $heading-text-color, $heading-bg-color, $heading-border) {
+  border-color: $border;
+
+  & > .panel-heading {
+    color: $heading-text-color;
+    background-color: $heading-bg-color;
+    border-color: $heading-border;
+
+    + .panel-collapse .panel-body {
+      border-top-color: $border;
+    }
+  }
+  & > .panel-footer {
+    + .panel-collapse .panel-body {
+      border-bottom-color: $border;
+    }
+  }
+}
+
+// Pads
+// -------------------------
+@mixin responsivePad($top:0px, $left:0px, $bottom:0px, $right:0px) {
+  @media(max-width:767px){
+      padding:$top $left $bottom $right;
+  }
+}
+
+@mixin responsivePadLeft($padding:0px){@media(max-width:767px){ padding-left:$padding;}}
+@mixin responsivePadRight($padding:0px){@media(max-width:767px){ padding-right:$padding; }}
+@mixin responsivePadTop($padding:0px){@media(max-width:767px){ padding-top:$padding;}}
+@mixin responsivePadBottom($padding:0px){@media(max-width:767px){padding-bottom:$padding;}}
+
+// Popover
+// -------------------------
+@mixin popover-variant($text-color, $title-color, $primary-bg, $secondary-bg, $border, $border-shadow, $border-hilight) {
+  border-radius:2px;
+  color:$text-color;
+  background: $primary-bg;
+  border-color: $border;
+
+  ul.scrollbar-active{
+      padding-right:10px !important;
+  }
+
+  .popover-title{
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+      background: transparent;
+      border:0px;
+      color:$title-color !important;
+      margin-bottom:0px !important;
+      border-bottom: 1px solid $border-shadow;
+  }
+
+  .popover-content {
+      border-top: 1px solid $border-hilight;
+      padding:10px;
+
+      .form-control {
+          color:$text-color;
+          background: transparent;
+          border:1px solid darken($secondary-bg, 5%);
+      }
+
+      .form-group, .input-group {
+          & ::-webkit-input-placeholder {
+              cursor: text;
+              text-transform: uppercase;
+              letter-spacing: 0.6px;
+              color: $placeholder-text;
+              font-size: 11px;
+              font-weight: normal;
+          }
+          & ::-moz-placeholder {
+              cursor: text;
+              text-transform: uppercase;
+              letter-spacing: 0.6px;
+              color: $placeholder-text;
+              font-size: 11px;
+              font-weight: normal;
+          } /* firefox 19+ */
+          & :-ms-input-placeholder {
+              cursor: text;
+              text-transform: uppercase;
+              letter-spacing: 0.6px;
+              color: $placeholder-text;
+              font-size: 11px;
+              font-weight: normal;
+          } /* ie */
+          & input:-moz-placeholder {
+              cursor: text;
+              text-transform: uppercase;
+              letter-spacing: 0.6px;
+              color: $placeholder-text;
+              font-size: 11px;
+              font-weight: normal;
+          }
+      }
+
+      .input-group-addon{
+          color:#fff;
+          background: darken($secondary-bg, 10%);
+          // border:1px solid darken($secondary-bg, 5%);
+      }
+
+      .input-group{
+          margin-bottom:10px;
+      }
+
+      :last-child{
+          margin-bottom:0px;
+      }
+
+      .popover-cpanel .input-group-addon{
+          color: #A6AFBC;
+          background: #383d44;
+          border: 1px solid #15171a;
+      }
+  }
+
+  &.responsive{
+      left:10px !important;
+      right:40px !important;
+      top:50px !important;
+      bottom:50px !important;
+
+      .arrow{
+          display:none;
+      }
+  }
+
+  .popover-filter {
+      position: relative;
+      .popover-filter-input {
+          position: relative;
+      }
+      .popover-filter-clear {
+          position: absolute;
+          right: 5px;
+          top: 50%;
+          margin-top: -10px;
+          cursor: pointer;
+      }
+  }
+
+  .hr {
+      border-top: 1px solid $border-shadow;
+      border-bottom: 1px solid $border-hilight;
+      width: 100%;
+      margin: 10px 0px;
+  }
+}
+
+@mixin shelf-menu-variant($color) {
+  padding-bottom:15px;
+  padding-top:15px;
+  background:#FFF;
+  border-bottom:1px solid #DDD;
+
+  .media {
+      padding-left:5px;
+      background:lighten($color, 38%);
+      border:1px solid lighten($color, 30%);
+      border-radius:$border-radius-base;
+      font-weight:300;
+      cursor:pointer;
+
+      .media-heading {
+          margin-top:10px;
+      }
+
+      &:hover {
+          background:lighten($color, 30%);
+          border:1px solid lighten($color, 22%);
+      }
+
+      &.active {
+          cursor: default;
+          background-color: lighten($color, 10%);
+          color:white;
+          border-color: darken($color, 5%);
+
+          .icon{
+              color:white;
+          }
+      }
+      .icon{
+          color:$color;
+          font-size:48px;
+      }
+  }
+
+  .btn-performance {
+      background:lighten($color, 38%);
+      border:1px solid lighten($color, 30%);
+      font-weight:300;
+      color: #000;
+
+      .icon{
+          color:$color;
+      }
+
+      &:hover {
+          background:lighten($color, 30%);
+          border:1px solid lighten($color, 22%);
+      }
+
+      &.active {
+          cursor: default;
+          background-color: lighten($color, 10%);
+          color:white;
+          border-color: darken($color, 5%);
+
+          .icon{
+              color:white;
+          }
+      }
+  }
+}

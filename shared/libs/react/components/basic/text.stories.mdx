@@ -1,0 +1,112 @@
+
+import {Flex} from '@rebass/grid';
+
+import {Props, Preview, Story, Meta} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
+import {withKnobs, boolean} from '@storybook/addon-knobs';
+import {H1, H2, H3, H4, H5, Description, Bold, HelpText, Italic} from './text';
+
+<Meta title='Documentation/LayoutElements' component={H1, H2, H3, H4, H5, Description, Bold, HelpText, Italic} />
+
+# Layout Elements
+
+These are text components that are of various sizes, color, weight, etc.
+
+## H1 Text
+
+This font size is 25px.
+
+<Preview>
+    <Story name='H1'>
+        <H1>H1</H1>
+    </Story>
+</Preview>
+
+## H2 Text
+
+This font size is 15px and the font weight is 500. All text is capitalized.
+
+<Preview>
+    <Story name='H2'>
+        <H2>H2</H2>
+    </Story>
+</Preview>
+
+## H3 Text
+
+This font size is 14px and the font weight is 700. All text is capitalized.
+
+<Preview>
+    <Story name='H3'>
+        <H3>H3</H3>
+    </Story>
+</Preview>
+
+## H4 Text
+
+This font size is 12px and the font weight is 500. All text is capitalized.
+
+<Preview>
+    <Story name='H4'>
+        <H4>H4</H4>
+    </Story>
+</Preview>
+
+## H5 Text
+
+This font size is 12px and the font weight is 700. All text is capitalized.
+
+<Preview>
+    <Story name='H5'>
+        <H5>H5</H5>
+    </Story>
+</Preview>
+
+## Description Text
+
+This font size is 15px and the font weight is 500.
+
+<Preview>
+    <Story name='Description'>
+        <Description>Description</Description>
+    </Story>
+</Preview>
+
+## Bold Text
+
+The font weight is 700.
+
+<Preview>
+    <Story name='Bold'>
+        <Bold>Bold</Bold>
+    </Story>
+</Preview>
+
+## HelpText Text
+
+The font size is 11px and the font color is grey.
+
+<Preview>
+    <Story name='HelpText'>
+        <HelpText>HelpText</HelpText>
+    </Story>
+</Preview>
+
+## Italic Text
+
+<Preview>
+    <Story name='Italic'>
+        <Italic>Italic</Italic>
+    </Story>
+</Preview>
+
+
+## Link
+
+This component can take in a 'color' prop to change the link color. When hovered by the cursor, an underline will appear.
+
+<Preview>
+    <Story name='Link'>
+        <Link>Link</Link>
+    </Story>
+</Preview>

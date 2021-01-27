@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="google" content="notranslate">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="<%= require('src/img/favicon/cobalt/favicon.ico') %>" />
+
+        <title>Commander</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top" data-bind="visible: is_signed_in" style="display: none">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="navbar-logo">
+                    <img src="<%= require('src/img/cobalt_logo_white.svg') %>">
+                </div>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li data-bind="css: { active: isCurrentPage('dashboard') }">
+                        <a data-bind="page-href: 'dashboard', css: {
+                            disabled: loading()
+                        }" class="disabled"><h5>
+                            Dashboard</h5>
+                        </a>
+                    </li>
+                    <li class="dropdown" data-bind="css: { active: isCurrentPage([
+                        'user-activity',
+                        'cashflow-stats',
+                        'action-activity',
+                        'metrics',
+                        'sign-ins',
+                    ]) }">
+                    <a href="#" data-bind="visible: allow_user_stats" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><h5>Stats & Logs <span class="caret"></span></h5></a>
+                    <ul class="dropdown-menu">
+                        <li data-bind="css: { active: isCurrentPage('user-activity') }">
+                            <a data-bind="page-href: 'user-activity', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                User Activity
+                            </a>
+                        </li>
+                        <li data-bind="css: { active: isCurrentPage('action-activity') }">
+                            <a data-bind="page-href: 'action-activity', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Action Activity
+                            </a>
+                        </li>
+                        <li data-bind="css: { active: isCurrentPage('cashflow-stats') }">
+                            <a data-bind="page-href: 'cashflow-stats', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Cashflow Stats
+                            </a>
+                        </li>
+                        <li data-bind="css: { active: isCurrentPage('metrics') }">
+                            <a data-bind="page-href: 'metrics', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Metrics
+                            </a>
+                        </li>
+                        <li data-bind="css: { active: isCurrentPage('client_metrics') }">
+                            <a data-bind="page-href: 'client_metrics', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Client Metrics
+                            </a>
+                        </li>
+                        <li data-bind="css: { active: isCurrentPage('sign-ins') }">
+                            <a data-bind="page-href: 'sign-ins', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Sign Ins
+                            </a>
+                        </li>
+                    </ul>
+                    </li>
+                    <li class="dropdown" data-bind="css: { active: isCurrentPage([
+                        'users',
+                        'clients',
+                        'permission-control',
+                        'api-keys',
+                    ]) }">
+                    <a href="#" data-bind="visible: allow_user_data" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><h5>Users & Permissions <span class="caret"></span></h5></a>
+                    <ul class="dropdown-menu">
+                        <li data-bind="css: { active: isCurrentPage('users') }">
+                            <a data-bind="page-href: 'users', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Users
+                            </a>
+                        </li>
+                        <li data-bind="css: { active: isCurrentPage('clients') }">
+                            <a data-bind="page-href: 'clients', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Clients
+                            </a>
+                        </li>
+                        <li data-bind="css: { active: isCurrentPage('permission-control') }">
+                            <a data-bind="page-href: 'permission-control', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Permission Control
+                            </a>
+                        </li>
+                        <li data-bind="css: { active: isCurrentPage('api-keys') }">
+                            <a data-bind="page-href: 'api-keys', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                API Keys
+                            </a>
+                        </li>
+                    </ul>
+                    <li class="dropdown" data-bind="visible: allow_status_check(), css: { active: isCurrentPage([
+                        'status-checker'
+                    ]) }">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><h5>Status & Validity<span class="caret"></span></h5></a>
+                    <ul class="dropdown-menu">
+                        <li data-bind="visible: allow_status_check(), css: { active: isCurrentPage('status-checker') }">
+                            <a data-bind="page-href: 'status-checker', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Status Checker
+                            </a>
+                        </li>
+                    </ul>
+                    </li>
+                    <li class="dropdown" data-bind="css: { active: isCurrentPage([
+                        'firms',
+                        'funds',
+                        'investments',
+                        'investors',
+                        'families',
+                        'anticipated-funds',
+                        'name-match',
+                        'sec-filing',
+                        'activity',
+                        'companies',
+                        'market_data_metrics',
+                    ]) }">
+                    <a data-bind="visible: allow_market_data() || allow_market_data_special()" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><h5>Data Admin <span class="caret"></span></h5></a>
+                    <ul class="dropdown-menu">
+                    <li data-bind="visible: allow_market_data_special, css: { active: isCurrentPage('anticipated-funds') }">
+                        <a data-bind="page-href: 'anticipated-funds', css: {
+                            disabled: loading()
+                        }" class="disabled">
+                            Anticipated Funds
+                        </a>
+                    </li>
+                        <li data-bind="visible: allow_edit_funds_and_firms, css: { active: isCurrentPage('firms') }">
+                            <a data-bind="page-href: 'firms', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Firms
+                            </a>
+                        </li>
+                        <li data-bind="visible: allow_edit_funds_and_firms, css: { active: isCurrentPage('funds') }">
+                            <a data-bind="page-href: 'funds', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Funds
+                            </a>
+                        </li>
+                        <li data-bind="visible: allow_edit_companies, css: { active: isCurrentPage('companies') }">
+                            <a data-bind="page-href: 'companies', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Companies
+                            </a>
+                        </li>
+                        <li data-bind="visible: allow_edit_companies, css: { active: isCurrentPage('deals') }">
+                            <a data-bind="page-href: 'deals', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Deals
+                            </a>
+                        </li>
+                        <li data-bind="visible: allow_market_data, css: { active: isCurrentPage('investments') }">
+                            <a data-bind="page-href: 'investments', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Investments
+                            </a>
+                        </li>
+                        <li data-bind="visible: allow_market_data, css: { active: isCurrentPage('investors') }">
+                            <a data-bind="page-href: 'investors', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Investors
+                            </a>
+                        </li>
+                        <li data-bind="visible: allow_market_data, css: { active: isCurrentPage('investor_contacts') }">
+                            <a data-bind="page-href: 'investor_contacts', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Investor Contacts
+                            </a>
+                        </li>
+                        <li data-bind="visible: allow_market_data_special, css: { active: isCurrentPage('families') }">
+                            <a data-bind="page-href: 'families', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Families
+                            </a>
+                        </li>
+                        <li data-bind="visible: allow_market_data_special, css: { active: isCurrentPage('market_data_metrics') }">
+                            <a data-bind="page-href: 'market_data_metrics', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Metrics
+                            </a>
+                        </li>
+                        <li data-bind="visible: allow_market_data, css: { active: isCurrentPage('sec-filing') }">
+                            <a data-bind="page-href: 'sec-filing', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                SEC Filings
+                            </a>
+                        </li>
+                        <li data-bind="visible: allow_market_data, css: { active: isCurrentPage('name-match') }">
+                            <a data-bind="page-href: 'name-match', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Name Match
+                            </a>
+                        </li>
+                        <li data-bind="visible: allow_activity, css: { active: isCurrentPage('activity') }">
+                            <a data-bind="page-href: 'activity', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Activity
+                            </a>
+                        </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" data-bind="visible: allow_tools(), css: { active: isCurrentPage([
+                        'tools'
+                    ]) }">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><h5>Tools<span class="caret"></span></h5></a>
+                    <ul class="dropdown-menu">
+                        <li data-bind="visible: allow_status_check(), css: { active: isCurrentPage('fx-export') }">
+                            <a data-bind="page-href: 'fx-export', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                FX Rate Export
+                            </a>
+                        </li>
+                    </ul>
+                    </li>
+                    <li class="dropdown" data-bind="visible: allow_remote_data_admin, css: { active: isCurrentPage([
+                        'tools'
+                    ]) }">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><h5>Remote Client Access<span class="caret"></span></h5></a>
+                    <ul class="dropdown-menu">
+                        <li data-bind=" css: { active: isCurrentPage('remote_clients') }">
+                            <a data-bind="page-href: 'remote_client', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Remote Clients
+                            </a>
+                        </li><!--
+                        <li data-bind=" css: { active: isCurrentPage('remote_client_funds') }">
+                            <a data-bind="page-href: 'remote_client_funds', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                                Remote Clients Funds
+                            </a>
+                        </li> -->
+                    </ul>
+                    </li>
+                    <li data-bind="css: { active: isCurrentPage('data-collection') }">
+                        <a data-bind="visible: allow_data_collection(), page-href: 'data-collection', css: {
+                            disabled: loading()
+                        }" class="disabled"><h5>
+                            Data Collection</h5>
+                        </a>
+                    </li>
+                    <!-- <li data-bind="css: { active: isCurrentPage('dev') }">
+                        <a data-bind="visible: allow_config_admin(), page-href: 'dev', css: {
+                            disabled: loading()
+                        }" class="disabled"><h5>
+                            Dev</h5>
+                        </a>
+                    </li> -->
+                    <li class="dropdown" data-bind="visible: allow_config_admin(), css: { active: isCurrentPage([
+                        'config','command'
+                    ]) }"><a href="#" data-bind="visible: allow_config_admin()" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><h5>Dev <span class="caret"></span></h5></a>
+                    <ul class="dropdown-menu">
+                        <li data-bind="css: { active: isCurrentPage('config') }">
+                            <a data-bind="visible: allow_config_admin(), page-href: 'config', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                            Configs
+                            </a>
+                        </li>
+                        <li data-bind="css: { active: isCurrentPage('command') }">
+                            <a data-bind="visible: allow_config_admin(), page-href: 'command', css: {
+                                disabled: loading()
+                            }" class="disabled">
+                            Commands
+                            </a>
+                        </li>
+                    </ul></ul>
+                </li>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span data-bind="text: email"></span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a data-bind="visible: is_signed_in, attr: { href: my_account }">My Account</a>
+                            </li>
+                            <li>
+                                <a href="#" data-bind="click: sign_out">Sign out</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+
+        <!-- Begin page content -->
+        <div class="container-fluid">
+            <!-- ko foreach: pages -->
+                <div class="hbox" data-bind="page: $data"></div>
+            <!-- /ko -->
+        </div>
+
+        <div id="popover-root"></div>
+        <div id="modal-root"></div>
+
+        <div id="templates" data-bind="
+            page: {
+                id: 'templates',
+                source: '<%= require('src/libs/templates.html') %>',
+                sourceLoaded: resolve_template_dfd
+            }
+        "></div>
+
+        <footer class="footer" data-bind="visible: is_signed_in" style="display: none">
+            <div class="container-fluid">
+                <p style="color: #323e4e;">Cobalt Commander</p>
+            </div>
+        </footer>
+    </body>
+</html>

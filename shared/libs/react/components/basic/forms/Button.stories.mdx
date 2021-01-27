@@ -1,0 +1,106 @@
+import {Flex} from '@rebass/grid';
+
+import {Props, Preview, Story, Meta} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
+import {withKnobs, boolean} from '@storybook/addon-knobs';
+import Button from './Button';
+
+<Meta title='Documentation/Button' component={Button} />
+
+# Button
+
+The button component is what you think it is. Whenever the user needs to press it, use it!
+
+<Preview>
+    <Story name='Default'>
+        <Button
+            onClick={action('onClick')}
+            default={boolean('Enable Default')}
+            primary={boolean('Enable Primary')}
+            secondary={boolean('Enable Secondary')}
+            danger={boolean('Enable Danger')}
+            disabled={boolean('Enable Disabled')}
+            outlined={boolean('Enable Outlined')}
+            text={boolean('Enable Text')}
+        >
+            Button
+        </Button>
+    </Story>
+</Preview>
+
+<Props of={Button} />
+
+## Contained Buttons
+
+Contained buttons are high-emphasis, distinguished by their use of elevation and fill. They contain actions that are primary to your app.
+
+<Story name='Contained'>
+    <Flex flexDirection='row'>
+        <Button mr={1}>Default</Button>
+        <Button mr={1} primary>
+            Primary
+        </Button>
+        <Button mr={1} secondary>
+            Secondary
+        </Button>
+        <Button mr={1} disabled>
+            Disabled
+        </Button>
+        <Button mr={1} danger>
+            Danger
+        </Button>
+    </Flex>
+</Story>
+
+## Outlined Buttons
+
+Outlined buttons are medium-emphasis buttons. They contain actions that are important, but aren’t the primary action in an app.
+Outlined buttons are also a lower emphasis alternative to contained buttons, or a higher emphasis alternative to text buttons.
+
+<Story name='Outlined'>
+    <Flex flexDirection='row'>
+        <Button mr={1} outlined>
+            Default
+        </Button>
+        <Button mr={1} outlined primary>
+            Primary
+        </Button>
+        <Button mr={1} outlined secondary>
+            Secondary
+        </Button>
+        <Button mr={1} outlined disabled>
+            Disabled
+        </Button>
+        <Button mr={1} outlined danger>
+            Danger
+        </Button>
+    </Flex>
+</Story>
+
+## Text Buttons
+
+Text buttons are typically used for less-pronounced actions, including those located:
+
+-   In dialogs
+-   In cards
+    In cards, text buttons help maintain an emphasis on card content.
+
+<Story name='Text'>
+    <Flex flexDirection='row'>
+        <Button mr={1} text>
+            Default
+        </Button>
+        <Button mr={1} text primary>
+            Primary
+        </Button>
+        <Button mr={1} text secondary>
+            Secondary
+        </Button>
+        <Button mr={1} text disabled>
+            Disabled
+        </Button>
+        <Button mr={1} text danger>
+            Danger
+        </Button>
+    </Flex>
+</Story>

@@ -1,0 +1,41 @@
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+@import url("https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic");
+
+@import "~src/libs/icons/css/fontello";
+@import "~src/libs/icons/css/animation";
+
+@import "~daterangepicker/daterangepicker.css";
+@import "~react-virtualized/styles.css";
+@import "~blueimp-file-upload/css/jquery.fileupload.css";
+
+@import "mixins";
+@import "variables";
+@import "base";
+@import "components";
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: rgba(50, 62, 78, 0.1);
+  p {
+      margin: 20px;
+  }
+}

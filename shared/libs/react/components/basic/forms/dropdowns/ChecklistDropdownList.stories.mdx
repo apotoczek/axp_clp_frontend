@@ -1,0 +1,79 @@
+
+import {Flex} from '@rebass/grid';
+
+import {Props, Preview, Story, Meta} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
+import {withKnobs, text} from '@storybook/addon-knobs';
+import ChecklistDropdown from './ChecklistDropdown';
+import {DropdownInput} from './base';
+
+<Meta title='Documentation/ChecklistDropdown' component={ChecklistDropdown, DropdownInput} />
+
+# ChecklistDropdown
+
+A component that displays a list of items. These items can be selected. 
+
+<Preview>
+    <Story name='Default'>
+    <ChecklistDropdown
+        label={text('Label')}
+        value={[
+            {value: 1},
+            {value: 2},
+            {value: 3},
+            {value: 4},
+            {alue: 5},
+            {value: 6},
+        ]}
+        options={[
+            {label: 'Option 1', value: 1},
+            {label: 'Option 2', value: 2},
+            {label: 'Option 3', value: 3},
+            {label: 'Option 4', value: 4},
+            {label: 'Option 5', value: 5},
+            {label: 'Option 6', value: 6},
+        ]}
+        onValueChanged={action('onValueChanged')}
+    />
+    </Story>
+</Preview>
+
+<Props of={ChecklistDropdown, DropdownInput} />
+Other props: options,
+    values = [],
+    labelKey = 'label',
+    keyKey = 'key',
+    valueKey = 'value',
+    noOptionsLabel = any,
+    disabled = any,
+    label = amy,
+    onValueChanged = () => {},
+    iconKey = any,
+    iconType = any
+
+
+## ChecklistDropdown with Placeholder
+
+<Story name='Placeholder'>
+    <ChecklistDropdown
+        label={text('Label')}
+        value={[
+            {value: 1},
+            {value: 2},
+            {value: 3},
+            {value: 4},
+            {alue: 5},
+            {value: 6},
+        ]}
+        options={[
+            {label: 'Option 1', value: 1},
+            {label: 'Option 2', value: 2},
+            {label: 'Option 3', value: 3},
+            {label: 'Option 4', value: 4},
+            {label: 'Option 5', value: 5},
+            {label: 'Option 6', value: 6},
+        ]}
+        onValueChanged={action('onValueChanged')}
+        placeholder={'Select options from list...'}
+    />
+</Story>

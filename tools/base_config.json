@@ -1,0 +1,5 @@
+{
+    "debugBar": true,
+    "reduxLogger": true,
+    "lintOnWatch": false
+}

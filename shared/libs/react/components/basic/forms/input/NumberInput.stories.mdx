@@ -1,0 +1,75 @@
+
+import {Flex} from '@rebass/grid';
+
+import {Props, Preview, Story, Meta} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
+import {withKnobs, text, number} from '@storybook/addon-knobs';
+import NumberInput from './NumberInput';
+import TextInput from './TextInput';
+
+<Meta title='Documentation/NumberInput' component={NumberInput, TextInput} />
+
+# NumberInput
+
+This components accepts the 
+
+<Preview>
+    <Story name='Default'>
+        <NumberInput
+            label={text('')}
+            value={number('')} 
+        />
+    </Story>
+</Preview>
+
+NumberInput contains TextInput's props as well.
+<Props of={NumberInput, TextInput} />
+
+## Left Side Icon
+
+An icon is placed to the left of number.
+
+<Story name='LeftSideIcon'>
+     <NumberInput leftIcon='user' leftGlyphicon value='1' />
+</Story>
+
+## Right Side Icon
+
+An icon is placed at the rightmost side of the line.
+
+<Story name='RightSideIcon'>
+    <NumberInput rightIcon='user' rightGlyphicon value='1' />
+</Story>
+
+## Error With Message
+
+Red number input box that also displays a specific message.
+
+<Story name='ErrorWithMessage'>
+    <NumberInput leftLabel='Label' value='' error='Something is wrong' />
+</Story>
+
+## Error Without Message
+
+Red number input box.
+
+<Story name='ErrorWithoutMessage'>
+    <NumberInput leftLabel='Label' value='' invalidValue />;
+</Story>
+
+## Error With Message And Right Label
+
+Red number input box that also displays a specific message and can have a label to the left of the message.
+
+<Story name='ErrorWithMessageAndRightLabel'>
+    <NumberInput rightLabel='Label' value='' error='Something is wrong' />
+</Story>
+
+## Top Label
+
+The number input box has a small label to the top left of the line.
+
+<Story name='TopLabel'>
+    <NumberInput mt={2} topLabel='User' value='1' />;
+</Story>
+

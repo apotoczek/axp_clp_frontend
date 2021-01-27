@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+ config.vm.box = "ubuntu/trusty64"
+ config.vm.host_name = "bison.dev"
+
+ config.vm.synced_folder "./", "/var/bison", id: "vagrant-root",
+   :owner => "vagrant",
+   :group => "www-data",
+   :mount_options => ["dmode=775","fmode=774"]
+
+ config.ssh.forward_agent = true
+
+ config.vm.provider :virtualbox do |vb|
+   #vb.gui = true
+   vb.customize ["modifyvm", :id, "--memory", "2014"]
+ end
+
+ config.vm.network :private_network, :ip => "10.10.10.2"
+ config.vm.network :public_network, :bridge => 'en0: Wi-Fi (AirPort)'
+end

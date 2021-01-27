@@ -1,0 +1,83 @@
+
+import {Flex} from '@rebass/grid';
+
+import {Props, Preview, Story, Meta} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
+import {withKnobs} from '@storybook/addon-knobs';
+import FilterableDropdownList from './FilterableDropdownList';
+
+<Meta title='Documentation/FilterableDropdownList' component={FilterableDropdownList} />
+
+# FilterableDropdownList
+
+A dropdown list component that has been enhanced with a filter. Filter is activated when typing.
+
+<Preview>
+    <Story name='Default'>
+        <FilterableDropdownList
+            options={[
+                {label: 'Option 1', value: 1},
+                {label: 'Option 2', value: 2},
+                {label: 'Option 3', value: 3},
+                {label: 'Option 4', value: 4},
+                {label: 'Option 5', value: 5},
+                {label: 'Option 6', value: 6},
+            ]}
+            onValueChange={action('onActionChange')}
+        />
+    </Story>
+</Preview>
+
+<Props of={FilterableDropdownList} />
+Other Props (type: any, default: none): manualValue, error
+
+## Filterable Dropdown List with Placeholder
+
+<Story name='Placeholder'>
+    <FilterableDropdownList
+        placeholder={'Select an option'}
+        options={[
+            {label: 'Option 1', value: 1},
+            {label: 'Option 2', value: 2},
+            {label: 'Option 3', value: 3},
+            {label: 'Option 4', value: 4},
+            {label: 'Option 5', value: 5},
+            {label: 'Option 6', value: 6},
+        ]}
+        onValueChange={action('onActionChange')}
+    />
+</Story>
+
+## Filterable Dropdown List with Left Label
+
+<Story name='LeftLabel'>
+    <FilterableDropdownList
+        leftLabel='Label'
+        options={[
+            {label: 'Option 1', value: 1},
+            {label: 'Option 2', value: 2},
+            {label: 'Option 3', value: 3},
+            {label: 'Option 4', value: 4},
+            {label: 'Option 5', value: 5},
+            {label: 'Option 6', value: 6},
+        ]}
+        onValueChange={action('onActionChange')}
+    />
+</Story>
+
+## Filterable Dropdown List with Manual Value
+
+<Story name='ManualValue'>
+    <FilterableDropdownList
+        manualValue={1}
+        options={[
+            {label: 'Option 1', value: 1},
+            {label: 'Option 2', value: 2},
+            {label: 'Option 3', value: 3},
+            {label: 'Option 4', value: 4},
+            {label: 'Option 5', value: 5},
+            {label: 'Option 6', value: 6},
+        ]}
+        onValueChange={action('onActionChange')}
+    />
+</Story>

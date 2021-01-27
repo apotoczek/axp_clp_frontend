@@ -1,0 +1,18 @@
+<div class="layout-aside page dashboard">
+    <div class="layout-vbox">
+        <div class="row">
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <!-- ko renderComponent: header --><!-- /ko -->
+        <!-- ko renderComponent: toolbar --><!-- /ko -->
+        <div class="scrollable content page dark-page">
+            <div data-bind="visible: templates_table.has_rows" style="display: none;">
+                <h2>Data Templates</h2>
+                <div style="padding: 0 30px">
+                    <!-- ko renderComponent: templates_table --><!-- /ko -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+
+<div class="aside aside-control-panel">
+    <div class="vbox">
+        <ul>
+            <li data-bind="renderComponent: filter">
+            </li>
+            <li data-bind="renderComponent: last_active_offset">
+            </li>
+            <li data-bind="renderComponent: auto_reload">
+            </li>
+            <li data-bind="renderComponent: reload">
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="aside aside-content">
+    <h4 class="text-center">Users Active <span data-bind="html: last_active_offset.selected_label()"></span></h4>
+
+    <div class="row" data-bind="foreach: callouts">
+        <div data-bind="css: $parent.callout_column_css, renderComponent: $data">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div style="padding: 0 20px 20px;">
+                <!-- ko renderComponent: table --><!-- /ko -->
+            </div>
+        </div>
+    </div>
+</div>

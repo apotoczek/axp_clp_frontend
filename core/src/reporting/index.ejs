@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="google" content="notranslate" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <link rel="shortcut icon" href="<%= require('src/img/favicon/cobalt/favicon.ico') %>" />
+
+        <title>Cobalt</title>
+    </head>
+    <body data-bind="css: css">
+        <div class="wrapper layout-hbox stretch">
+            <div class="table-row">
+                <!-- ko renderComponent: main_nav --><!-- /ko -->
+
+                <!-- This will render the currently active main page -->
+                <div id="mainbody" class="content">
+                    <div id="big_loader" style="display: none;">
+                        <div class="wrapper">
+                            <span class="glyphicon glyphicon-cog animate-spin"></span>
+                            <h1>Loading..</h1>
+                        </div>
+                    </div>
+                    <!-- ko foreach: pages -->
+                        <div class="layout-hbox stretch" data-bind="page: $data"></div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+        <div id="popover-root"></div>
+        <div id="modal-root"></div>
+
+        <div id="templates" data-bind="
+            page: {
+                id: 'templates',
+                source: '<%= require('src/libs/templates.html') %>',
+                sourceLoaded: resolve_template_dfd
+            }
+        "></div>
+    </body>
+</html>

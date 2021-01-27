@@ -1,0 +1,49 @@
+<div class="row" data-bind="visible: !is_signed_in()" style="display: none;">
+    <div class="col-xs-12 col-md-4 col-md-offset-4">
+        <div class="page-header page-header-logo">
+            <img src="/img/bisonh.png" height="45">
+        </div>
+        <form data-bind="submit: sign_in">
+            <!-- ko if: !mfa() -->
+                <div class="form-group">
+                    <label for="email_input">Email</label>
+                    <input id="email" type="email" class="form-control" placeholder="Email" id="email_input" data-bind="textInput: email">
+                </div>
+                <div class="form-group">
+                    <label for="password_input">Password</label>
+                    <input id="password" type="password" class="form-control" id="password_input" placeholder="Password" data-bind="textInput: password" >
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" data-bind="checked: keep_logged_in"> Keep me signed in
+                    </label>
+                </div>
+                <button id="submit" type="submit" class="btn btn-primary" data-bind="disable: loading">
+                    <!-- ko ifnot: loading -->
+                        Sign In
+                    <!-- /ko -->
+                    <!-- ko if: loading -->
+                        <span class="glyphicon glyphicon-cog animate-spin"></span> Signing In..
+                    <!-- /ko -->
+                </button>
+            <!-- /ko -->
+            <!-- ko if: mfa -->
+                <p>
+                    Open the multi-factor authentication app on your device to view your authentication code and verify your identity.
+                </p>
+                <div class="form-group">
+                    <label for="email_input">Autentication Code</label>
+                    <input id="mfa_token" type="text" class="form-control" placeholder="Autentication Code" id="mfa_token_input" data-bind="textInput: mfa_token">
+                </div>
+                <button id="submit" type="submit" class="btn btn-primary" data-bind="disable: loading">
+                    <!-- ko ifnot: loading -->
+                        Submit
+                    <!-- /ko -->
+                    <!-- ko if: loading -->
+                        <span class="glyphicon glyphicon-cog animate-spin"></span> Verifying..
+                    <!-- /ko -->
+                </button>
+            <!-- /ko -->
+        </form>
+    </div>
+</div>

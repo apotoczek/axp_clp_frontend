@@ -1,0 +1,26 @@
+<div class="layout-hbox stretch">
+    <div class="layout-hbox stretch" data-bind="
+        visible: active_mode() === 'start',
+        renderComponent: start,
+    "></div>
+
+    <!-- ko foreach: render_wizards -->
+        <div class="layout-hbox stretch" data-bind="
+            visible: $parent.active_mode() === key,
+            renderComponent: component,
+        "></div>
+    <!-- /ko -->
+
+    <div class="layout-hbox stretch" data-bind="
+        visible: active_mode() === 'viewer',
+        renderComponent: viewer,
+    "></div>
+</div>
+<div class="layout-hbox stretch" data-bind="visible: !active_mode()">
+    <div id="big_loader">
+        <div class="wrapper">
+            <span class="glyphicon glyphicon-cog animate-spin"></span>
+            <h1>Loading..</h1>
+        </div>
+    </div>
+</div>

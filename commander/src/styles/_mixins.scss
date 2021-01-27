@@ -1,0 +1,67 @@
+// Button variants
+// -------------------------
+// Easily pump out default styles, as well as :hover, :focus, :active,
+// and disabled options for all buttons
+@mixin flat-button-variant($color, $background) {
+  @include button-variant($color, $background, $background);
+}
+
+
+@mixin gen-btn-transparent($color) {
+  color:$color;
+  background:transparent;
+
+  > .glyphicon, .icon {
+    margin-left: 5px;
+  }
+
+  &:hover {
+    background-color: lighten(#999, 30%);
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+      pointer-events: none;
+      opacity: 0.5;
+      filter: alpha(opacity=5);
+      -webkit-box-shadow: none;
+      box-shadow: none;
+  }
+}
+
+// Alerts
+// -------------------------
+@mixin alert-variant($background, $border, $text-color) {
+  background-color: $background;
+  border-color: $border;
+  color: $text-color;
+
+  hr {
+    border-top-color: darken($border, 5%);
+  }
+  .alert-link {
+    color: darken($text-color, 10%);
+  }
+}
+
+
+// Panels
+// -------------------------
+@mixin panel-variant($border, $heading-text-color, $heading-bg-color, $heading-border) {
+  border-color: $border;
+
+  & > .panel-heading {
+    color: $heading-text-color;
+    background-color: $heading-bg-color;
+    border-color: $heading-border;
+
+    + .panel-collapse .panel-body {
+      border-top-color: $border;
+    }
+  }
+  & > .panel-footer {
+    + .panel-collapse .panel-body {
+      border-bottom-color: $border;
+    }
+  }
+}

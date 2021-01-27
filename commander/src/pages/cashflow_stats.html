@@ -1,0 +1,29 @@
+<div class="aside aside-content cashflow-stats">
+    <div class="row top-chart">
+        <div class="col-md-6 col-xs-12">
+            <h4 class="text-center">Cashflows Over Time</h4>
+            <!-- ko renderComponent: overview_chart --><!-- /ko -->
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <!-- ko renderComponent: overview_table --><!-- /ko -->
+        </div>
+    </div>
+    <hr>
+    <div class="hbox">
+        <div class="aside aside-control-panel">
+            <div class="vbox">
+                <ul>
+                    <li data-bind="renderComponent: filter">
+                    </li>
+                    <li data-bind="renderComponent: client_meta">
+                    </li>
+                    <li data-bind="renderComponent: restore_defaults">
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="aside aside-content">
+            <!-- ko renderComponent: client_table --><!-- /ko -->
+        </div>
+    </div>
+</div>

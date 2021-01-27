@@ -1,0 +1,23 @@
+{
+    "folders":
+    [
+        {
+            "follow_symlinks": true,
+            "path": ".",
+            "folder_exclude_patterns": [
+                "repo/built",
+                "repo/core/vendor",
+                "repo/core/src/libs",
+                "repo/commander/vendor",
+                "repo/commander/src/libs",
+                "repo/tools/node_modules",
+                "repo/snapshots/node_modules",
+            ],
+            "file_exclude_patterns": [
+                "*.css",
+                "*.css.*",
+                "app.css",
+            ]
+        }
+    ]
+}

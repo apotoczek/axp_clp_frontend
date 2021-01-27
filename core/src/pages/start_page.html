@@ -1,0 +1,36 @@
+<div class="layout-aside page performance-calculator">
+    <div class="layout-vbox">
+        <div class="row">
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <div class="scrollable content page performance-calculator start-page no-header">
+            <h1 style="text-align: center; color:#fff;margin-top:30px;">
+                Welcome to <span data-bind="text: platform_name"></span>
+            </h1>
+            <div class="row start-options" data-bind="equalHeight:'.start-option', foreach: sections">
+                <div data-bind="css: $data.column_style || $parent.column_style">
+                    <a class="start-option" style="display: block; cursor: pointer; text-decoration: none; padding-bottom:10px;" data-bind="attr: { href: url }">
+                        <span class="start-option-icon" data-bind="css: icon_css, style: icon_style"></span>
+                        <h3 data-bind="text: title"></h3>
+                        <p data-bind="foreach: highlights" style="padding-right:10px;">
+                            <span data-bind="html: $data, css: $parent.highlight_css"></span><br>
+                        </p>
+                        <div class="btn-area">
+                            <div class="btn btn-default btn-sm btn-block" data-toggle="collapse" data-bind="attr: {'data-target': id}">Enter</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="row" align="center" style="color: #fff;">
+                <h3>Need help?</h3>
+                <p>
+                    Send an email to <span data-bind="text: support_email"></span>
+                    <!-- ko if: support_phone -->
+                    <br/> or call us at <span data-bind="text: support_phone"></span>
+                    <!-- /ko -->
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="layout-hbox stretch" data-bind="visible: !initializing()">
+    <div class="layout-hbox stretch" data-bind="
+        visible: active_mode() === 'start',
+        renderComponent: start,
+    "></div>
+
+    <!-- ko foreach: initialized -->
+    <div class="layout-hbox stretch" data-bind="
+        visible: $parent.active_mode() === $data,
+        renderComponent: $parent.instances[$data],
+    "></div>
+    <!-- /ko -->
+</div>

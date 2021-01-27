@@ -1,0 +1,75 @@
+import {Flex} from '@rebass/grid';
+
+import {Props, Preview, Story, Meta} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
+import {withKnobs, text, boolean} from '@storybook/addon-knobs';
+import TextInput from './TextInput';
+
+<Meta title='Documentation/TextInput' component={TextInput} />
+
+# TextInput
+
+A component that stores text that can be edited by the user.
+
+<Preview>
+    <Story name='Default'>
+        <TextInput
+            label={text('')}
+            value={text('')} 
+        >
+            Button
+        </TextInput>
+    </Story>
+</Preview>
+
+
+<Props of={TextInput} />
+
+## Left Side Icon
+
+An icon is placed to the left of text.
+
+<Story name='LeftSideIcon'>
+     <TextInput leftIcon='user' leftGlyphicon value='Simon Petersson' />
+</Story>
+
+## Right Side Icon
+
+An icon is placed at the rightmost side of the line.
+
+<Story name='RightSideIcon'>
+    <TextInput rightIcon='user' rightGlyphicon value='Simon Petersson' />
+</Story>
+
+## Error With Message
+
+Red text input box that also displays a specific message.
+
+<Story name='ErrorWithMessage'>
+    <TextInput leftLabel='Label' value='Value' error='Something is wrong' />
+</Story>
+
+## Error Without Message
+
+Red text input box.
+
+<Story name='ErrorWithoutMessage'>
+    <TextInput leftLabel='Label' value='Value' invalidValue />;
+</Story>
+
+## Error With Message And Right Label
+
+Red text input box that also displays a specific message and can have a label to the left of the message.
+
+<Story name='ErrorWithMessageAndRightLabel'>
+    <TextInput rightLabel='Label' value='Value' error='Something is wrong' />
+</Story>
+
+## Top Label
+
+The text input box has a small label to the top left of the line.
+
+<Story name='TopLabel'>
+    <TextInput mt={2} topLabel='User' value='Simon Petersson' />;
+</Story>
+

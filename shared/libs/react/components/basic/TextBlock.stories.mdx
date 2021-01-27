@@ -1,0 +1,32 @@
+
+import {Flex} from '@rebass/grid';
+
+import {Props, Preview, Story, Meta} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
+import {withKnobs, text, boolean} from '@storybook/addon-knobs';
+import TextBlock, {Editor} from './TextBlock';
+
+<Meta title='Documentation/TextBlock' component={TextBlock, Editor} />
+
+# TextBlock
+
+A component displaying a block of texxt
+
+<Preview>
+    <Story name='Default'>
+        <TextBlock
+            componentId={text('')}
+            onSpecHandlerAction={action('onComponentSettingsChanged')}
+            placeholder={'Start writing free text here...'}
+            isEditing={boolean('Is Editing')}
+            isSelected={boolean('Is Selected')}
+            showToolbar={boolean('Enable Toolbar')}
+        />
+    </Story>
+</Preview>
+
+<Props of={TextBlock} />
+Other props: componentId, instanceId, dataProvider, onSpecHandlerAction, isEditing, isSelected, showToolbar
+
+## Props from the Editor Class
+<Props of={Editor} />

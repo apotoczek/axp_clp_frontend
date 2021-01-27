@@ -1,0 +1,85 @@
+env:
+    browser: true
+    es6: true
+parser: 'babel-eslint'
+parserOptions:
+    sourceType: 'module'
+    ecmaVersion: 2017
+    ecmaFeatures:
+        experimentalObjectRestSpread: true
+        jsx: true
+extends:
+    - 'eslint:recommended'
+    - 'plugin:react/recommended'
+    - 'prettier'
+    - 'prettier/react'
+plugins:
+    - react
+    - react-hooks
+settings:
+    react:
+        version: '16.13.1'
+globals:
+    __ENV__: true
+    __DEV_CONFIG__: true
+rules:
+    # The following two rules are needed due to a bug in babel-eslint
+    # https://github.com/babel/babel-eslint/issues/815
+    indent: off
+    template-curly-spacing: off
+    rest-spread-spacing: [error, never]
+    array-bracket-spacing: [error, never]
+    eol-last: [error, always]
+    func-call-spacing: [error, never]
+    object-curly-spacing: [error, never]
+    padded-blocks: [error, never]
+    arrow-spacing: error
+    arrow-parens: [error, as-needed]
+    prefer-spread: error
+    prefer-template: error
+    prefer-arrow-callback: error
+    no-else-return: error
+    space-infix-ops: error
+    space-unary-ops: error
+    # no-extra-parens: error
+    quote-props: [error, as-needed]
+    space-in-parens: [error, never]
+    space-before-function-paren:
+        [error, {'anonymous': 'never', 'named': 'never', 'asyncArrow': 'always'}]
+    space-before-blocks: error
+    key-spacing: error
+    no-use-before-define: [error, nofunc]
+    no-multiple-empty-lines: error
+    block-spacing: error
+    brace-style: error
+    comma-spacing: error
+    no-trailing-spaces: error
+    no-unneeded-ternary: error
+    no-unused-vars: [error, {argsIgnorePattern: '^_', varsIgnorePattern: '^_'}]
+    no-whitespace-before-property: error
+    no-multi-spaces: error
+    guard-for-in: error
+    curly: error
+    no-var: error
+    linebreak-style: [error, unix]
+    quotes: [error, single, {'avoidEscape': true}]
+    semi: [error, always]
+    react/no-deprecated: 0
+    react/prop-types: 0
+    react/no-typos: error
+    react/jsx-boolean-value: error
+    react/jsx-curly-brace-presence: [error, never]
+    react/jsx-tag-spacing:
+        [
+            error,
+            {
+                'closingSlash': 'never',
+                'beforeSelfClosing': 'always',
+                'afterOpening': 'never',
+                'beforeClosing': 'never',
+            },
+        ]
+    jsx-quotes: [error, prefer-single]
+    react-hooks/rules-of-hooks: error
+    react-hooks/exhaustive-deps: warn
+    no-restricted-syntax: [error, 'SequenceExpression']

@@ -1,0 +1,13 @@
+{
+    "source": {
+        "include": ["./core/src"]
+    },
+    "opts": {
+        // "template": "node_modules/tui-jsdoc-template",
+        "template": "node_modules/docdash",
+        // "template": "node_modules/minami",
+        "destination": "./docs/",
+        "recurse": true
+    },
+    "plugins": ["plugins/markdown"]
+}

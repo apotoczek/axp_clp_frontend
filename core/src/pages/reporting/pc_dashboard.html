@@ -1,0 +1,30 @@
+<div class="layout-aside page dashboard">
+    <div class="layout-vbox">
+        <div class="row">
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6"></div>
+        </div>
+        <!-- ko renderComponent: header --><!-- /ko -->
+        <!-- ko renderComponent: toolbar --><!-- /ko -->
+        <div class="scrollable content page dark-page">
+           <div data-bind="visible: uploads_table.has_rows" style="display: none;">
+                <h2>Pending Uploads</h2>
+                <div style="padding: 0 30px">
+                    <!-- ko renderComponent: uploads_table --><!-- /ko -->
+                </div>
+            </div>
+            <div data-bind="visible: data_requests_table.has_rows" style="display: none;">
+                <h2>Pending Requests</h2>
+                <div style="padding: 0 30px">
+                    <!-- ko renderComponent: data_requests_table --><!-- /ko -->
+                </div>
+            </div>
+            <div data-bind="visible: submissions_table.has_rows" style="display: none;">
+                <h2>My Submissions</h2>
+                <div style="padding: 0 30px">
+                    <!-- ko renderComponent: submissions_table --><!-- /ko -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

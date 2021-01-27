@@ -1,0 +1,31 @@
+
+import {Flex} from '@rebass/grid';
+
+import {Props, Preview, Story, Meta} from '@storybook/addon-docs/blocks';
+import {action} from '@storybook/addon-actions';
+import {withKnobs, boolean} from '@storybook/addon-knobs';
+import InfoBox from './InfoBox';
+
+<Meta title='Documentation/InfoBox' component={InfoBox} />
+
+# InfoBox
+
+The InfoBox is a component that surrounds other nesting components in a box. The box size is dependent on the amount of content inside.
+
+<Preview>
+    <Story name='Default'>
+    <InfoBox>
+        InfoBox
+    </InfoBox>
+    </Story>
+</Preview>
+
+Props: Can be an error box or have a specific amount of spacing or color.
+
+## Error
+
+<Story name='Error'>
+    <InfoBox error>
+        InfoBox
+    </InfoBox>
+</Story>
