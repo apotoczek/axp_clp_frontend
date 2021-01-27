@@ -76,6 +76,18 @@ const NetAnalytics = function(opts = {}, components = {}) {
 
     const bubble_control_visible = ko.observable(false);
 
+    // axp t105 NetAnalytics (default current market ids helpers) (start)
+    let default_market_id = () => {
+        return default_market_id || 100101;
+    };
+
+    let current_market_id = () => {
+        // let _current_market_id = self.get_id(); // axp t105 todo verify id source
+        let _current_market_id = default_market_id();
+
+        return _current_market_id || default_market_id();
+    };
+
     let default_mode = opts.default_mode;
     let events = self.new_instance(EventRegistry);
     events.new('toggle_expand_metadata');
@@ -97,8 +109,8 @@ const NetAnalytics = function(opts = {}, components = {}) {
 
     /********************************************************************
      * Events used frequently in config, broadcasted by analytics.js
-         based on url
-        *******************************************************************/
+     based on url
+     *******************************************************************/
 
     const set_mode_event = opts.set_mode_event;
 
@@ -113,11 +125,11 @@ const NetAnalytics = function(opts = {}, components = {}) {
     const market_data_fund_uid_event = opts.market_data_fund_uid_event;
     const market_data_family_uid_event = opts.market_data_family_uid_event;
     const currency_visible_event = Utils.gen_event('BenchmarkCurrency.visible', self.get_id());
-    const clear_horizon_event = Utils.gen_event('Horizon.clear', self.get_id());
-    let reset_event;
+    const clear_horizon_event = Utils.gen_event('Horizon.clear', self.get_id()); // axp t105 (!)
+    let reset_event; // axp t105 (!)
 
     if (opts.reset_event) {
-        reset_event = Utils.gen_event(opts.reset_event, self.get_id());
+        reset_event = Utils.gen_event(opts.reset_event, self.get_id()); // axp t105 (!)
     }
 
     const register_export_event = Utils.gen_event(
@@ -277,6 +289,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
             mode,
             'horizon',
         );
+
     const get_pme_index_event = mode =>
         Utils.gen_event(
             'PopoverButton.value',
@@ -286,6 +299,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
             mode,
             'pme_index',
         );
+
     const get_render_currency_event = mode =>
         Utils.gen_event(
             'PopoverButton.value',
@@ -295,6 +309,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
             mode,
             'render_currency',
         );
+
     const get_currency_symbol_event = mode =>
         Observer.map(get_render_currency_event(mode), {
             mapping: 'get',
@@ -368,7 +383,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
     /********************************************************************
      * MODES / TABS
      Modes for mode_toggle components (vertical tabs)
-        *******************************************************************/
+     *******************************************************************/
     const enum_popover_confs = clear_event => {
         return {
             id: 'enum_attributes',
@@ -692,7 +707,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
     /********************************************************************
      * USER FUND/PORTFOLIO FILTERS
      options to filter within the user's fund/portfolio being analyzed
-        *******************************************************************/
+     *******************************************************************/
 
     events.resolve_and_add('vintage_year', 'PopoverButton.value');
     // enumerable attributes (ex: geo, style, focus)
@@ -745,10 +760,12 @@ const NetAnalytics = function(opts = {}, components = {}) {
     /********************************************************************
      * FUND FILTERS
      Filters used both in peer and side by side
-        *******************************************************************/
+     *******************************************************************/
 
     let fund_filter_confs = fund_filter_id => {
         const fund_filter = fund_filter_id || 'fund_filters';
+
+        // axp t105 (info)
         const clear_event = Utils.gen_event(
             'EventButton',
             self.get_id(),
@@ -885,13 +902,14 @@ const NetAnalytics = function(opts = {}, components = {}) {
         ];
     };
 
+    // axp t105 const horizon_conf = inception_last => {... (info)
     const horizon_conf = inception_last => {
         inception_last = inception_last || false;
 
         return {
             component: NewPopoverButton,
             disabled: self.in_revision_mode,
-            clear_event: reset_event,
+            clear_event: reset_event, // axp t105 (horizon_conf return clear_event: reset_event) (!)
             id: 'horizon',
             label: 'Horizon',
             label_track_selection: true,
@@ -908,7 +926,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
             },
             popover_config: {
                 id: 'horizon_popover',
-                clear_event: [as_of_date_event, clear_horizon_event],
+                clear_event: [as_of_date_event, clear_horizon_event], // axp t105 todo insert market id check
                 component: PopoverChecklistCustomValue,
                 custom_value_placeholder: 'Custom Date',
                 custom_value_mapping: 'date_to_epoch',
@@ -955,6 +973,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
         };
     };
 
+    // axp t105 pme_index_conf = horizon_event (const pme_index_conf = horizon_event => {... (info)
     const pme_index_conf = horizon_event => {
         const query = {
             target: 'vehicle:index_options',
@@ -996,11 +1015,12 @@ const NetAnalytics = function(opts = {}, components = {}) {
             };
         }
 
+        // axp t105 pme_index_conf = horizon_event pme_index return (start)
         return {
             id: 'pme_index',
             label: 'Index',
             component: NewPopoverButton,
-            clear_event: reset_event,
+            clear_event: reset_event, // axp t105 (return pme_index clear_event: reset_event) (!)
             label_track_selection: true,
             css: {
                 'btn-block': true,
@@ -1079,10 +1099,10 @@ const NetAnalytics = function(opts = {}, components = {}) {
 
     /********************************************************************
      * Shared components are initialized beforehand and passed in as the
-        second argument to the Control Panel Aside (top level aside).
-        They can then be referenced in all components and thus reused in
-        multiple modes.
-        *******************************************************************/
+     second argument to the Control Panel Aside (top level aside).
+     They can then be referenced in all components and thus reused in
+     multiple modes.
+     *******************************************************************/
 
     let shared_components = {
         chart_provider: self.new_instance(NewPopoverButton, {
@@ -1289,7 +1309,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
             },
         }),
         as_of_date: self.new_instance(NewPopoverButton, {
-            clear_event: reset_event,
+            clear_event: reset_event, // axp t105 as_of_date clear_event: reset_event (info)
             disabled: self.in_revision_mode,
             id: 'as_of_date',
             label: 'As of',
@@ -2339,6 +2359,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
                     css_class: 'popover-cpanel',
                 },
                 visible_callback: function() {
+                    // axp t105 cpanel_confs.net_benchmark.components visible_callback (info)
                     let provider = shared_components.chart_provider.popover.get_value();
                     return provider && provider.value === 'Hamilton Lane';
                 },
@@ -2594,7 +2615,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
     /*******************************************************************
      * CPANEL CONFIG - SIDE BY SIDE
      Includes fund filter configs
-    *******************************************************************/
+     *******************************************************************/
 
     cpanel_confs.side_by_side = {
         id: 'side_by_side',
@@ -2801,7 +2822,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
     /********************************************************************
      * CPANEL CONFIG - PEER
      Includes fund filter configs
-        *******************************************************************/
+     *******************************************************************/
 
     const peer_funds_visible = ko.observable(true);
 
@@ -2960,6 +2981,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
             ],
         },
         components: [
+            // axp t105 cpanel_confs.value_change.components horizon_conf render_currency_conf get_horizon_event (info)
             horizon_conf(),
             render_currency_conf(get_horizon_event('value_change')),
             {
@@ -3635,7 +3657,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
                     selected_datasource: {
                         key: 'market_id',
                         type: 'dynamic',
-                        mapping_default: 100101,
+                        mapping_default: current_market_id(), //100101, // axp t105 todo verify correct id
                         one_required: [
                             'user_fund_uid',
                             'portfolio_uid',
@@ -4397,8 +4419,8 @@ const NetAnalytics = function(opts = {}, components = {}) {
     /********************************************************************
      * BODY CONFIGS
      Configs for each mode. Configured here to enable dynamic
-        setup based on entity type.
-        *******************************************************************/
+     setup based on entity type.
+     *******************************************************************/
 
     const body_confs = {};
 
@@ -4674,9 +4696,10 @@ const NetAnalytics = function(opts = {}, components = {}) {
                             type: 'observer',
                             event_type: portfolio_uid_event,
                         },
-                        list_uid: {
+                        list_uids: {
                             type: 'observer',
-                            mapping: 'get',
+                            default: [],
+                            mapping: 'get_values',
                             event_type: list_uid_event,
                         },
                         market_data_family_uid: {
@@ -4742,6 +4765,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
      * BODY CONFIG - PME
      *******************************************************************/
 
+    // axp t105 body_confs.pme = {... (as_of_date_event, horizon_event, query items) (info)
     body_confs.pme = {
         id: 'pme:benchmark',
         component: AnalyticsPME,
@@ -4927,6 +4951,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
         },
     };
 
+    // axp t105
     body_confs.value_change = {
         id: 'value_change',
         component: ValueChange,
@@ -5370,12 +5395,13 @@ const NetAnalytics = function(opts = {}, components = {}) {
      * BODY CONFIG - HORIZON MODEL
      *******************************************************************/
 
+    // axp t105 body_confs.horizon_model = { (info)
     body_confs.horizon_model = {
         id: 'horizon_model',
         component: HorizonModel,
         dependencies: Utils.gen_id(self.get_id(), 'as_of_date'),
         portfolio_uid_event: portfolio_uid_event,
-        reset_event: reset_event,
+        reset_event: reset_event, // axp t105 (!)
         time_interval_event: Observer.map(get_time_interval_event('horizon_model'), 'get_value'),
         register_export_event: !in_market_data && register_export_event,
         attribute_event: horizon_model_attribute_event,
@@ -6042,8 +6068,8 @@ const NetAnalytics = function(opts = {}, components = {}) {
 
     /********************************************************************
      Here we assemble the full config for cpanel and body
-        based on entity type
-        *******************************************************************/
+     based on entity type
+     *******************************************************************/
 
     let cpanel_components = [
         cpanel_confs.overview,
@@ -6187,8 +6213,8 @@ const NetAnalytics = function(opts = {}, components = {}) {
 
     /********************************************************************
      * Control panel aside == json config for Control Panel initialized
-         as an aside (very simple container component)
-        *******************************************************************/
+     as an aside (very simple container component)
+     *******************************************************************/
 
     self.cpanel = new Aside(
         {
@@ -6235,11 +6261,11 @@ const NetAnalytics = function(opts = {}, components = {}) {
 
     /********************************************************************
      * Body Component. Initalized as a
-         DynamicWrapper (container component) with a dynamic element.
-        The DynamicWrapper has an active component that can be changed
-        by calling toggle() or by an inbound event determined by
-        'set_active_event'.
-        *******************************************************************/
+     DynamicWrapper (container component) with a dynamic element.
+     The DynamicWrapper has an active component that can be changed
+     by calling toggle() or by an inbound event determined by
+     'set_active_event'.
+     *******************************************************************/
 
     self.body = self.new_instance(
         DynamicWrapper,
@@ -6376,8 +6402,8 @@ const NetAnalytics = function(opts = {}, components = {}) {
 
     /********************************************************************
      * The main 'analytics' vm assumes it's components to have
-         'asides' or columns to render horizontally on the page.
-        *******************************************************************/
+     'asides' or columns to render horizontally on the page.
+     *******************************************************************/
 
     self.asides = [self.cpanel, self.body];
 
@@ -6453,7 +6479,7 @@ const NetAnalytics = function(opts = {}, components = {}) {
             });
 
             if (mode) {
-                Observer.broadcast(clear_horizon_event, true);
+                Observer.broadcast(clear_horizon_event, true); // axp t105 (!)
             }
 
             self.mode(mode);
